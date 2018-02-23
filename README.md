@@ -1,7 +1,7 @@
 ![](http://www.southgreen.fr/sites/southgreen.fr/themes/southgreen/logo.png)
 # Welcome on the open resource materials of the Southgreen Bioinformatics Platform 
 
-The [wiki page](https://github.com/SouthGreenPlatform/tutorials/wiki) is used as an open resource material for people who wish to know about bionformatics specially users of the Southgreen Platform.  It contains tips, tutorials on bioinformatics analysis and softwares.
+The [https://southgreenplatform.github.io/tutorials/](https://southgreenplatform.github.io/tutorials/) is used as an open resource material for people who wish to know about bionformatics specially users of the Southgreen Platform.  It contains tips, tutorials on bioinformatics analysis and softwares.
 
 ### Who are we?
 
