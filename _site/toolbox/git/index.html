@@ -1,0 +1,443 @@
+<!doctype html>
+<!--[if lt IE 7]><html class="no-js ie6 oldie" lang="ja"><![endif]-->
+<!--[if IE 7]>   <html class="no-js ie7 oldie" lang="ja"><![endif]-->
+<!--[if IE 8]>   <html class="no-js ie8 oldie" lang="ja"><![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="ja"><!--<![endif]-->
+<head>
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+
+	<title>Git for dumpies</title>
+	<meta name="description" content="Bioinformatics tutorials, Linux, HPC, NGS, NGS workflow manager, TOGGLe, galaxy">
+	<meta name="description" content="Git for dumpies">
+	
+	<meta name="author" content=" Sébastien RAVEL -- sebastien.ravel@cirad.fr">
+	
+	<meta name="author" content=" Christine Tranchant-Dubreuil -- christine.tranchant@ird.fr">
+	
+
+	<meta name="viewport" content="width=device-width,initial-scale=1">
+
+	<link rel="stylesheet" type="text/css" media="screen" href="http://toggle.ird.fr:4000/css/bootstrap.min.css" >
+	<link rel="stylesheet" type="text/css" media="screen" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
+	<link rel="stylesheet" type="text/css" media="screen" href="http://toggle.ird.fr:4000/css/monokai.css">
+	<link rel="stylesheet" type="text/css" media="screen" href="http://toggle.ird.fr:4000/css/stylesheet.css">
+	<link rel="icon" href="http://toggle.ird.fr:4000/images/southgreenlong.png">
+</head>
+ <body>
+
+	<!-- Static navbar -->
+	<nav class="navbar navbar-default navbar-inverse navbar-static-top">
+		<div class="container">
+		<div class="navbar-header">
+			<button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+			<span class="sr-only"></span>
+			<span class="icon-bar"></span>
+			<span class="icon-bar"></span>
+			<span class="icon-bar"></span>
+			</button>
+			<a class="navbar-brand visible-xs" href="#"></a>
+		</div>
+		<div id="navbar" class="navbar-collapse collapse">
+			<ul id="menu">
+				<li><a href="http://toggle.ird.fr:4000/">Home</a></li>
+				<li><a href="#">Bioanalysis</a><span class="caret" ></span>
+					<ul id="child">
+						<li><a href="http://toggle.ird.fr:4000/bioanalysis/polymorphism/">Polymorphism detection</a></li>
+						<li><a href="http://toggle.ird.fr:4000/bioanalysis/vcfExtract/">VCF manipulate</a></li>
+						<li><a href="http://toggle.ird.fr:4000/bioanalysis/rnaSeq/">RNA-Seq</a></li>
+					</ul>
+				</li>
+				<li><a href="#">Cluster</a><span class="caret" ></span>
+					<ul id="child">
+						<li><a href="http://toggle.ird.fr:4000/cluster/HPCConnection/">HPC connection</a></li>
+						<li><a href="http://toggle.ird.fr:4000/cluster/SGE/">SGE</a></li>
+						<li><a href="http://toggle.ird.fr:4000/cluster/moduleLoad/">Use module system</a></li>
+					</ul>
+				</li>
+				<li><a href="#">Toolbox&Trick</a><span class="caret" ></span>
+					<ul id="child">
+						<li><a href="http://toggle.ird.fr:4000/toolbox/linux/">Linux</a></li>
+						<li><a href="http://toggle.ird.fr:4000/toolbox/git/">Git</a></li>
+						<li><a href="http://toggle.ird.fr:4000/toolbox/docker/">Docker</a></li>
+					</ul>
+				</li>
+				<li><a href="http://toggle.ird.fr:4000/contact/">About Us</a></li>
+				<li><a id="forkme_banner" href="https://github.com/SouthGreenPlatform/trainings/">GitHub</a></li>
+			</ul>
+		</div>
+		</div>
+	</nav>
+	<!--/.nav-collapse -->
+	<!-- Header -->
+	<div id="header_wrap" class="outer">
+		<header class="inner">
+		<div class="header"><img class="img-responsive" width="25%" src="http://toggle.ird.fr:4000/images/southgreenlong.png" alt="South Green Logo" /></div>
+		<h2 id="project_tagline">South Green tutorials Web Site</h2>
+		</header>
+	</div>
+
+<body>
+<div id="main_content_wrap" class="outer">
+	 <section id="main_content" class="inner">
+<table class="table-contact">
+<tr>
+<td><img width="100%" src="http://toggle.ird.fr:4000/images/trainings-linux.png" alt="" />
+</td>
+<td>
+<h1> Git For Dummies</h1><br />
+This page describes describes the main commands you need in order to use Git.
+</td>
+</tr>
+</table>
+
+<h3 id="authors">Author(s)</h3>
+
+<table>
+  <thead>
+    <tr>
+      <th style="text-align: left">Authors</th>
+      <th style="text-align: left">Christine Tranchant-Dubreuil</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td style="text-align: left">Research Unit</td>
+      <td style="text-align: left">UMR DIADE</td>
+    </tr>
+    <tr>
+      <td style="text-align: left">Institut</td>
+      <td style="text-align: left"><img src="https://www.ird.fr/extension/ird/design/ird/images/picto/logo_ird.png" width="20%" /></td>
+    </tr>
+  </tbody>
+</table>
+
+<h3 id="keywords">Keywords</h3>
+<p>git</p>
+
+<h3 id="date">Date</h3>
+<p>10/03/2017</p>
+
+<hr />
+
+<h2 id="summary">Summary</h2>
+
+<ul>
+  <li><a href="#clone">Download the repository using the <code class="highlighter-rouge">git clone</code>command</a></li>
+  <li><a href="#pull">Update the downloaded repository using the <code class="highlighter-rouge">git pull</code> command</a></li>
+  <li><a href="#file-add">Add a file, commit and pull with <code class="highlighter-rouge">git add</code>, <code class="highlighter-rouge">git commit</code> and <code class="highlighter-rouge">git pull</code></a></li>
+  <li><a href="#file-add">Remove a file using <code class="highlighter-rouge">git rm</code></a></li>
+  <li><a href="#branch">Branching</a></li>
+</ul>
+
+<p><a name="clone"></a></p>
+<h2 id="download-the-repository-using-the-git-clonecommand">Download the repository using the <code class="highlighter-rouge">git clone</code>command</h2>
+
+<figure class="highlight"><pre><code class="language-ruby" data-lang="ruby"> <span class="n">git</span> <span class="nb">clone</span> <span class="n">https</span><span class="ss">:/</span><span class="o">/</span><span class="n">github</span><span class="p">.</span><span class="nf">com</span><span class="o">/</span><span class="no">SouthGreenPlatform</span><span class="o">/</span><span class="no">TOGGLE</span><span class="o">-</span><span class="no">DEV</span><span class="p">.</span><span class="nf">git</span> <span class="o">&lt;</span><span class="n">directory</span> <span class="nb">name</span><span class="o">&gt;</span></code></pre></figure>
+
+<figure class="highlight"><pre><code class="language-ruby" data-lang="ruby"><span class="c1">#Example</span>
+<span class="p">[</span><span class="n">tranchant</span><span class="vi">@master0</span> <span class="no">TOGGLE</span><span class="o">-</span><span class="no">ON</span><span class="o">-</span><span class="no">THE</span><span class="o">-</span><span class="no">FLY</span><span class="p">]</span><span class="err">$</span> <span class="n">git</span> <span class="nb">clone</span> <span class="n">https</span><span class="ss">:/</span><span class="o">/</span><span class="n">github</span><span class="p">.</span><span class="nf">com</span><span class="o">/</span><span class="no">SouthGreenPlatform</span><span class="o">/</span><span class="no">TOGGLE</span><span class="o">-</span><span class="no">DEV</span><span class="p">.</span><span class="nf">git</span> <span class="o">.</span>
+<span class="no">Cloning</span> <span class="n">into</span> <span class="s1">'.'</span><span class="o">...</span>
+<span class="ss">remote: </span><span class="no">Counting</span> <span class="ss">objects: </span><span class="mi">7945</span><span class="p">,</span> <span class="n">done</span><span class="p">.</span>
+<span class="nf">remote</span><span class="p">:</span> <span class="no">Compressing</span> <span class="ss">objects: </span><span class="mi">100</span><span class="o">%</span> <span class="p">(</span><span class="mi">124</span><span class="o">/</span><span class="mi">124</span><span class="p">),</span> <span class="n">done</span><span class="p">.</span>
+<span class="nf">remote</span><span class="p">:</span> <span class="no">Total</span> <span class="mi">7945</span> <span class="p">(</span><span class="n">delta</span> <span class="mi">78</span><span class="p">),</span> <span class="n">reused</span> <span class="mi">0</span> <span class="p">(</span><span class="n">delta</span> <span class="mi">0</span><span class="p">),</span> <span class="n">pack</span><span class="o">-</span><span class="n">reused</span> <span class="mi">7820</span>
+<span class="no">Receiving</span> <span class="ss">objects: </span><span class="mi">100</span><span class="o">%</span> <span class="p">(</span><span class="mi">7945</span><span class="o">/</span><span class="mi">7945</span><span class="p">),</span> <span class="mf">170.06</span> <span class="no">MiB</span> <span class="o">|</span> <span class="mf">23.03</span> <span class="no">MiB</span><span class="o">/</span><span class="n">s</span><span class="p">,</span> <span class="n">done</span><span class="o">.</span>
+<span class="no">Resolving</span> <span class="ss">deltas: </span><span class="mi">100</span><span class="o">%</span> <span class="p">(</span><span class="mi">5503</span><span class="o">/</span><span class="mi">5503</span><span class="p">),</span> <span class="n">done</span><span class="o">.</span>
+<span class="no">Checking</span> <span class="n">out</span> <span class="ss">files: </span><span class="mi">100</span><span class="o">%</span> <span class="p">(</span><span class="mi">364</span><span class="o">/</span><span class="mi">364</span><span class="p">),</span> <span class="n">done</span><span class="o">.</span></code></pre></figure>
+
+<p><a name="pull"></a></p>
+<h2 id="update-the-downloaded-repository-using-the-git-pull-command">Update the downloaded repository using the <code class="highlighter-rouge">git pull</code> command</h2>
+
+<p>update your copy of repository with the version on remote server</p>
+
+<figure class="highlight"><pre><code class="language-ruby" data-lang="ruby"> <span class="n">git</span> <span class="n">pull</span> <span class="n">https</span><span class="ss">:/</span><span class="o">/</span><span class="n">github</span><span class="p">.</span><span class="nf">com</span><span class="o">/</span><span class="no">SouthGreenPlatform</span><span class="o">/</span><span class="no">TOGGLE</span><span class="o">-</span><span class="no">DEV</span><span class="p">.</span><span class="nf">git</span> <span class="o">&lt;</span><span class="n">branch</span> <span class="nb">name</span><span class="o">&gt;</span></code></pre></figure>
+<p>`</p>
+
+<figure class="highlight"><pre><code class="language-ruby" data-lang="ruby"><span class="c1">#Example</span>
+<span class="p">[</span><span class="n">tranchant</span><span class="vi">@master0</span> <span class="no">TOGGLE</span><span class="o">-</span><span class="no">ON</span><span class="o">-</span><span class="no">THE</span><span class="o">-</span><span class="no">FLY</span><span class="p">]</span><span class="err">$</span> <span class="n">git</span> <span class="n">pull</span> <span class="n">https</span><span class="ss">:/</span><span class="o">/</span><span class="n">github</span><span class="p">.</span><span class="nf">com</span><span class="o">/</span><span class="no">SouthGreenPlatform</span><span class="o">/</span><span class="no">TOGGLE</span><span class="o">-</span><span class="no">DEV</span><span class="p">.</span><span class="nf">git</span>  <span class="n">master</span>
+<span class="no">From</span> <span class="n">https</span><span class="ss">:/</span><span class="o">/</span><span class="n">github</span><span class="p">.</span><span class="nf">com</span><span class="o">/</span><span class="no">SouthGreenPlatform</span><span class="o">/</span><span class="no">TOGGLE</span><span class="o">-</span><span class="no">DEV</span>
+ <span class="o">*</span> <span class="n">branch</span>            <span class="n">master</span>     <span class="o">-&gt;</span> <span class="no">FETCH_HEAD</span>
+<span class="no">Already</span> <span class="n">up</span><span class="o">-</span><span class="n">to</span><span class="o">-</span><span class="n">date</span><span class="o">.</span></code></pre></figure>
+
+<p><a name="file-add"></a></p>
+<h2 id="add-a-file-commit-and-pull-with-git-add-git-commit-and-git-pull">Add a file, commit and pull with <code class="highlighter-rouge">git add</code>, <code class="highlighter-rouge">git commit</code> and <code class="highlighter-rouge">git pull</code></h2>
+
+<p>Don’t forget to pull to download the latest changes before pushing</p>
+
+<h4 id="to-add-a-file-a-change-to-your-local-index-with-git-add">To add a file (a change) to your local index with <code class="highlighter-rouge">git add</code></h4>
+
+<figure class="highlight"><pre><code class="language-ruby" data-lang="ruby"><span class="n">git</span> <span class="n">add</span> <span class="o">&lt;</span><span class="n">filename</span><span class="o">&gt;</span></code></pre></figure>
+
+<h4 id="to-actually-commit-these-changes-with-git-commit">To actually commit these changes with <code class="highlighter-rouge">git commit</code></h4>
+
+<figure class="highlight"><pre><code class="language-ruby" data-lang="ruby"><span class="n">git</span> <span class="n">commit</span> <span class="o">-</span><span class="n">m</span> <span class="s2">"message"</span> <span class="o">&lt;</span><span class="n">file</span> <span class="nb">name</span><span class="o">&gt;</span></code></pre></figure>
+
+<h4 id="to-send-those-changes-to-your-remote-repository-with-git-pull">To send those changes to your remote repository with <code class="highlighter-rouge">git pull</code></h4>
+
+<figure class="highlight"><pre><code class="language-ruby" data-lang="ruby"><span class="n">git</span> <span class="n">push</span> <span class="n">https</span><span class="ss">:/</span><span class="o">/</span><span class="n">github</span><span class="p">.</span><span class="nf">com</span><span class="o">/</span><span class="no">SouthGreenPlatform</span><span class="o">/</span><span class="no">TOGGLE</span><span class="o">-</span><span class="no">DEV</span><span class="p">.</span><span class="nf">git</span> <span class="o">&lt;</span><span class="n">branch_name</span><span class="o">&gt;</span></code></pre></figure>
+
+<p>Example</p>
+
+<figure class="highlight"><pre><code class="language-ruby" data-lang="ruby"><span class="p">[</span><span class="n">tranchant</span><span class="vi">@master0</span> <span class="no">TOGGLE</span><span class="o">-</span><span class="no">ON</span><span class="o">-</span><span class="no">THE</span><span class="o">-</span><span class="no">FLY</span><span class="p">]</span><span class="err">$</span> <span class="n">git</span> <span class="n">add</span> <span class="n">update</span><span class="p">.</span><span class="nf">txt</span>
+
+<span class="p">[</span><span class="n">tranchant</span><span class="vi">@master0</span> <span class="no">TOGGLE</span><span class="o">-</span><span class="no">ON</span><span class="o">-</span><span class="no">THE</span><span class="o">-</span><span class="no">FLY</span><span class="p">]</span><span class="err">$</span> <span class="n">git</span> <span class="n">commit</span> <span class="o">-</span><span class="n">m</span> <span class="s2">"Adding update.txt file"</span> <span class="n">update</span><span class="p">.</span><span class="nf">txt</span>
+<span class="p">[</span><span class="n">master</span> <span class="n">ebb0a1c</span><span class="p">]</span> <span class="no">Adding</span> <span class="n">update</span><span class="p">.</span><span class="nf">txt</span> <span class="n">file</span>
+ <span class="mi">1</span> <span class="n">file</span> <span class="n">changed</span><span class="p">,</span> <span class="mi">0</span> <span class="n">insertions</span><span class="p">(</span><span class="o">+</span><span class="p">),</span> <span class="mi">0</span> <span class="n">deletions</span><span class="p">(</span><span class="o">-</span><span class="p">)</span>
+ <span class="n">create</span> <span class="n">mode</span> <span class="mi">100644</span> <span class="n">update</span><span class="p">.</span><span class="nf">txt</span>
+
+<span class="p">[</span><span class="n">tranchant</span><span class="vi">@master0</span> <span class="no">TOGGLE</span><span class="o">-</span><span class="no">ON</span><span class="o">-</span><span class="no">THE</span><span class="o">-</span><span class="no">FLY</span><span class="p">]</span><span class="err">$</span> <span class="n">git</span> <span class="n">push</span> <span class="n">https</span><span class="ss">:/</span><span class="o">/</span><span class="n">github</span><span class="p">.</span><span class="nf">com</span><span class="o">/</span><span class="no">SouthGreenPlatform</span><span class="o">/</span><span class="no">TOGGLE</span><span class="o">-</span><span class="no">DEV</span><span class="p">.</span><span class="nf">git</span> <span class="n">master</span>
+<span class="no">Counting</span> <span class="ss">objects: </span><span class="mi">3</span><span class="p">,</span> <span class="n">done</span><span class="o">.</span>
+<span class="no">Delta</span> <span class="n">compression</span> <span class="n">using</span> <span class="n">up</span> <span class="n">to</span> <span class="mi">16</span> <span class="n">threads</span><span class="o">.</span>
+<span class="no">Compressing</span> <span class="ss">objects: </span><span class="mi">100</span><span class="o">%</span> <span class="p">(</span><span class="mi">2</span><span class="o">/</span><span class="mi">2</span><span class="p">),</span> <span class="n">done</span><span class="o">.</span>
+<span class="no">Writing</span> <span class="ss">objects: </span><span class="mi">100</span><span class="o">%</span> <span class="p">(</span><span class="mi">2</span><span class="o">/</span><span class="mi">2</span><span class="p">),</span> <span class="mi">271</span> <span class="n">bytes</span> <span class="o">|</span> <span class="mi">0</span> <span class="n">bytes</span><span class="o">/</span><span class="n">s</span><span class="p">,</span> <span class="n">done</span><span class="o">.</span>
+<span class="no">Total</span> <span class="mi">2</span> <span class="p">(</span><span class="n">delta</span> <span class="mi">1</span><span class="p">),</span> <span class="n">reused</span> <span class="mi">0</span> <span class="p">(</span><span class="n">delta</span> <span class="mi">0</span><span class="p">)</span>
+<span class="ss">remote: </span><span class="no">Resolving</span> <span class="ss">deltas: </span><span class="mi">100</span><span class="o">%</span> <span class="p">(</span><span class="mi">1</span><span class="o">/</span><span class="mi">1</span><span class="p">),</span> <span class="n">completed</span> <span class="n">with</span> <span class="mi">1</span> <span class="n">local</span> <span class="n">objects</span><span class="o">.</span>
+<span class="no">To</span> <span class="n">https</span><span class="ss">:/</span><span class="o">/</span><span class="n">github</span><span class="p">.</span><span class="nf">com</span><span class="o">/</span><span class="no">SouthGreenPlatform</span><span class="o">/</span><span class="no">TOGGLE</span><span class="o">-</span><span class="no">DEV</span><span class="p">.</span><span class="nf">git</span>
+   <span class="n">fec3a1f</span><span class="o">..</span><span class="n">ebb0a1c</span>  <span class="n">master</span> <span class="o">-&gt;</span> <span class="n">master</span></code></pre></figure>
+
+<p><a name="file-rm"></a></p>
+<h2 id="remove-a-file-using-git-rm">Remove a file using <code class="highlighter-rouge">git rm</code></h2>
+
+<figure class="highlight"><pre><code class="language-ruby" data-lang="ruby"><span class="n">git</span> <span class="n">rm</span> <span class="o">&lt;</span><span class="n">file</span> <span class="nb">name</span><span class="o">&gt;</span></code></pre></figure>
+
+<figure class="highlight"><pre><code class="language-ruby" data-lang="ruby"><span class="p">[</span><span class="n">tranchant</span><span class="vi">@master0</span> <span class="no">TOGGLE</span><span class="o">-</span><span class="no">ON</span><span class="o">-</span><span class="no">THE</span><span class="o">-</span><span class="no">FLY</span><span class="p">]</span><span class="err">$</span> <span class="n">git</span> <span class="n">rm</span> <span class="n">update</span><span class="p">.</span><span class="nf">txt</span>
+<span class="n">rm</span> <span class="s1">'update.txt'</span>
+
+<span class="p">[</span><span class="n">tranchant</span><span class="vi">@master0</span> <span class="no">TOGGLE</span><span class="o">-</span><span class="no">ON</span><span class="o">-</span><span class="no">THE</span><span class="o">-</span><span class="no">FLY</span><span class="p">]</span><span class="err">$</span> <span class="n">git</span> <span class="n">commit</span> <span class="o">-</span><span class="n">m</span> <span class="s2">"Remove update.txt file"</span> <span class="n">update</span><span class="p">.</span><span class="nf">txt</span>
+<span class="p">[</span><span class="n">master</span> <span class="mi">9</span><span class="n">fa50b4</span><span class="p">]</span> <span class="no">Remove</span> <span class="n">update</span><span class="p">.</span><span class="nf">txt</span> <span class="n">file</span>
+ <span class="mi">1</span> <span class="n">file</span> <span class="n">changed</span><span class="p">,</span> <span class="mi">0</span> <span class="n">insertions</span><span class="p">(</span><span class="o">+</span><span class="p">),</span> <span class="mi">0</span> <span class="n">deletions</span><span class="p">(</span><span class="o">-</span><span class="p">)</span>
+ <span class="n">delete</span> <span class="n">mode</span> <span class="mi">100644</span> <span class="n">update</span><span class="p">.</span><span class="nf">txt</span>
+
+<span class="p">[</span><span class="n">tranchant</span><span class="vi">@master0</span> <span class="no">TOGGLE</span><span class="o">-</span><span class="no">ON</span><span class="o">-</span><span class="no">THE</span><span class="o">-</span><span class="no">FLY</span><span class="p">]</span><span class="err">$</span> <span class="n">git</span> <span class="n">push</span> <span class="n">https</span><span class="ss">:/</span><span class="o">/</span><span class="n">github</span><span class="p">.</span><span class="nf">com</span><span class="o">/</span><span class="no">SouthGreenPlatform</span><span class="o">/</span><span class="no">TOGGLE</span><span class="o">-</span><span class="no">DEV</span><span class="p">.</span><span class="nf">git</span> <span class="n">master</span>
+<span class="no">Counting</span> <span class="ss">objects: </span><span class="mi">3</span><span class="p">,</span> <span class="n">done</span><span class="o">.</span>
+<span class="no">Delta</span> <span class="n">compression</span> <span class="n">using</span> <span class="n">up</span> <span class="n">to</span> <span class="mi">16</span> <span class="n">threads</span><span class="o">.</span>
+<span class="no">Compressing</span> <span class="ss">objects: </span><span class="mi">100</span><span class="o">%</span> <span class="p">(</span><span class="mi">2</span><span class="o">/</span><span class="mi">2</span><span class="p">),</span> <span class="n">done</span><span class="o">.</span>
+<span class="no">Writing</span> <span class="ss">objects: </span><span class="mi">100</span><span class="o">%</span> <span class="p">(</span><span class="mi">2</span><span class="o">/</span><span class="mi">2</span><span class="p">),</span> <span class="mi">236</span> <span class="n">bytes</span> <span class="o">|</span> <span class="mi">0</span> <span class="n">bytes</span><span class="o">/</span><span class="n">s</span><span class="p">,</span> <span class="n">done</span><span class="o">.</span>
+<span class="no">Total</span> <span class="mi">2</span> <span class="p">(</span><span class="n">delta</span> <span class="mi">1</span><span class="p">),</span> <span class="n">reused</span> <span class="mi">0</span> <span class="p">(</span><span class="n">delta</span> <span class="mi">0</span><span class="p">)</span>
+<span class="ss">remote: </span><span class="no">Resolving</span> <span class="ss">deltas: </span><span class="mi">100</span><span class="o">%</span> <span class="p">(</span><span class="mi">1</span><span class="o">/</span><span class="mi">1</span><span class="p">),</span> <span class="n">completed</span> <span class="n">with</span> <span class="mi">1</span> <span class="n">local</span> <span class="n">objects</span><span class="o">.</span>
+<span class="no">To</span> <span class="n">https</span><span class="ss">:/</span><span class="o">/</span><span class="n">github</span><span class="p">.</span><span class="nf">com</span><span class="o">/</span><span class="no">SouthGreenPlatform</span><span class="o">/</span><span class="no">TOGGLE</span><span class="o">-</span><span class="no">DEV</span><span class="p">.</span><span class="nf">git</span>
+   <span class="n">ebb0a1c</span><span class="o">..</span><span class="mi">9</span><span class="n">fa50b4</span>  <span class="n">master</span> <span class="o">-&gt;</span> <span class="n">master</span></code></pre></figure>
+
+<p><a name="branch"></a></p>
+<h2 id="branching">Branching</h2>
+
+<p>Branches are used to develop new features or modify codes isolated from each other. The <em>master</em> branch is the “default” branch when a repository is created. Use other branches for development and merge them back to the master branch.</p>
+
+<h4 id="view-all-branches-that-were-ever-checked-out-on-your-local-copy-using--git-branch-">View all branches that were ever checked out on your local copy using ` git branch `</h4>
+
+<figure class="highlight"><pre><code class="language-ruby" data-lang="ruby"><span class="n">git</span> <span class="n">branch</span></code></pre></figure>
+
+<figure class="highlight"><pre><code class="language-ruby" data-lang="ruby"><span class="p">[</span><span class="n">tranchant</span><span class="vi">@master0</span> <span class="no">TOGGLE</span><span class="o">-</span><span class="no">ON</span><span class="o">-</span><span class="no">THE</span><span class="o">-</span><span class="no">FLY</span><span class="p">]</span><span class="err">$</span> <span class="n">git</span> <span class="n">branch</span>
+<span class="o">*</span> <span class="n">master</span></code></pre></figure>
+
+<ul>
+  <li>indicates the branch used actually</li>
+</ul>
+
+<h4 id="view-all-distant-branches-using--git-branch-">View all distant branches using ` git branch `</h4>
+
+<figure class="highlight"><pre><code class="language-ruby" data-lang="ruby"><span class="n">git</span> <span class="n">branch</span> <span class="o">-</span><span class="n">r</span></code></pre></figure>
+
+<figure class="highlight"><pre><code class="language-ruby" data-lang="ruby"><span class="p">[</span><span class="n">tranchant</span><span class="vi">@master0</span> <span class="no">TOGGLE</span><span class="o">-</span><span class="no">ON</span><span class="o">-</span><span class="no">THE</span><span class="o">-</span><span class="no">FLY</span><span class="p">]</span><span class="err">$</span> <span class="n">git</span> <span class="n">branch</span> <span class="o">-</span><span class="n">r</span>
+  <span class="n">origin</span><span class="o">/</span><span class="no">HEAD</span> <span class="o">-&gt;</span> <span class="n">origin</span><span class="o">/</span><span class="n">master</span>
+  <span class="n">origin</span><span class="o">/</span><span class="n">master</span>
+  <span class="n">origin</span><span class="o">/</span><span class="n">picardtools</span><span class="o">-</span><span class="n">samtofastq</span>
+  <span class="n">origin</span><span class="o">/</span><span class="n">samtoolsBlocks</span>
+  <span class="n">origin</span><span class="o">/</span><span class="n">structuralVariant</span>
+  <span class="n">origin</span><span class="o">/</span><span class="n">tgicl</span>
+  <span class="n">origin</span><span class="o">/</span><span class="n">transabyss</span>
+  <span class="n">origin</span><span class="o">/</span><span class="n">trinity</span></code></pre></figure>
+
+<h3 id="create-your-own-branch-on-your-local-copy-then-transfer-it-on-remote-server">Create your own branch on your local copy then transfer it on remote server</h3>
+
+<p>Create the branch</p>
+
+<figure class="highlight"><pre><code class="language-ruby" data-lang="ruby"><span class="n">git</span> <span class="n">branch</span> <span class="o">&lt;</span><span class="n">branch</span> <span class="nb">name</span><span class="o">&gt;</span></code></pre></figure>
+
+<p>Move into this branch</p>
+
+<figure class="highlight"><pre><code class="language-ruby" data-lang="ruby"><span class="n">git</span> <span class="n">checkout</span> <span class="o">&lt;</span><span class="n">branch</span> <span class="nb">name</span><span class="o">&gt;</span></code></pre></figure>
+
+<p>Commit the changes</p>
+
+<figure class="highlight"><pre><code class="language-ruby" data-lang="ruby"><span class="n">git</span> <span class="n">commit</span> <span class="o">-</span><span class="n">m</span> <span class="s2">"mon commentaire"</span></code></pre></figure>
+
+<p>Push this local branch on the remote server</p>
+
+<figure class="highlight"><pre><code class="language-ruby" data-lang="ruby"> <span class="n">git</span> <span class="n">push</span> <span class="n">https</span><span class="ss">:/</span><span class="o">/</span><span class="n">github</span><span class="p">.</span><span class="nf">com</span><span class="o">/</span><span class="no">SouthGreenPlatform</span><span class="o">/</span><span class="no">TOGGLE</span><span class="o">-</span><span class="no">DEV</span><span class="p">.</span><span class="nf">git</span> <span class="n">nom_branche</span></code></pre></figure>
+
+<h3 id="get-a-distant-branch-on-the-local-repository-if-the-branch-dont-exist-locally">Get a distant branch on the local repository if the branch don’t exist locally</h3>
+
+<h4 id="method-1">Method 1</h4>
+
+<figure class="highlight"><pre><code class="language-ruby" data-lang="ruby"><span class="n">git</span> <span class="n">checkout</span> <span class="o">&lt;</span><span class="n">remote</span> <span class="n">branch</span> <span class="nb">name</span><span class="o">&gt;</span>
+<span class="n">git</span> <span class="n">pull</span> <span class="n">https</span><span class="ss">:/</span><span class="o">/</span><span class="n">github</span><span class="p">.</span><span class="nf">com</span><span class="o">/</span><span class="no">SouthGreenPlatform</span><span class="o">/</span><span class="no">TOGGLE</span><span class="o">-</span><span class="no">DEV</span><span class="p">.</span><span class="nf">git</span> <span class="n">nom_branche_distante</span> <span class="sb">`</span></code></pre></figure>
+
+<h4 id="method-2">Method 2</h4>
+
+<figure class="highlight"><pre><code class="language-ruby" data-lang="ruby"><span class="n">git</span> <span class="n">branch</span> <span class="o">&lt;</span><span class="n">remote</span> <span class="n">branch</span> <span class="nb">name</span><span class="o">&gt;</span>
+<span class="n">git</span> <span class="n">pull</span> <span class="n">https</span><span class="ss">:/</span><span class="o">/</span><span class="n">github</span><span class="p">.</span><span class="nf">com</span><span class="o">/</span><span class="no">SouthGreenPlatform</span><span class="o">/</span><span class="no">TOGGLE</span><span class="o">-</span><span class="no">DEV</span><span class="p">.</span><span class="nf">git</span> <span class="o">&lt;</span><span class="n">remote</span> <span class="n">branch</span> <span class="nb">name</span><span class="o">&gt;</span>
+<span class="n">git</span> <span class="n">checkout</span> <span class="o">&lt;</span><span class="n">remote</span> <span class="n">branch</span> <span class="nb">name</span><span class="o">&gt;</span></code></pre></figure>
+
+<h3 id="to-merge-another-branch--ex-samtoolsblock--into-your-active-branch-eg-master">To merge another branch  (ex: samtoolsBlock)  into your active branch (e.g. master)</h3>
+
+<h4 id="move-into-the-active-branch-eg-master">Move into the “active” branch (e.g. master)</h4>
+
+<figure class="highlight"><pre><code class="language-ruby" data-lang="ruby"><span class="n">git</span> <span class="n">checkout</span> <span class="n">master</span></code></pre></figure>
+
+<h4 id="update-your-local-repository-to-the-newest-commit">Update your local repository to the newest commit,</h4>
+
+<figure class="highlight"><pre><code class="language-ruby" data-lang="ruby"><span class="n">git</span> <span class="n">pull</span> <span class="n">https</span><span class="ss">:/</span><span class="o">/</span><span class="n">github</span><span class="p">.</span><span class="nf">com</span><span class="o">/</span><span class="no">SouthGreenPlatform</span><span class="o">/</span><span class="no">TOGGLE</span><span class="o">-</span><span class="no">DEV</span><span class="p">.</span><span class="nf">git</span> <span class="n">master</span></code></pre></figure>
+
+<h4 id="merging">Merging</h4>
+
+<figure class="highlight"><pre><code class="language-ruby" data-lang="ruby"><span class="n">git</span> <span class="n">merge</span> <span class="n">samtoolsBlock</span></code></pre></figure>
+<p>`</p>
+
+<h4 id="check-and-resolve-the-conflicts-generated">Check and resolve the conflicts generated</h4>
+
+<p>You are responsible to merge those conflicts manually by editing the files shown by <code class="highlighter-rouge">git status</code>.</p>
+
+<figure class="highlight"><pre><code class="language-ruby" data-lang="ruby"> <span class="n">git</span> <span class="n">status</span></code></pre></figure>
+
+<h4 id="commit-and-push-the-changes-and-the-merge-on-the-distant-server">Commit and push the changes and the merge on the distant server</h4>
+
+<figure class="highlight"><pre><code class="language-ruby" data-lang="ruby"> <span class="n">git</span> <span class="n">commit</span> <span class="o">-</span><span class="n">m</span> <span class="s2">"Branch merging samtoolsBlock-master"</span> <span class="o">-</span><span class="n">a</span>
+ <span class="n">git</span> <span class="n">push</span> <span class="n">https</span><span class="ss">:/</span><span class="o">/</span><span class="n">github</span><span class="p">.</span><span class="nf">com</span><span class="o">/</span><span class="no">SouthGreenPlatform</span><span class="o">/</span><span class="no">TOGGLE</span><span class="o">-</span><span class="no">DEV</span><span class="p">.</span><span class="nf">git</span> <span class="n">master</span> <span class="sb">`</span></code></pre></figure>
+
+<h3 id="remove-a-branche">Remove a branche</h3>
+
+<h4 id="on-the-remote-server">on the remote server</h4>
+
+<figure class="highlight"><pre><code class="language-ruby" data-lang="ruby"> <span class="n">git</span> <span class="n">push</span> <span class="n">https</span><span class="ss">:/</span><span class="o">/</span><span class="n">github</span><span class="p">.</span><span class="nf">com</span><span class="o">/</span><span class="no">SouthGreenPlatform</span><span class="o">/</span><span class="no">TOGGLE</span><span class="o">-</span><span class="no">DEV</span><span class="p">.</span><span class="nf">git</span> <span class="ss">:nom_branche_a_suppr</span> <span class="sb">`</span></code></pre></figure>
+<p>`</p>
+
+<h4 id="on-our-local-copy">on our local copy</h4>
+
+<figure class="highlight"><pre><code class="language-ruby" data-lang="ruby"><span class="n">git</span> <span class="n">branch</span> <span class="n">nom</span><span class="o">-</span><span class="n">branche_a_suppr</span> <span class="o">-</span><span class="n">d</span></code></pre></figure>
+<p>`</p>
+
+<h2 id="back-to-the-change-just-before-the-last-commit-without-losing-the-work-done">Back to the change just before the last commit without losing the work done</h2>
+
+<figure class="highlight"><pre><code class="language-ruby" data-lang="ruby"><span class="c1"># create one branch</span>
+<span class="n">git</span> <span class="n">branch</span> <span class="n">readDir</span>
+
+<span class="c1"># move on this branch</span>
+<span class="n">git</span> <span class="n">checkout</span> <span class="n">readDir</span>
+
+<span class="c1"># push</span>
+<span class="n">git</span> <span class="n">push</span> <span class="n">https</span><span class="ss">:/</span><span class="o">/</span><span class="n">github</span><span class="p">.</span><span class="nf">com</span><span class="o">/</span><span class="no">SouthGreenPlatform</span><span class="o">/</span><span class="no">TOGGLE</span><span class="o">-</span><span class="no">DEV</span><span class="p">.</span><span class="nf">git</span> <span class="n">readDir</span> <span class="sb">`
+
+# back to the former branch
+git checkout dev
+
+# Revert the commit (number given on the terminal)
+git revert d10a97d
+
+# Push
+git push
+
+# Back to the branch
+git checkout readDir</span></code></pre></figure>
+
+<h2 id="diverses-commandes">+DIVERSES COMMANDES+</h2>
+
+<p>To get status</p>
+
+<figure class="highlight"><pre><code class="language-ruby" data-lang="ruby"><span class="n">git</span> <span class="n">status</span></code></pre></figure>
+
+<p>To get log</p>
+
+<figure class="highlight"><pre><code class="language-ruby" data-lang="ruby"><span class="n">git</span> <span class="n">log</span>
+<span class="n">git</span> <span class="n">log</span> <span class="o">--</span><span class="n">graph</span> <span class="o">--</span><span class="n">pretty</span><span class="o">=</span><span class="nb">format</span><span class="ss">:'%C(red)%h%Creset -%C(yellow)%d%Creset %s %C(green)(%cr) %C(bold blue)&lt;%an&gt;%Creset'</span> <span class="o">--</span><span class="n">abbrev</span><span class="o">-</span><span class="n">commit</span></code></pre></figure>
+
+<p>Pour mettre la commande du dessus en alias dans git (exemple avec git lg)
+` git config –global alias.lg “log –color –graph –pretty=format:’%C(red)%h%Creset -%C(yellow)%d%Creset %s %C(green)(%cr) %C(bold blue)&lt;%an&gt;%Creset’ –abbrev-commit” `</p>
+
+<ul>
+  <li>pour virer un fichier du git quand il est trop gros (et qu’on ne peut plus pusher)</li>
+</ul>
+
+<p><code class="highlighter-rouge"> git filter-branch --index-filter 'git rm --cached --ignore-unmatch DATA/expectedData/snpEffdata/MSU6.1/sequences.fa' --prune-empty --tag-name-filter cat -- --all </code></p>
+
+<h2 id="docs">Docs:</h2>
+<blockquote>
+  <p>https://ccwiki.in2p3.fr/developpements:formation:git
+http://www.moussu.fr/git/</p>
+</blockquote>
+
+<!--
+<aside>
+	<h3>aside</h3>
+	<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam sodales urna non odio egestas tempor. Nunc vel vehicula ante. Etiam bibendum iaculis libero, eget molestie nisl pharetra in. In semper consequat est, eu porta velit mollis nec. Curabitur posuere enim eget turpis feugiat tempor. Etiam ullamcorper lorem dapibus velit suscipit ultrices.</p>
+</aside>-->
+
+	</div> <!-- #main -->
+</div> <!-- #main-container -->
+    <!-- Placed at the end of the document so the pages load faster -->
+    <script src="http://toggle.ird.fr:4000/js/jquery-1.11.3.min.js"></script>
+    <script src="http://toggle.ird.fr:4000/js/bootstrap.min.js"></script>
+    <script src="http://toggle.ird.fr:4000/js/homepage.js"></script>
+    <script src="http://toggle.ird.fr:4000/js/libs/modernizr-2.0.6.min.js"></script>
+
+</script>
+
+    <!-- FOOTER  -->
+    <div id="footer_wrap" class="outer">
+      <footer class="inner">
+        <div id="footer">
+			<div class="logo-div" class="clearfix">
+				<a class="logo" href="http://www.ird.fr">
+					<img class="img-logo" src="http://toggle.ird.fr:4000/images/logo_ird.png" alt="IRD Logo"  width="" />
+				</a>
+
+				<a class="logo" href="http://www.cirad.fr">
+					<img class="img-logo" src="http://toggle.ird.fr:4000/images/logo-cirad.png" alt="CIRAD Logo"   width="" />
+				</a>
+
+				<a class="logo" href="http://www.inra.fr">
+					<img class="img-logo" src="http://toggle.ird.fr:4000/images/logo_inra.png" alt="INRA Logo"   width=""/>
+				</a>
+
+				<a class="logo" href="https://www.bioversityinternational.org/">
+					<img class="img-logo" src="http://toggle.ird.fr:4000/images/logo_bioversity.png" alt="Bioversity Logo"   width=""/>
+				</a>
+
+				<a class="logo" href="https://www.supagro.fr/">
+					<img class="img-logo" src="http://toggle.ird.fr:4000/images/logo_supagro.png" alt="SupAgro Logo"   width=""/>
+				</a>
+				
+				<a class="logo" href="http://www.southgreen.fr">
+					<img class="img-logo" src="http://toggle.ird.fr:4000/images/southgreenlong.png" alt="South Green Logo"   width=""/>
+				</a>
+
+			</div>
+		</div>
+
+		<div class="footer_txt">
+			<p>The contents of this website are &copy;&nbsp;2018 under the terms of the Licencied under
+				<a href="http://www.cecill.info/licences/Licence_CeCILL-C_V1-en.html">CeCill-C</a>
+				 and <a href="/blob/master/LICENSE">GPLv3</a>.
+			</p>
+		</div>
+      </footer>
+    </div>
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
+<script>window.jQuery || document.write('<script src="js/libs/jquery-1.7.1.min.js"><\/script>')</script>
+
+<!--<script src="http://toggle.ird.fr:4000/js/script.js"></script>
+<script>
+	var _gaq=[['_setAccount',''],['_trackPageview']];
+	(function(d,t){var g=d.createElement(t),s=d.getElementsByTagName(t)[0];g.async=1;
+	g.src=('https:'==location.protocol?'//ssl':'//www')+'.google-analytics.com/ga.js';
+	s.parentNode.insertBefore(g,s)}(document,'script'));
+</script>
+
+<!--[if lt IE 7 ]>
+	<script src="//ajax.googleapis.com/ajax/libs/chrome-frame/1.0.2/CFInstall.min.js"></script>
+	<script>window.attachEvent("onload",function(){CFInstall.check({mode:"overlay"})})</script>
+<![endif]-->
+
+</body>
+</html>

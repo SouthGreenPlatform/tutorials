@@ -1,0 +1,544 @@
+<!doctype html>
+<!--[if lt IE 7]><html class="no-js ie6 oldie" lang="ja"><![endif]-->
+<!--[if IE 7]>   <html class="no-js ie7 oldie" lang="ja"><![endif]-->
+<!--[if IE 8]>   <html class="no-js ie8 oldie" lang="ja"><![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="ja"><!--<![endif]-->
+<head>
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+
+	<title>polymorphism</title>
+	<meta name="description" content="Bioinformatics tutorials, Linux, HPC, NGS, NGS workflow manager, TOGGLe, galaxy">
+	<meta name="description" content="Polymorphism detection from fastq files on a linux terminal">
+	
+	<meta name="author" content=" Sébastien RAVEL -- sebastien.ravel@cirad.fr">
+	
+	<meta name="author" content=" Christine Tranchant-Dubreuil -- christine.tranchant@ird.fr">
+	
+
+	<meta name="viewport" content="width=device-width,initial-scale=1">
+
+	<link rel="stylesheet" type="text/css" media="screen" href="http://toggle.ird.fr:4000/css/bootstrap.min.css" >
+	<link rel="stylesheet" type="text/css" media="screen" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
+	<link rel="stylesheet" type="text/css" media="screen" href="http://toggle.ird.fr:4000/css/monokai.css">
+	<link rel="stylesheet" type="text/css" media="screen" href="http://toggle.ird.fr:4000/css/stylesheet.css">
+	<link rel="icon" href="http://toggle.ird.fr:4000/images/southgreenlong.png">
+</head>
+ <body>
+
+	<!-- Static navbar -->
+	<nav class="navbar navbar-default navbar-inverse navbar-static-top">
+		<div class="container">
+		<div class="navbar-header">
+			<button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+			<span class="sr-only"></span>
+			<span class="icon-bar"></span>
+			<span class="icon-bar"></span>
+			<span class="icon-bar"></span>
+			</button>
+			<a class="navbar-brand visible-xs" href="#"></a>
+		</div>
+		<div id="navbar" class="navbar-collapse collapse">
+			<ul id="menu">
+				<li><a href="http://toggle.ird.fr:4000/">Home</a></li>
+				<li><a href="#">Bioanalysis</a><span class="caret" ></span>
+					<ul id="child">
+						<li><a href="http://toggle.ird.fr:4000/bioanalysis/polymorphism/">Polymorphism detection</a></li>
+						<li><a href="http://toggle.ird.fr:4000/bioanalysis/vcfExtract/">VCF manipulate</a></li>
+						<li><a href="http://toggle.ird.fr:4000/bioanalysis/rnaSeq/">RNA-Seq</a></li>
+					</ul>
+				</li>
+				<li><a href="#">Cluster</a><span class="caret" ></span>
+					<ul id="child">
+						<li><a href="http://toggle.ird.fr:4000/cluster/HPCConnection/">HPC connection</a></li>
+						<li><a href="http://toggle.ird.fr:4000/cluster/SGE/">SGE</a></li>
+						<li><a href="http://toggle.ird.fr:4000/cluster/moduleLoad/">Use module system</a></li>
+					</ul>
+				</li>
+				<li><a href="#">Toolbox&Trick</a><span class="caret" ></span>
+					<ul id="child">
+						<li><a href="http://toggle.ird.fr:4000/toolbox/linux/">Linux</a></li>
+						<li><a href="http://toggle.ird.fr:4000/toolbox/git/">Git</a></li>
+						<li><a href="http://toggle.ird.fr:4000/toolbox/docker/">Docker</a></li>
+					</ul>
+				</li>
+				<li><a href="http://toggle.ird.fr:4000/contact/">About Us</a></li>
+				<li><a id="forkme_banner" href="https://github.com/SouthGreenPlatform/trainings/">GitHub</a></li>
+			</ul>
+		</div>
+		</div>
+	</nav>
+	<!--/.nav-collapse -->
+	<!-- Header -->
+	<div id="header_wrap" class="outer">
+		<header class="inner">
+		<div class="header"><img class="img-responsive" width="25%" src="http://toggle.ird.fr:4000/images/southgreenlong.png" alt="South Green Logo" /></div>
+		<h2 id="project_tagline">South Green tutorials Web Site</h2>
+		</header>
+	</div>
+
+<body>
+<div id="main_content_wrap" class="outer">
+	 <section id="main_content" class="inner">
+<table class="table-contact">
+<tr>
+<td><img width="100%" src="http://toggle.ird.fr:4000/images/trainings-linux.png" alt="" />
+</td>
+<td>
+<h1> Polymorphism detection from fastq files on a linux terminal</h1><br />
+This page describes a serie of tools and linux commands used to detect polymorphism from raw data (fastq files) to polymorphism file (vcf).
+</td>
+</tr>
+</table>
+
+<p>We need, in this tutorial:</p>
+<ul>
+  <li>2 fastq files paired</li>
+  <li>a reference file used for the mapping step.</li>
+</ul>
+
+<h3 id="authors">Author(s)</h3>
+
+<table>
+  <thead>
+    <tr>
+      <th style="text-align: left">Authors</th>
+      <th style="text-align: left">Christine Tranchant-Dubreuil</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td style="text-align: left">Research Unit</td>
+      <td style="text-align: left">UMR DIADE</td>
+    </tr>
+    <tr>
+      <td style="text-align: left">Institut</td>
+      <td style="text-align: left"><img src="https://www.ird.fr/extension/ird/design/ird/images/picto/logo_ird.png" width="20%" /></td>
+    </tr>
+  </tbody>
+</table>
+
+<h3 id="keywords">Keywords</h3>
+<p>fastq-stats, fastqc, cutadapt, bwa, samtools, gatk, picardtools</p>
+
+<h3 id="files-format">Files format</h3>
+<p>fastq, sam, bam, vcf</p>
+
+<h3 id="date">Date</h3>
+<p>10/03/2017</p>
+
+<h2 id="summary">Summary</h2>
+
+<ul>
+  <li><a href="#Getting-basic-informations-about-fastq-files">Getting basic informations about <em>fastq</em> files</a></li>
+  <li><a href="#ea-utils">Getting a report with various statistics about  file with <code class="highlighter-rouge">ea-utils</code> </a></li>
+  <li><a href="#fastqc">Getting various statistics about <em>fastq</em> and performing a quality control check with <code class="highlighter-rouge">fastqc</code></a></li>
+  <li><a href="#cutadapt">Using <code class="highlighter-rouge">cutadapt</code> to remove adapters and to trim reads based on quality</a></li>
+  <li><a href="#bwa">Mapping reads with <code class="highlighter-rouge">bwa</code></a></li>
+  <li><a href="#picardtools-samtools">Processing <em>sam</em> file with <code class="highlighter-rouge">picardtools</code> and <code class="highlighter-rouge">samtools</code></a></li>
+  <li><a href="#gatk-indelrealigner">Local realignment around INDELS using <code class="highlighter-rouge">GATK</code></a></li>
+  <li><a href="#gatk-ug-hc">Variant calling using <code class="highlighter-rouge">GATK unifiedGenotyper</code> or <code class="highlighter-rouge">GATK haplotypeCaller</code> </a></li>
+  <li><a href="#gatk-filters">Basic Filters vcf files using <code class="highlighter-rouge">GATK</code> </a></li>
+</ul>
+
+<p><a name="Getting-basic-informations-about-fastq-files"></a></p>
+<h2 id="getting-basic-informations-about-fastq-files-file-size-sequences-number">Getting basic informations about <em>fastq</em> files (file size, sequences number)</h2>
+
+<h3 id="how-to-get-fastq-file-size">How to get <em>fastq</em> file size</h3>
+
+<figure class="highlight"><pre><code class="language-ruby" data-lang="ruby"><span class="p">[</span><span class="n">tranchant</span><span class="vi">@master0</span> <span class="o">~</span><span class="p">]</span><span class="err">$</span> <span class="n">du</span> <span class="o">-</span><span class="n">sh</span> <span class="o">*</span><span class="p">.</span><span class="nf">fastq</span>
+<span class="mi">311</span><span class="no">M</span>    <span class="no">C3KB2ACXX_5_12_11_debar</span><span class="p">.</span><span class="nf">fastq</span>
+<span class="mi">525</span><span class="no">M</span>    <span class="no">C3KB2ACXX_5_12_12_debar</span><span class="p">.</span><span class="nf">fastq</span></code></pre></figure>
+
+<h3 id="how-to-get-sequences-number-by-fastq-files--uncompressed-files-only">How to get sequences number by <em>fastq</em> files  (uncompressed files only)</h3>
+
+<figure class="highlight"><pre><code class="language-sh" data-lang="sh"><span class="o">[</span>tranchant@master0 ~]<span class="nv">$ </span>wc <span class="nt">-l</span> <span class="k">*</span>.fastq | awk <span class="s1">'{ print $2" \t "$1/4}'</span>
+C3KB2ACXX_5_12_11_debar.fastq 	 1354891
+C3KB2ACXX_5_12_12_debar.fastq 	 2249353</code></pre></figure>
+
+<p><a name="ea-utils"></a></p>
+<h2 id="getting-a-report-with-various-statistics-about-fastq-file-with-ea-utils">Getting a report with various statistics about <em>fastq</em> file with <code class="highlighter-rouge">ea-utils</code></h2>
+
+<p>This software runs quickly, faster than fastqc and the output can be parsed and formatted with some basics linux command
+https://code.google.com/p/ea-utils/</p>
+
+<h3 id="how-to-use-fastq-stats-with-one-fastq-file">How to use <code class="highlighter-rouge">fastq-stats</code> with one <em>fastq</em> file</h3>
+
+<figure class="highlight"><pre><code class="language-ruby" data-lang="ruby"><span class="p">[</span><span class="n">tranchant</span><span class="vi">@node11</span> <span class="no">FASTQ</span><span class="p">]</span><span class="err">$</span> <span class="n">fastq</span><span class="o">-</span><span class="n">stats</span> <span class="o">-</span><span class="no">D</span> <span class="no">PdFIE94_R1</span><span class="p">.</span><span class="nf">fq</span><span class="p">.</span><span class="nf">gz</span>
+<span class="n">reads</span>	<span class="mi">15034838</span>
+<span class="n">len</span>	<span class="mi">144</span>
+<span class="n">len</span> <span class="n">mean</span>	<span class="mf">144.0000</span>
+<span class="n">len</span> <span class="n">stdev</span>	<span class="mf">0.0000</span>
+<span class="n">len</span> <span class="n">min</span>	<span class="mi">144</span>
+<span class="n">phred</span>	<span class="mi">33</span>
+<span class="n">window</span><span class="o">-</span><span class="n">size</span>	<span class="mi">2000000</span>
+<span class="n">cycle</span><span class="o">-</span><span class="n">max</span>	<span class="mi">35</span>
+<span class="n">qual</span> <span class="n">min</span>	<span class="mi">2</span>
+<span class="n">qual</span> <span class="n">max</span>	<span class="mi">42</span>
+<span class="n">qual</span> <span class="n">mean</span>	<span class="mf">40.2191</span>
+<span class="n">qual</span> <span class="n">stdev</span>	<span class="mf">4.8129</span>
+<span class="o">%</span><span class="no">A</span>	<span class="mf">25.5314</span>
+<span class="o">%</span><span class="no">C</span>	<span class="mf">26.3730</span>
+<span class="o">%</span><span class="no">G</span>	<span class="mf">22.4570</span>
+<span class="o">%</span><span class="no">T</span>	<span class="mf">25.6209</span>
+<span class="o">%</span><span class="no">N</span>	<span class="mf">0.0178</span>
+<span class="n">total</span> <span class="n">bases</span>	<span class="mi">2165016672</span></code></pre></figure>
+
+<h3 id="how-to-use-fastq-stats-on-several-fastq-files">How to use <code class="highlighter-rouge">fastq-stats</code> on several <em>fastq</em> files</h3>
+
+<figure class="highlight"><pre><code class="language-ruby" data-lang="ruby"><span class="p">[</span><span class="n">tranchant</span><span class="vi">@node2</span> <span class="n">tranchant</span><span class="p">]</span><span class="err">$</span> <span class="n">ls</span>
+<span class="no">DV</span><span class="o">.</span><span class="no">UNMAPPED_1</span><span class="p">.</span><span class="nf">fastq</span>              <span class="no">DV</span><span class="o">.</span><span class="no">UNMAPPED_2</span><span class="p">.</span><span class="nf">fastq</span>
+<span class="no">DT</span><span class="o">.</span><span class="no">UNMAPPED_1</span><span class="p">.</span><span class="nf">fastq</span>              <span class="no">DT</span><span class="o">.</span><span class="no">UNMAPPED_2</span><span class="p">.</span><span class="nf">fastq</span></code></pre></figure>
+
+<h1 id="you-can-execute-every-fastq-stats-command-by-using-for-loop-bash">you can execute every fastq-stats command by using for loop (bash)</h1>
+
+<figure class="highlight"><pre><code class="language-ruby" data-lang="ruby"><span class="p">[</span><span class="n">tranchant</span><span class="vi">@node2</span> <span class="n">tranchant</span><span class="p">]</span><span class="err">$</span> <span class="k">for</span> <span class="n">file</span> <span class="k">in</span> <span class="o">*</span><span class="n">fastq</span><span class="p">;</span> <span class="k">do</span> <span class="n">fastq</span><span class="o">-</span><span class="n">stats</span> <span class="o">-</span><span class="no">D</span> <span class="vg">$file</span> <span class="o">&gt;</span> <span class="vg">$file</span><span class="p">.</span><span class="nf">fastq</span><span class="o">-</span><span class="n">stats</span> <span class="p">;</span> <span class="n">done</span><span class="p">;</span></code></pre></figure>
+
+<p>#Check that the files have been created</p>
+
+<figure class="highlight"><pre><code class="language-ruby" data-lang="ruby"><span class="p">[</span><span class="n">tranchant</span><span class="vi">@node2</span> <span class="n">tranchant</span><span class="p">]</span><span class="err">$</span> <span class="n">ls</span> <span class="o">-</span><span class="n">l</span> <span class="o">*</span><span class="n">stats</span>
+<span class="o">-</span><span class="n">rw</span><span class="o">-</span><span class="n">r</span><span class="o">--</span><span class="n">r</span><span class="o">--</span> <span class="mi">1</span> <span class="n">tranchant</span> <span class="n">ggr</span> <span class="mi">246</span>  <span class="mi">8</span> <span class="n">juin</span>  <span class="mi">14</span><span class="p">:</span><span class="mi">55</span> <span class="no">DT</span><span class="o">.</span><span class="no">UNMAPPED_1</span><span class="p">.</span><span class="nf">fastq</span><span class="p">.</span><span class="nf">fastq</span><span class="o">-</span><span class="n">stats</span>
+<span class="o">-</span><span class="n">rw</span><span class="o">-</span><span class="n">r</span><span class="o">--</span><span class="n">r</span><span class="o">--</span> <span class="mi">1</span> <span class="n">tranchant</span> <span class="n">ggr</span> <span class="mi">247</span>  <span class="mi">8</span> <span class="n">juin</span>  <span class="mi">14</span><span class="p">:</span><span class="mi">55</span> <span class="no">DT</span><span class="o">.</span><span class="no">UNMAPPED_2</span><span class="p">.</span><span class="nf">fastq</span><span class="p">.</span><span class="nf">fastq</span><span class="o">-</span><span class="n">stats</span>
+<span class="o">-</span><span class="n">rw</span><span class="o">-</span><span class="n">r</span><span class="o">--</span><span class="n">r</span><span class="o">--</span> <span class="mi">1</span> <span class="n">tranchant</span> <span class="n">ggr</span> <span class="mi">246</span>  <span class="mi">8</span> <span class="n">juin</span>  <span class="mi">14</span><span class="p">:</span><span class="mi">55</span> <span class="no">DV</span><span class="o">.</span><span class="no">UNMAPPED_1</span><span class="p">.</span><span class="nf">fastq</span><span class="p">.</span><span class="nf">fastq</span><span class="o">-</span><span class="n">stats</span>
+<span class="o">-</span><span class="n">rw</span><span class="o">-</span><span class="n">r</span><span class="o">--</span><span class="n">r</span><span class="o">--</span> <span class="mi">1</span> <span class="n">tranchant</span> <span class="n">ggr</span> <span class="mi">246</span>  <span class="mi">8</span> <span class="n">juin</span>  <span class="mi">14</span><span class="p">:</span><span class="mi">55</span> <span class="no">DV</span><span class="o">.</span><span class="no">UNMAPPED_2</span><span class="p">.</span><span class="nf">fastq</span><span class="p">.</span><span class="nf">fastq</span><span class="o">-</span><span class="n">stats</span>
+
+<span class="c1">#check one file</span>
+<span class="p">[</span><span class="n">tranchant</span><span class="vi">@node2</span> <span class="n">tranchant</span><span class="p">]</span><span class="err">$</span> <span class="n">cat</span> <span class="no">DT</span><span class="o">.</span><span class="no">UNMAPPED_1</span><span class="p">.</span><span class="nf">fastq</span><span class="p">.</span><span class="nf">fastq</span><span class="o">-</span><span class="n">stats</span>
+<span class="n">reads</span>	<span class="mi">11043989</span>
+<span class="n">len</span>	<span class="mi">101</span>
+<span class="n">len</span> <span class="n">mean</span>	<span class="mf">99.3377</span>
+<span class="n">len</span> <span class="n">stdev</span>	<span class="mf">7.4780</span>
+<span class="n">len</span> <span class="n">min</span>	<span class="mi">30</span>
+<span class="n">phred</span>	<span class="mi">33</span>
+<span class="n">window</span><span class="o">-</span><span class="n">size</span>	<span class="mi">2000000</span>
+<span class="n">cycle</span><span class="o">-</span><span class="n">max</span>	<span class="mi">35</span>
+<span class="n">qual</span> <span class="n">min</span>	<span class="mi">2</span>
+<span class="n">qual</span> <span class="n">max</span>	<span class="mi">41</span>
+<span class="n">qual</span> <span class="n">mean</span>	<span class="mf">37.7341</span>
+<span class="n">qual</span> <span class="n">stdev</span>	<span class="mf">3.8379</span>
+<span class="o">%</span><span class="no">A</span>	<span class="mf">29.2366</span>
+<span class="o">%</span><span class="no">C</span>	<span class="mf">20.8381</span>
+<span class="o">%</span><span class="no">G</span>	<span class="mf">20.7269</span>
+<span class="o">%</span><span class="no">T</span>	<span class="mf">29.1967</span>
+<span class="o">%</span><span class="no">N</span>	<span class="mf">0.0017</span>
+<span class="n">total</span> <span class="n">bases</span>	<span class="mi">1097084447</span></code></pre></figure>
+
+<p>How to get a tab file from all files generated by the command</p>
+<figure class="highlight"><pre><code class="language-ruby" data-lang="ruby"><span class="n">ls</span> <span class="o">|</span> <span class="n">cut</span> <span class="o">|</span> <span class="n">sed</span> <span class="o">|</span> <span class="n">sh</span></code></pre></figure>
+
+<figure class="highlight"><pre><code class="language-ruby" data-lang="ruby"><span class="c1"># To generate a header</span>
+<span class="p">[</span><span class="n">tranchant</span><span class="vi">@node11</span> <span class="no">FASTQ</span><span class="p">]</span><span class="err">$</span> <span class="n">cut</span> <span class="o">-</span><span class="n">f1</span> <span class="no">PdFIE94_R1</span><span class="p">.</span><span class="nf">fq</span><span class="p">.</span><span class="nf">gz</span><span class="p">.</span><span class="nf">fastq</span><span class="o">-</span><span class="n">stats</span> <span class="o">|</span> <span class="n">paste</span> <span class="o">-</span><span class="n">s</span> <span class="o">-</span> <span class="o">-</span> <span class="o">&gt;</span> <span class="n">all</span><span class="p">.</span><span class="nf">stats</span>
+
+<span class="c1"># To display header file</span>
+<span class="p">[</span><span class="n">tranchant</span><span class="vi">@node11</span> <span class="no">FASTQ</span><span class="p">]</span><span class="err">$</span> <span class="n">head</span> <span class="n">all</span><span class="p">.</span><span class="nf">stats</span>
+<span class="n">reads</span>	<span class="n">len</span>	<span class="n">len</span> <span class="n">mean</span>	<span class="n">len</span> <span class="n">stdev</span>	<span class="n">len</span> <span class="n">min</span>	<span class="n">phred</span>	<span class="n">window</span><span class="o">-</span><span class="n">size</span>	<span class="n">cycle</span><span class="o">-</span><span class="n">max</span>	<span class="n">qual</span> <span class="n">min</span>	<span class="n">qual</span> <span class="n">max</span>	<span class="n">qual</span> <span class="n">mean</span>	<span class="n">qual</span> <span class="n">stdev</span>	<span class="o">%</span><span class="no">A</span>	<span class="o">%</span><span class="no">C</span>	<span class="o">%</span><span class="no">G</span>	<span class="o">%</span><span class="no">T</span>	<span class="o">%</span><span class="no">N</span>	<span class="n">total</span> <span class="n">bases</span>
+
+<span class="c1"># To parse every file and to create a tab-delimited file</span>
+<span class="p">[</span><span class="n">tranchant</span><span class="vi">@node11</span> <span class="no">FASTQ</span><span class="p">]</span><span class="err">$</span> <span class="n">awk</span> <span class="s1">'BEGIN { num=0;  }  { num++; if (num == 1) { print FILENAME }  print $NF; if (num == 18) {print "\n"; num=0; } } END {  } '</span> <span class="o">*</span><span class="n">fastq</span><span class="o">-</span><span class="n">stats</span>   <span class="o">|</span>   <span class="n">awk</span> <span class="s1">' BEGIN { RS="\n\n"; ;} { print $1,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12,$13,$14,$15,$16,$17,$18,$19;}'</span> <span class="o">&gt;&gt;</span> <span class="n">all</span><span class="p">.</span><span class="nf">stats</span>
+
+<span class="c1"># Display 10 first lines of the file all.stats</span>
+<span class="p">[</span><span class="n">tranchant</span><span class="vi">@node11</span> <span class="no">FASTQ</span><span class="p">]</span><span class="err">$</span> <span class="n">head</span> <span class="n">all</span><span class="p">.</span><span class="nf">stats</span>
+<span class="n">reads</span>	<span class="n">len</span>	<span class="n">len</span> <span class="n">mean</span>	<span class="n">len</span> <span class="n">stdev</span>	<span class="n">len</span> <span class="n">min</span>	<span class="n">phred</span>	<span class="n">window</span><span class="o">-</span><span class="n">size</span>	<span class="n">cycle</span><span class="o">-</span><span class="n">max</span>	<span class="n">qual</span> <span class="n">min</span>	<span class="n">qual</span> <span class="n">max</span>	<span class="n">qual</span> <span class="n">mean</span>	<span class="n">qual</span> <span class="n">stdev</span>	<span class="o">%</span><span class="no">A</span>	<span class="o">%</span><span class="no">C</span>	<span class="o">%</span><span class="no">G</span>	<span class="o">%</span><span class="no">T</span>	<span class="o">%</span><span class="no">N</span>	<span class="n">total</span> <span class="n">bases</span>
+<span class="no">PdFIE94_R1</span><span class="p">.</span><span class="nf">fq</span><span class="p">.</span><span class="nf">gz</span><span class="p">.</span><span class="nf">fastq</span><span class="o">-</span><span class="n">stats</span> <span class="mi">144</span> <span class="mf">144.0000</span> <span class="mf">0.0000</span> <span class="mi">144</span> <span class="mi">33</span> <span class="mi">2000000</span> <span class="mi">35</span> <span class="mi">2</span> <span class="mi">42</span> <span class="mf">40.2191</span> <span class="mf">4.8129</span> <span class="mf">25.5314</span> <span class="mf">26.3730</span> <span class="mf">22.4570</span> <span class="mf">25.6209</span> <span class="mf">0.0178</span> <span class="mi">2165016672</span>
+<span class="no">PdFIE94_R2</span><span class="p">.</span><span class="nf">fq</span><span class="p">.</span><span class="nf">gz</span><span class="p">.</span><span class="nf">fastq</span><span class="o">-</span><span class="n">stats</span> <span class="mi">151</span> <span class="mf">151.0000</span> <span class="mf">0.0000</span> <span class="mi">151</span> <span class="mi">33</span> <span class="mi">2000000</span> <span class="mi">35</span> <span class="mi">2</span> <span class="mi">42</span> <span class="mf">34.8602</span> <span class="mf">10.4600</span> <span class="mf">26.6998</span> <span class="mf">23.6108</span> <span class="mf">22.8715</span> <span class="mf">26.4631</span> <span class="mf">0.3548</span> <span class="mi">2270260538</span>
+<span class="no">PdFIE95_R1</span><span class="p">.</span><span class="nf">fq</span><span class="p">.</span><span class="nf">gz</span><span class="p">.</span><span class="nf">fastq</span><span class="o">-</span><span class="n">stats</span> <span class="mi">143</span> <span class="mf">143.0000</span> <span class="mf">0.0000</span> <span class="mi">143</span> <span class="mi">33</span> <span class="mi">2000000</span> <span class="mi">35</span> <span class="mi">2</span> <span class="mi">42</span> <span class="mf">40.1422</span> <span class="mf">4.9354</span> <span class="mf">25.2075</span> <span class="mf">26.6116</span> <span class="mf">22.5737</span> <span class="mf">25.5869</span> <span class="mf">0.0202</span> <span class="mi">1873211197</span>
+<span class="no">PdFIE95_R2</span><span class="p">.</span><span class="nf">fq</span><span class="p">.</span><span class="nf">gz</span><span class="p">.</span><span class="nf">fastq</span><span class="o">-</span><span class="n">stats</span> <span class="mi">151</span> <span class="mf">151.0000</span> <span class="mf">0.0000</span> <span class="mi">151</span> <span class="mi">33</span> <span class="mi">2000000</span> <span class="mi">35</span> <span class="mi">2</span> <span class="mi">42</span> <span class="mf">35.0387</span> <span class="mf">10.3787</span> <span class="mf">26.5003</span> <span class="mf">24.0084</span> <span class="mf">23.0377</span> <span class="mf">26.0990</span> <span class="mf">0.3546</span> <span class="mi">1978006229</span>
+<span class="no">PdFIE96_R1</span><span class="p">.</span><span class="nf">fq</span><span class="p">.</span><span class="nf">gz</span><span class="p">.</span><span class="nf">fastq</span><span class="o">-</span><span class="n">stats</span> <span class="mi">143</span> <span class="mf">143.0000</span> <span class="mf">0.0000</span> <span class="mi">143</span> <span class="mi">33</span> <span class="mi">2000000</span> <span class="mi">35</span> <span class="mi">2</span> <span class="mi">42</span> <span class="mf">40.1133</span> <span class="mf">4.9931</span> <span class="mf">25.0246</span> <span class="mf">26.6680</span> <span class="mf">22.6115</span> <span class="mf">25.6756</span> <span class="mf">0.0204</span> <span class="mi">1488540911</span>
+<span class="no">PdFIE96_R2</span><span class="p">.</span><span class="nf">fq</span><span class="p">.</span><span class="nf">gz</span><span class="p">.</span><span class="nf">fastq</span><span class="o">-</span><span class="n">stats</span> <span class="mi">151</span> <span class="mf">151.0000</span> <span class="mf">0.0000</span> <span class="mi">151</span> <span class="mi">33</span> <span class="mi">2000000</span> <span class="mi">35</span> <span class="mi">2</span> <span class="mi">42</span> <span class="mf">34.9494</span> <span class="mf">10.4096</span> <span class="mf">26.5905</span> <span class="mf">24.0838</span> <span class="mf">23.1924</span> <span class="mf">25.7780</span> <span class="mf">0.3554</span> <span class="mi">1571815927</span>
+<span class="no">PdFIE98_R1</span><span class="p">.</span><span class="nf">fq</span><span class="p">.</span><span class="nf">gz</span><span class="p">.</span><span class="nf">fastq</span><span class="o">-</span><span class="n">stats</span> <span class="mi">143</span> <span class="mf">143.0000</span> <span class="mf">0.0000</span> <span class="mi">143</span> <span class="mi">33</span> <span class="mi">2000000</span> <span class="mi">35</span> <span class="mi">2</span> <span class="mi">42</span> <span class="mf">40.2191</span> <span class="mf">4.8173</span> <span class="mf">25.3874</span> <span class="mf">26.4649</span> <span class="mf">22.4244</span> <span class="mf">25.7031</span> <span class="mf">0.0201</span> <span class="mi">1443785200</span>
+<span class="no">PdFIE98_R2</span><span class="p">.</span><span class="nf">fq</span><span class="p">.</span><span class="nf">gz</span><span class="p">.</span><span class="nf">fastq</span><span class="o">-</span><span class="n">stats</span> <span class="mi">151</span> <span class="mf">151.0000</span> <span class="mf">0.0000</span> <span class="mi">151</span> <span class="mi">33</span> <span class="mi">2000000</span> <span class="mi">35</span> <span class="mi">2</span> <span class="mi">42</span> <span class="mf">35.0267</span> <span class="mf">10.3824</span> <span class="mf">26.6316</span> <span class="mf">23.8662</span> <span class="mf">22.8668</span> <span class="mf">26.2791</span> <span class="mf">0.3564</span> <span class="mi">1524556400</span></code></pre></figure>
+
+<p><a name="fastqc"></a></p>
+<h2 id="getting-various-statistics-about-fastq-and-performing-a-quality-control-check-with-fastqc">Getting various statistics about <em>fastq</em> and performing a quality control check with <code class="highlighter-rouge">fastqc</code></h2>
+
+<p><code class="highlighter-rouge">FastQC</code> perform some simple quality control checks to ensure that the raw data looks good and there are no problems or biases in data which may affect how user can usefully use it.</p>
+
+<p>http://www.bioinformatics.babraham.ac.uk/projects/fastqc/</p>
+
+<h3 id="fastqc-command"><code class="highlighter-rouge">fastqc</code> command</h3>
+
+<figure class="highlight"><pre><code class="language-ruby" data-lang="ruby"><span class="p">[</span><span class="n">tranchant</span><span class="vi">@master0</span> <span class="o">~</span><span class="p">]</span><span class="err">$</span> <span class="n">fastqc</span> <span class="o">*</span><span class="p">.</span><span class="nf">fastq</span> <span class="o">-</span><span class="n">o</span> <span class="p">.</span>
+<span class="nf">[</span><span class="n">tranchant</span><span class="vi">@master0</span> <span class="o">~</span><span class="p">]</span><span class="err">$</span> <span class="n">ls</span>
+<span class="n">total</span> <span class="mi">543577236</span>
+<span class="n">drwxr</span><span class="o">-</span><span class="n">xr</span><span class="o">-</span><span class="n">x</span> <span class="mi">4</span> <span class="n">tranchant</span> <span class="n">ggr</span>                <span class="mi">4096</span>  <span class="mi">9</span> <span class="n">mars</span>  <span class="mi">22</span><span class="p">:</span><span class="mi">11</span> <span class="no">PdFIE94_R1</span><span class="p">.</span><span class="nf">fq_fastqc</span>
+<span class="o">-</span><span class="n">rw</span><span class="o">-</span><span class="n">r</span><span class="o">--</span><span class="n">r</span><span class="o">--</span> <span class="mi">1</span> <span class="n">tranchant</span> <span class="n">ggr</span>              <span class="mi">225516</span>  <span class="mi">9</span> <span class="n">mars</span>  <span class="mi">22</span><span class="p">:</span><span class="mi">11</span> <span class="no">PdFIE94_R1</span><span class="p">.</span><span class="nf">fq_fastqc</span><span class="p">.</span><span class="nf">zip</span></code></pre></figure>
+
+<p><a name="cutadapt"></a></p>
+<h2 id="using-cutadapt-to-remove-adapters-and-to-trim-reads-based-on-quality">Using <code class="highlighter-rouge">cutadapt</code> to remove adapters and to trim reads based on quality</h2>
+
+<p><code class="highlighter-rouge">Cutadapt</code> is a tool specifically designed to remove adapters from NGS data.
+https://code.google.com/p/cutadapt/</p>
+
+<h3 id="cutadadapt-command"><code class="highlighter-rouge">cutadadapt</code> command</h3>
+
+<figure class="highlight"><pre><code class="language-ruby" data-lang="ruby"><span class="n">cutadapt</span>  <span class="o">-</span><span class="n">q</span> <span class="mi">30</span><span class="p">,</span><span class="mi">30</span> <span class="o">-</span><span class="n">m</span> <span class="mi">35</span>  <span class="o">-</span><span class="no">B</span> <span class="no">GATCGGAAGAGCACACGTCTGAACTCCAGTCACATCACGATCTCGTATGCCGTCTTCTGCTTG</span> <span class="o">-</span><span class="no">B</span> <span class="no">GTTCGTCTTCTGCCGTATGCTCTAGCACTACACTGACCTCAAGTCTGCACACGAGAAGGCTAG</span> <span class="o">-</span><span class="n">b</span> <span class="no">GATCGGAAGAGCACACGTCTGAACTCCAGTCACATCACGATCTCGTATGCCGTCTTCTGCTTG</span> <span class="o">-</span><span class="n">b</span> <span class="no">GTTCGTCTTCTGCCGTATGCTCTAGCACTACACTGACCTCAAGTCTGCACACGAGAAGGCTAG</span><span class="o">-</span><span class="n">o</span> <span class="no">P1_R1</span><span class="o">.</span><span class="no">CUTADAPT</span><span class="p">.</span><span class="nf">fastq</span><span class="p">.</span><span class="nf">gz</span> <span class="o">-</span><span class="nb">p</span> <span class="no">P1_R2</span><span class="o">.</span><span class="no">CUTADAPT</span><span class="p">.</span><span class="nf">fastq</span><span class="p">.</span><span class="nf">gz</span> <span class="no">P1_R1</span><span class="p">.</span><span class="nf">fq</span><span class="p">.</span><span class="nf">gz</span> <span class="no">P1_R2</span><span class="p">.</span><span class="nf">fq</span><span class="p">.</span><span class="nf">gz</span></code></pre></figure>
+
+<p><code class="highlighter-rouge">Cutadapt</code> supports trimming of multiple types of adapters:</p>
+
+<table>
+  <thead>
+    <tr>
+      <th style="text-align: left">Adapter type</th>
+      <th style="text-align: left">Command-line option</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td style="text-align: left">3’ adapter</td>
+      <td style="text-align: left">-a ADAPTER</td>
+    </tr>
+    <tr>
+      <td style="text-align: left">5’ adapter</td>
+      <td style="text-align: left">-g ADAPTER</td>
+    </tr>
+    <tr>
+      <td style="text-align: left">5’ or 3’ (both possible)</td>
+      <td style="text-align: left">-b ADAPTER</td>
+    </tr>
+  </tbody>
+</table>
+
+<p>-q 30, 30 : by default, only the 3’ end of each read is quality-trimmed. If you want to trim the 5’ end as well, use the -q option with two comma-separated cutoffs</p>
+
+<p>-p is the short form of –paired-output. The option -B is used here to specify an adapter sequence that cutadapt should remove from the second read in each pair.</p>
+
+<p><a name="bwa"></a></p>
+<h2 id="mapping-reads-with-bwa">Mapping reads with <code class="highlighter-rouge">bwa</code></h2>
+
+<p>http://bio-bwa.sourceforge.net/</p>
+
+<p>There are several steps involved in mapping sequence reads.</p>
+
+<h3 id="creating-an-index-of-the-reference-genome-with-bwa-index">Creating an index of the reference genome with <code class="highlighter-rouge">bwa index</code></h3>
+
+<figure class="highlight"><pre><code class="language-ruby" data-lang="ruby"><span class="n">bwa</span> <span class="n">index</span> <span class="o">-</span><span class="n">a</span> <span class="n">is</span></code></pre></figure>
+
+<figure class="highlight"><pre><code class="language-ruby" data-lang="ruby"><span class="n">is</span></code></pre></figure>
+<p>for short genome and</p>
+<figure class="highlight"><pre><code class="language-ruby" data-lang="ruby"><span class="n">bwtsw</span></code></pre></figure>
+<p>for genome &gt;2Gb</p>
+
+<h3 id="performing-mapping-with-bwa-aln-and-bwa-sampesamse">Performing mapping with <code class="highlighter-rouge">bwa aln</code> and <code class="highlighter-rouge">bwa sampe/samse</code></h3>
+
+<p>Getting <em>sai</em> files with <code class="highlighter-rouge">bwa aln</code></p>
+
+<figure class="highlight"><pre><code class="language-ruby" data-lang="ruby"><span class="n">bwa</span> <span class="n">aln</span> <span class="n">reference</span> <span class="n">file_forward</span><span class="p">.</span><span class="nf">fastq</span> <span class="o">&gt;</span> <span class="n">file_forward</span><span class="p">.</span><span class="nf">sai</span>
+<span class="n">bwa</span> <span class="n">aln</span> <span class="n">reference</span> <span class="n">file_reverse</span><span class="p">.</span><span class="nf">fastq</span> <span class="o">&gt;</span> <span class="n">file_reverse</span><span class="p">.</span><span class="nf">sai</span></code></pre></figure>
+
+<p>Getting <em>sam</em> file with <code class="highlighter-rouge">bwa sampe</code> (paired)</p>
+
+<p>Here is a description for the contents of the SAM file: https://samtools.github.io/hts-specs/SAMv1.pdf</p>
+
+<figure class="highlight"><pre><code class="language-ruby" data-lang="ruby"><span class="n">bwa</span> <span class="n">sampe</span> <span class="n">reference</span> <span class="n">file_forward</span><span class="p">.</span><span class="nf">sai</span> <span class="n">file_reverse</span><span class="p">.</span><span class="nf">sai</span>  <span class="n">file_forward</span><span class="p">.</span><span class="nf">fastq</span> <span class="n">file_reverse</span><span class="p">.</span><span class="nf">fastq</span> <span class="o">-</span><span class="n">f</span> <span class="n">file</span><span class="p">.</span><span class="nf">sam</span>  <span class="o">-</span><span class="n">r</span> <span class="s1">'@RG        ID:RG  SM:RG  PL:Illumina'</span></code></pre></figure>
+
+<p>Getting <em>sam</em> file with <code class="highlighter-rouge">bwa samse</code> (single)</p>
+
+<figure class="highlight"><pre><code class="language-ruby" data-lang="ruby"><span class="n">bwa</span> <span class="n">samse</span> <span class="n">reference</span> <span class="n">file</span><span class="p">.</span><span class="nf">sai</span> <span class="n">file</span><span class="p">.</span><span class="nf">fastq</span> <span class="n">file_reverse</span><span class="p">.</span><span class="nf">fastq</span> <span class="o">-</span><span class="n">f</span> <span class="n">file</span><span class="p">.</span><span class="nf">sam</span>  <span class="o">-</span><span class="n">r</span> <span class="s1">'@RG        ID:RG  SM:RG  PL:Illumina'</span></code></pre></figure>
+
+<h3 id="performing-mapping-with-bwa-mem">Performing mapping with <code class="highlighter-rouge">bwa mem</code></h3>
+
+<figure class="highlight"><pre><code class="language-ruby" data-lang="ruby"><span class="n">bwa</span> <span class="n">mem</span>  <span class="n">reference</span> <span class="n">file</span><span class="p">.</span><span class="nf">fastq</span>  <span class="n">file_reverse</span><span class="p">.</span><span class="nf">fastq</span>  <span class="o">-</span><span class="no">R</span> <span class="s1">'@RG\tID:RC3\tSM:RC3\tPL:Illumina'</span> <span class="o">&gt;</span> <span class="n">file</span><span class="p">.</span><span class="nf">sam</span></code></pre></figure>
+
+<p><a name="picardtools-samtools"></a></p>
+<h2 id="processing-sam-file-with-picardtools-and-samtools">Processing sam file with <code class="highlighter-rouge">picardtools</code> and <code class="highlighter-rouge">samtools</code></h2>
+<p>https://broadinstitute.github.io/picard/
+http://samtools.sourceforge.net/</p>
+
+<h3 id="creating-reference-dictionary-and-indexes">Creating Reference dictionary and indexes</h3>
+
+<p>with <code class="highlighter-rouge">picardtools CreateSequenceDictionary</code></p>
+
+<figure class="highlight"><pre><code class="language-ruby" data-lang="ruby"><span class="sr">/usr/</span><span class="n">bin</span><span class="o">/</span><span class="n">java</span> <span class="o">-</span><span class="no">Xmx8g</span>  <span class="o">-</span><span class="n">jar</span> <span class="sr">/us/</span><span class="n">local</span><span class="o">/</span><span class="n">picard</span><span class="o">-</span><span class="n">tools</span><span class="o">-</span><span class="mf">2.5</span><span class="o">.</span><span class="mi">0</span><span class="o">/</span><span class="n">picard</span><span class="p">.</span><span class="nf">jar</span> <span class="no">CreateSequenceDictionary</span> <span class="no">REFERENCE</span><span class="o">=</span><span class="no">Reference</span><span class="p">.</span><span class="nf">fasta</span> <span class="no">OUTPUT</span><span class="o">=</span><span class="no">Reference</span><span class="p">.</span><span class="nf">dict</span></code></pre></figure>
+
+<p>with <code class="highlighter-rouge">samtools faidx</code></p>
+
+<figure class="highlight"><pre><code class="language-ruby" data-lang="ruby"><span class="n">samtools</span> <span class="n">faidx</span> <span class="no">Rreference</span><span class="p">.</span><span class="nf">fasta</span></code></pre></figure>
+
+<h3 id="converting-the-sam-file-into-a-bam-file-and-sorting-the-bam-file">Converting the <em>sam</em> file into a <em>bam</em> file and sorting the <em>bam</em> file</h3>
+
+<figure class="highlight"><pre><code class="language-ruby" data-lang="ruby"><span class="sr">/usr/</span><span class="n">bin</span><span class="o">/</span><span class="n">java</span> <span class="o">-</span><span class="no">Xmx12g</span> <span class="o">-</span><span class="n">jar</span> <span class="sr">/usr/</span><span class="n">local</span><span class="o">/</span><span class="n">picard</span><span class="o">-</span><span class="n">tools</span><span class="o">-</span><span class="mf">2.5</span><span class="o">.</span><span class="mi">0</span><span class="o">/</span><span class="n">picard</span><span class="p">.</span><span class="nf">jar</span> <span class="no">SortSam</span>  <span class="no">CREATE_INDEX</span><span class="o">=</span><span class="no">TRUE</span> <span class="no">VALIDATION_STRINGENCY</span><span class="o">=</span><span class="no">SILENT</span> <span class="no">SORT_ORDER</span><span class="o">=</span><span class="n">coordinate</span>  <span class="no">INPUT</span><span class="o">=</span><span class="n">file</span><span class="o">.</span><span class="no">BWASAMPE</span><span class="p">.</span><span class="nf">sam</span> <span class="no">OUTPUT</span><span class="o">=</span><span class="n">file</span><span class="o">.</span><span class="no">PICARDTOOLSSORT</span><span class="p">.</span><span class="nf">bam</span></code></pre></figure>
+
+<p>The <em>bam</em> index (<em>.bai</em>) is created auomtically by <code class="highlighter-rouge">picardtools</code> (<code class="highlighter-rouge">samtools index</code> command unnecessary)</p>
+
+<h3 id="getting-some-stats-from-bam-file">Getting some stats from <em>bam</em> file</h3>
+
+<figure class="highlight"><pre><code class="language-ruby" data-lang="ruby"><span class="n">samtools</span> <span class="n">flagstat</span> <span class="n">file</span><span class="o">.</span><span class="no">PICARDTOOLSSORT</span><span class="p">.</span><span class="nf">bam</span></code></pre></figure>
+
+<figure class="highlight"><pre><code class="language-ruby" data-lang="ruby"><span class="mi">14524094</span> <span class="o">+</span> <span class="mi">0</span> <span class="k">in</span> <span class="n">total</span> <span class="p">(</span><span class="no">QC</span><span class="o">-</span><span class="n">passed</span> <span class="n">reads</span> <span class="o">+</span> <span class="no">QC</span><span class="o">-</span><span class="n">failed</span> <span class="n">reads</span><span class="p">)</span>
+<span class="mi">0</span> <span class="o">+</span> <span class="mi">0</span> <span class="n">secondary</span>
+<span class="mi">0</span> <span class="o">+</span> <span class="mi">0</span> <span class="n">supplimentary</span>
+<span class="mi">0</span> <span class="o">+</span> <span class="mi">0</span> <span class="n">duplicates</span>
+<span class="mi">11219302</span> <span class="o">+</span> <span class="mi">0</span> <span class="n">mapped</span> <span class="p">(</span><span class="mf">77.25</span><span class="o">%</span><span class="p">:</span><span class="o">-</span><span class="n">nan</span><span class="sx">%)
+0 + 0 paired in sequencing
+0 + 0 read1
+0 + 0 read2
+0 + 0 prorubyy paired (-nan%:-nan%)</span>
+<span class="mi">0</span> <span class="o">+</span> <span class="mi">0</span> <span class="n">with</span> <span class="n">itself</span> <span class="n">and</span> <span class="n">mate</span> <span class="n">mapped</span>
+<span class="mi">0</span> <span class="o">+</span> <span class="mi">0</span> <span class="n">singletons</span> <span class="p">(</span><span class="o">-</span><span class="n">nan</span><span class="sx">%:-nan%)
+0 + 0 with mate mapped to a different chr
+0 + 0 with mate mapped to a different chr (mapQ&gt;=5)</span></code></pre></figure>
+
+<figure class="highlight"><pre><code class="language-ruby" data-lang="ruby"><span class="n">samtools</span> <span class="n">idxstats</span> <span class="n">file</span><span class="o">.</span><span class="no">PICARDTOOLSSORT</span><span class="p">.</span><span class="nf">bam</span></code></pre></figure>
+
+<p>The output is TAB-delimited with each line consisting of reference sequence name, sequence length, # mapped reads and # unmapped reads. It is written to stdout.</p>
+
+<figure class="highlight"><pre><code class="language-ruby" data-lang="ruby"><span class="no">Chromosome_8</span><span class="o">.</span><span class="mi">1</span>	<span class="mi">7978604</span>	<span class="mi">2274010</span>	<span class="mi">0</span>
+<span class="no">Chromosome_8</span><span class="o">.</span><span class="mi">2</span>	<span class="mi">8319966</span>	<span class="mi">2274086</span>	<span class="mi">0</span>
+<span class="no">Chromosome_8</span><span class="o">.</span><span class="mi">3</span>	<span class="mi">6606598</span>	<span class="mi">1774006</span>	<span class="mi">0</span>
+<span class="no">Chromosome_8</span><span class="o">.</span><span class="mi">4</span>	<span class="mi">5546968</span>	<span class="mi">1483879</span>	<span class="mi">0</span>
+<span class="no">Chromosome_8</span><span class="o">.</span><span class="mi">5</span>	<span class="mi">4490059</span>	<span class="mi">1217779</span>	<span class="mi">0</span>
+<span class="no">Chromosome_8</span><span class="o">.</span><span class="mi">6</span>	<span class="mi">4133993</span>	<span class="mi">1132535</span>	<span class="mi">0</span>
+<span class="no">Chromosome_8</span><span class="o">.</span><span class="mi">7</span>	<span class="mi">3415785</span>	<span class="mi">945505</span>	<span class="mi">0</span>
+<span class="no">Chromosome_8</span><span class="o">.</span><span class="mi">8</span>	<span class="mi">535760</span>	<span class="mi">117502</span>	<span class="mi">0</span>
+<span class="o">*</span>	<span class="mi">0</span>	<span class="mi">0</span>	<span class="mi">3304792</span></code></pre></figure>
+
+<h3 id="remove-multimapping-and-improrubyy-paired-reads-with-samtools-view">Remove multimapping and improrubyy paired reads with <code class="highlighter-rouge">samtools view</code></h3>
+
+<p>https://broadinstitute.github.io/picard/explain-flags.html
+https://ppotato.wordpress.com/2010/08/25/samtool-bitwise-flag-paired-reads/</p>
+
+<figure class="highlight"><pre><code class="language-ruby" data-lang="ruby"><span class="c1"># Reads correctly mapped extracted</span>
+<span class="n">samtools</span> <span class="n">view</span> <span class="o">-</span><span class="n">h</span> <span class="o">-</span><span class="n">b</span> <span class="o">-</span><span class="n">f</span><span class="o">=</span><span class="mi">0</span><span class="o">*</span><span class="mo">02</span> <span class="o">-</span><span class="n">o</span> <span class="n">file</span><span class="o">.</span><span class="no">SAMTOOLSVIEW</span><span class="o">-</span><span class="no">MAPPED</span><span class="p">.</span><span class="nf">bam</span> <span class="n">file</span><span class="o">.</span><span class="no">PICARDTOOLSSORT</span><span class="p">.</span><span class="nf">bam</span>
+
+<span class="c1"># Unmapped reads extracted</span>
+<span class="n">samtools</span> <span class="n">view</span> <span class="o">-</span><span class="n">h</span> <span class="o">-</span><span class="n">b</span> <span class="o">-</span><span class="no">F</span><span class="o">=</span><span class="mi">0</span><span class="o">*</span><span class="mo">02</span> <span class="o">-</span><span class="n">o</span> <span class="n">file</span><span class="o">.</span><span class="no">SAMTOOLSVIEW</span><span class="o">-</span><span class="no">UNMAPPED</span><span class="p">.</span><span class="nf">bam</span> <span class="n">file</span><span class="o">.</span><span class="no">PICARDTOOLSSORT</span><span class="p">.</span><span class="nf">bam</span></code></pre></figure>
+
+<h3 id="creating-index-of-the-last-bam-generated-with-samtools-index">Creating index of the last bam generated with <code class="highlighter-rouge">samtools index</code></h3>
+
+<figure class="highlight"><pre><code class="language-ruby" data-lang="ruby"><span class="n">samtools</span> <span class="n">index</span> <span class="n">file</span><span class="o">.</span><span class="no">SAMTOOLSVIEW</span><span class="o">-</span><span class="no">MAPPED</span><span class="p">.</span><span class="nf">bam</span></code></pre></figure>
+
+<h3 id="adding-read-group-with-picardtools-addorreplacereadgroups">Adding read group with <code class="highlighter-rouge">picardtools AddOrReplaceReadGroups</code></h3>
+
+<p>… if they haven’t been added precedently</p>
+
+<figure class="highlight"><pre><code class="language-ruby" data-lang="ruby"><span class="sr">/usr/</span><span class="n">bin</span><span class="o">/</span><span class="n">java</span> <span class="o">-</span><span class="no">Xmx12g</span> <span class="o">-</span><span class="n">jar</span> <span class="sr">/usr/</span><span class="n">local</span><span class="o">/</span><span class="n">picard</span><span class="o">-</span><span class="n">tools</span><span class="o">-</span><span class="mf">2.5</span><span class="o">.</span><span class="mi">0</span><span class="o">/</span><span class="n">picard</span><span class="p">.</span><span class="nf">jar</span> <span class="no">AddOrReplaceReadGroups</span> <span class="no">INPUT</span><span class="o">=</span><span class="mi">20135</span><span class="o">.</span><span class="no">SAMTOOLSVIEW</span><span class="o">-</span><span class="no">MAPPED</span><span class="p">.</span><span class="nf">bam</span> <span class="no">OUTPUT</span><span class="o">=</span><span class="mi">20135</span><span class="o">.</span><span class="no">PICARDTOOLSADDORREPLACEREADGROUPS</span><span class="p">.</span><span class="nf">bam</span> <span class="no">RGPL</span><span class="o">=</span><span class="no">Illumina</span> <span class="no">RGLB</span><span class="o">=</span><span class="mi">20135</span> <span class="no">RGPU</span><span class="o">=</span><span class="mi">20135</span> <span class="no">RGSM</span><span class="o">=</span><span class="mi">20135</span> <span class="no">CREATE_INDEX</span><span class="o">=</span><span class="no">True</span> <span class="no">VALIDATION_STRINGENCY</span><span class="o">=</span><span class="no">LENIENT</span> <span class="o">&gt;</span> <span class="mi">20135</span><span class="o">.</span><span class="no">PICARDTOOLSADDORREPLACEREADGROUPS</span><span class="p">.</span><span class="nf">log</span></code></pre></figure>
+
+<ul>
+  <li>RGPL= Read Group Platform (i.e. Illumina)</li>
+  <li>RGLB= Read Group Library (i.e. DNA preparation library identity i.e “HG19”)</li>
+  <li>RGPU= Read Group Platform Unit (i.e Barcode)</li>
+  <li>RGSM= Read Group Sample Name (i.e. Sample Name)</li>
+</ul>
+
+<h3 id="marking-duplicates-with-picardtools-addorreplacereadgroups">Marking duplicates with <code class="highlighter-rouge">picardtools AddOrReplaceReadGroups</code></h3>
+
+<p>… if it is necessary</p>
+
+<figure class="highlight"><pre><code class="language-ruby" data-lang="ruby"><span class="sr">/usr/</span><span class="n">bin</span><span class="o">/</span><span class="n">java</span> <span class="o">-</span><span class="no">Xmx12g</span> <span class="o">-</span><span class="n">jar</span> <span class="sr">/usr/</span><span class="n">local</span><span class="o">/</span><span class="n">picard</span><span class="o">-</span><span class="n">tools</span><span class="o">-</span><span class="mf">2.5</span><span class="o">.</span><span class="mi">0</span><span class="o">/</span><span class="n">picard</span><span class="p">.</span><span class="nf">jar</span> <span class="no">MarkDuplicates</span> <span class="no">INPUT</span><span class="o">=</span><span class="mi">20135</span><span class="o">.</span><span class="no">SAMTOOLSVIEW</span><span class="o">-</span><span class="no">MAPPED</span><span class="p">.</span><span class="nf">bam</span> <span class="no">OUTPUT</span><span class="o">=</span><span class="mi">20135</span><span class="o">.</span><span class="no">PICARDTOOLSMARKDUPLICATES</span><span class="p">.</span><span class="nf">bam</span> <span class="no">METRICS_FIL</span><span class="o">=</span><span class="n">metrics</span><span class="p">.</span><span class="nf">txt</span> <span class="no">CREATE_INDEX</span><span class="o">=</span><span class="no">True</span> <span class="no">VALIDATION_STRINGENCY</span><span class="o">=</span><span class="no">LENIENT</span> <span class="o">&gt;</span> <span class="mi">20135</span><span class="o">.</span><span class="no">PICARDTOOLSADDORREPLACEREADGROUPS</span><span class="p">.</span><span class="nf">log</span></code></pre></figure>
+
+<p><a name="gatk-indelrealigner"></a></p>
+<h2 id="local-realignment-around-indels-using-gatk">Local realignment around INDELS using <code class="highlighter-rouge">GATK</code></h2>
+
+<p>https://www.broadinstitute.org/gatk/</p>
+
+<h3 id="firstly-creating-a-target-list-of-intervals-which-need-to-be-realigned-with-gatk-realignertargetcreator">Firstly, creating a target list of intervals which need to be realigned with <code class="highlighter-rouge">gatk realignerTargetCreator</code></h3>
+
+<figure class="highlight"><pre><code class="language-ruby" data-lang="ruby"><span class="sr">/usr/</span><span class="n">bin</span><span class="o">/</span><span class="n">java</span> <span class="o">-</span><span class="no">Xmx12g</span> <span class="o">-</span><span class="n">jar</span> <span class="sr">/usr/</span><span class="n">local</span><span class="o">/</span><span class="n">gatk</span><span class="o">-</span><span class="mf">3.7</span><span class="o">/</span><span class="no">GenomeAnalysisTK</span><span class="p">.</span><span class="nf">jar</span> <span class="o">-</span><span class="no">T</span> <span class="no">RealignerTargetCreator</span>  <span class="o">-</span><span class="no">R</span> <span class="n">reference</span> <span class="o">-</span><span class="no">I</span> <span class="n">file</span><span class="p">.</span><span class="nf">bam</span> <span class="o">-</span><span class="n">o</span> <span class="n">file</span><span class="o">.</span><span class="no">GATKREALIGNERTARGETCREATOR</span><span class="p">.</span><span class="nf">intervals</span>
+<span class="sb">``</span></code></pre></figure>
+<p>`</p>
+
+<h3 id="then-perform-realignment-of-the-target-intervals-with-gatk-indelrealigner">Then, perform realignment of the target intervals with <code class="highlighter-rouge">gatk indelRealigner</code></h3>
+
+<figure class="highlight"><pre><code class="language-ruby" data-lang="ruby"><span class="sr">/usr/</span><span class="n">bin</span><span class="o">/</span><span class="n">java</span> <span class="o">-</span><span class="no">Xmx12g</span> <span class="o">-</span><span class="n">jar</span> <span class="sr">/usr/</span><span class="n">local</span><span class="o">/</span><span class="n">gatk</span><span class="o">-</span><span class="mf">3.7</span><span class="o">/</span><span class="no">GenomeAnalysisTK</span><span class="p">.</span><span class="nf">jar</span> <span class="o">-</span><span class="no">T</span> <span class="no">IndelRealigner</span>  <span class="o">-</span><span class="no">R</span> <span class="n">reference</span> <span class="o">-</span><span class="no">I</span> <span class="n">file</span><span class="p">.</span><span class="nf">bam</span> <span class="o">-</span><span class="n">targetIntervals</span> <span class="n">file</span><span class="o">.</span><span class="no">GATKREALIGNERTARGETCREATOR</span><span class="p">.</span><span class="nf">intervals</span> <span class="o">-</span><span class="n">o</span> <span class="n">file</span><span class="o">.</span><span class="no">GATKINDELREALIGNER</span><span class="p">.</span><span class="nf">bam</span></code></pre></figure>
+
+<p><a name="gatk-ug-hc"></a></p>
+<h2 id="variant-calling-using-gatk-unifiedgenotyper-or-gatk-haplotypecaller">Variant calling using <code class="highlighter-rouge">GATK unifiedGenotyper</code> or <code class="highlighter-rouge">GATK haplotypeCaller</code></h2>
+
+<h3 id="gatk-haplotypecaller"><code class="highlighter-rouge">GATK haplotypeCaller</code></h3>
+
+<figure class="highlight"><pre><code class="language-ruby" data-lang="ruby"><span class="sr">/usr/</span><span class="n">bin</span><span class="o">/</span><span class="n">java</span> <span class="o">-</span><span class="no">Xmx12g</span> <span class="o">-</span><span class="n">jar</span> <span class="sr">/usr/</span><span class="n">local</span><span class="o">/</span><span class="n">gatk</span><span class="o">-</span><span class="mf">3.7</span><span class="o">/</span><span class="no">GenomeAnalysisTK</span><span class="p">.</span><span class="nf">jar</span> <span class="o">-</span><span class="n">rf</span> <span class="no">BadCigar</span>  <span class="o">-</span><span class="no">T</span> <span class="no">HaplotypeCaller</span>  <span class="o">-</span><span class="no">R</span> <span class="n">reference</span> <span class="o">-</span><span class="no">I</span> <span class="n">file</span><span class="o">-</span><span class="n">ind1</span><span class="o">.</span><span class="no">PICARDTOOLSMARKDUPLICATES</span><span class="p">.</span><span class="nf">bam</span> <span class="o">-</span><span class="no">I</span>  <span class="n">file</span><span class="o">-</span><span class="n">ind2</span><span class="o">.</span><span class="no">PICARDTOOLSMARKDUPLICATES</span><span class="p">.</span><span class="nf">bam</span>  <span class="o">-</span><span class="n">o</span> <span class="n">file</span><span class="o">.</span><span class="no">GATKHAPLOTYPECALLER</span><span class="p">.</span><span class="nf">vcf</span></code></pre></figure>
+
+<h3 id="gatk-unifiedgenotyper"><code class="highlighter-rouge">GATK unifiedGenotyper</code></h3>
+
+<figure class="highlight"><pre><code class="language-ruby" data-lang="ruby"><span class="sr">/usr/</span><span class="n">bin</span><span class="o">/</span><span class="n">java</span> <span class="o">-</span><span class="no">Xmx12g</span> <span class="o">-</span><span class="n">jar</span> <span class="sr">/usr/</span><span class="n">local</span><span class="o">/</span><span class="n">gatk</span><span class="o">-</span><span class="mf">3.7</span><span class="o">/</span><span class="no">GenomeAnalysisTK</span><span class="p">.</span><span class="nf">jar</span> <span class="o">-</span><span class="n">rf</span> <span class="no">BadCigar</span>   <span class="o">-</span><span class="no">T</span> <span class="no">UnifiedGenotyper</span> <span class="o">-</span><span class="no">R</span> <span class="n">reference</span> <span class="o">-</span><span class="no">I</span> <span class="n">file</span><span class="p">.</span><span class="nf">bam</span>  <span class="o">-</span><span class="n">o</span> <span class="n">file</span><span class="o">.</span><span class="no">GATKUNIFIEDGENOTYPER</span><span class="p">.</span><span class="nf">vcf</span></code></pre></figure>
+
+<p><a name="gatk-filters"></a></p>
+<h2 id="basic-filters-vcf-files-using-gatk">Basic Filters vcf files using <code class="highlighter-rouge">GATK</code></h2>
+
+<h3 id="gatk-variantfiltration">gatk variantFiltration</h3>
+
+<figure class="highlight"><pre><code class="language-ruby" data-lang="ruby"><span class="sr">/usr/</span><span class="n">bin</span><span class="o">/</span><span class="n">java</span> <span class="o">-</span><span class="no">Xmx12g</span> <span class="o">-</span><span class="n">jar</span> <span class="sr">/usr/</span><span class="n">local</span><span class="o">/</span><span class="n">gatk</span><span class="o">-</span><span class="mf">3.7</span><span class="o">/</span><span class="no">GenomeAnalysisTK</span><span class="p">.</span><span class="nf">jar</span> <span class="o">-</span><span class="no">T</span> <span class="no">VariantFiltration</span> <span class="o">--</span><span class="n">filterName</span> <span class="s1">'FILTER-DP'</span> <span class="o">--</span><span class="n">filterExpression</span> <span class="s1">'DP&lt;10 || DP&gt;600'</span> <span class="o">--</span><span class="n">filterName</span> <span class="s1">'LowQual'</span> <span class="o">--</span><span class="n">filterExpression</span> <span class="s1">'QUAL&lt;30'</span>   <span class="o">-</span><span class="no">R</span> <span class="sr">/reference -o file.GATKVARIANTFILTRATION.vcf --variant file.GATKHAPLOTYPECALLER.vcf</span></code></pre></figure>
+
+<h3 id="gatk-selectvariants">gatk selectVariants</h3>
+
+<figure class="highlight"><pre><code class="language-ruby" data-lang="ruby"><span class="sr">/usr/</span><span class="n">bin</span><span class="o">/</span><span class="n">java</span> <span class="o">-</span><span class="no">Xmx12g</span> <span class="o">-</span><span class="n">jar</span> <span class="sr">/usr/</span><span class="n">local</span><span class="o">/</span><span class="n">gatk</span><span class="o">-</span><span class="mf">3.7</span><span class="o">/</span><span class="no">GenomeAnalysisTK</span><span class="p">.</span><span class="nf">jar</span> <span class="o">-</span><span class="n">selectType</span> <span class="no">SNP</span> <span class="o">-</span><span class="no">T</span> <span class="no">SelectVariants</span>  <span class="o">-</span><span class="no">R</span> <span class="n">reference</span> <span class="o">--</span><span class="n">variant</span> <span class="n">file</span><span class="o">.</span><span class="no">GATKVARIANTFILTRATION</span><span class="p">.</span><span class="nf">vcf</span> <span class="o">-</span><span class="n">o</span> <span class="n">file</span><span class="o">.</span><span class="no">GATKSELECTVARIANT</span><span class="p">.</span><span class="nf">vcf</span></code></pre></figure>
+
+<hr />
+<h2 id="more-informations">More informations</h2>
+<p>cf. NGS trainings and linux trainings</p>
+
+<!--
+<aside>
+	<h3>aside</h3>
+	<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam sodales urna non odio egestas tempor. Nunc vel vehicula ante. Etiam bibendum iaculis libero, eget molestie nisl pharetra in. In semper consequat est, eu porta velit mollis nec. Curabitur posuere enim eget turpis feugiat tempor. Etiam ullamcorper lorem dapibus velit suscipit ultrices.</p>
+</aside>-->
+
+	</div> <!-- #main -->
+</div> <!-- #main-container -->
+    <!-- Placed at the end of the document so the pages load faster -->
+    <script src="http://toggle.ird.fr:4000/js/jquery-1.11.3.min.js"></script>
+    <script src="http://toggle.ird.fr:4000/js/bootstrap.min.js"></script>
+    <script src="http://toggle.ird.fr:4000/js/homepage.js"></script>
+    <script src="http://toggle.ird.fr:4000/js/libs/modernizr-2.0.6.min.js"></script>
+
+</script>
+
+    <!-- FOOTER  -->
+    <div id="footer_wrap" class="outer">
+      <footer class="inner">
+        <div id="footer">
+			<div class="logo-div" class="clearfix">
+				<a class="logo" href="http://www.ird.fr">
+					<img class="img-logo" src="http://toggle.ird.fr:4000/images/logo_ird.png" alt="IRD Logo"  width="" />
+				</a>
+
+				<a class="logo" href="http://www.cirad.fr">
+					<img class="img-logo" src="http://toggle.ird.fr:4000/images/logo-cirad.png" alt="CIRAD Logo"   width="" />
+				</a>
+
+				<a class="logo" href="http://www.inra.fr">
+					<img class="img-logo" src="http://toggle.ird.fr:4000/images/logo_inra.png" alt="INRA Logo"   width=""/>
+				</a>
+
+				<a class="logo" href="https://www.bioversityinternational.org/">
+					<img class="img-logo" src="http://toggle.ird.fr:4000/images/logo_bioversity.png" alt="Bioversity Logo"   width=""/>
+				</a>
+
+				<a class="logo" href="https://www.supagro.fr/">
+					<img class="img-logo" src="http://toggle.ird.fr:4000/images/logo_supagro.png" alt="SupAgro Logo"   width=""/>
+				</a>
+				
+				<a class="logo" href="http://www.southgreen.fr">
+					<img class="img-logo" src="http://toggle.ird.fr:4000/images/southgreenlong.png" alt="South Green Logo"   width=""/>
+				</a>
+
+			</div>
+		</div>
+
+		<div class="footer_txt">
+			<p>The contents of this website are &copy;&nbsp;2018 under the terms of the Licencied under
+				<a href="http://www.cecill.info/licences/Licence_CeCILL-C_V1-en.html">CeCill-C</a>
+				 and <a href="/blob/master/LICENSE">GPLv3</a>.
+			</p>
+		</div>
+      </footer>
+    </div>
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
+<script>window.jQuery || document.write('<script src="js/libs/jquery-1.7.1.min.js"><\/script>')</script>
+
+<!--<script src="http://toggle.ird.fr:4000/js/script.js"></script>
+<script>
+	var _gaq=[['_setAccount',''],['_trackPageview']];
+	(function(d,t){var g=d.createElement(t),s=d.getElementsByTagName(t)[0];g.async=1;
+	g.src=('https:'==location.protocol?'//ssl':'//www')+'.google-analytics.com/ga.js';
+	s.parentNode.insertBefore(g,s)}(document,'script'));
+</script>
+
+<!--[if lt IE 7 ]>
+	<script src="//ajax.googleapis.com/ajax/libs/chrome-frame/1.0.2/CFInstall.min.js"></script>
+	<script>window.attachEvent("onload",function(){CFInstall.check({mode:"overlay"})})</script>
+<![endif]-->
+
+</body>
+</html>

@@ -7,9 +7,9 @@
 	<meta charset="utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
 
-	<title>About Us</title>
+	<title>Docker for dumpies</title>
 	<meta name="description" content="Bioinformatics tutorials, Linux, HPC, NGS, NGS workflow manager, TOGGLe, galaxy">
-	<meta name="description" content="Contact page">
+	<meta name="description" content="Docker for dumpies">
 	
 	<meta name="author" content=" Sébastien RAVEL -- sebastien.ravel@cirad.fr">
 	
@@ -80,19 +80,171 @@
 <body>
 <div id="main_content_wrap" class="outer">
 	 <section id="main_content" class="inner">
-<h1 id="abous-us">Abous us</h1>
-<p>The <a href="http://www.southgreen.fr/">South Green platform</a> is a local network of scientists gathering Bioinformatics skills based on the Agropolis campus (Montpellier, France) that hosts research institutes such as CIRAD, IRD, INRA, SupAgro, Bioversity international as well as the CGIAR consortium.</p>
+<table class="table-contact">
+<tr>
+<td><img width="100%" src="http://toggle.ird.fr:4000/images/trainings-linux.png" alt="" />
+</td>
+<td>
+<h1> Docker For Dummies</h1><br />
+This page describes describes the main commands you need in order to use Docker.
+</td>
+</tr>
+</table>
 
-<p>Based on this strong local community in the field of agriculture, food, biodiversity and environment, this network of national and international scope, develops bioinformatics applications and resources dedicated to genetics and genomics of tropical and Mediterranean plants. South Green relies on the computer technical platforms of its partner institutes.</p>
+<h3 id="authors">Author(s)</h3>
 
-<h1 id="contact">Contact:</h1>
+<table>
+  <thead>
+    <tr>
+      <th style="text-align: left">Authors</th>
+      <th style="text-align: left">Christine Tranchant-Dubreuil</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td style="text-align: left">Research Unit</td>
+      <td style="text-align: left">UMR DIADE</td>
+    </tr>
+    <tr>
+      <td style="text-align: left">Institut</td>
+      <td style="text-align: left"><img src="https://www.ird.fr/extension/ird/design/ird/images/picto/logo_ird.png" width="20%" /></td>
+    </tr>
+  </tbody>
+</table>
 
+<p><a name="module1-intro"></a></p>
+<h2 id="module-1--introduction-docker">Module 1 : Introduction Docker</h2>
+
+<h3 id="build">build</h3>
 <ul>
-  <li><a href="mailto:southgreen-formation@cirad.fr">southgreen-formation@cirad.fr</a></li>
+  <li>Workflows Developer : production et compilation image (DEV)</li>
+  <li>outil : Docker toolbox
+    <blockquote>
+      <p>pour Mac et windows (pas demon natif comme sous linux), permet de faire tourner le demon docker qui va tourner dans une machine virtuelle linux (virtual box) &lt;-&gt; engine docker &lt;=&gt; docker for Mac and Windows now : add url)</p>
+    </blockquote>
+  </li>
+  <li>Se compose de :
+    <blockquote>
+      <p>Docker Engine
+Docker Compose
+Docker Swarm (partie cluster)
+Docker Client
+Kitematic : outil graphique  (pas intéressant)</p>
+    </blockquote>
+  </li>
 </ul>
 
-<h1 id="reference">Reference</h1>
-<p>The South Green portal: a comprehensive resource for tropical and Mediterranean crop genomics, Current Plant Biology, 2016</p>
+<h3 id="ship">ship</h3>
+<ul>
+  <li>registry services: transport et stockage des images produites pendant la phase de dev</li>
+  <li>outil :
+    <blockquote>
+      <p>** Docker Hub **
+ &lt;=&gt; “github” docker = plateforme mutualisée en ligne de reference https://hub.docker.com/
+ stocke image sous cloud ou sur son propre réseau/registry</p>
+    </blockquote>
+  </li>
+</ul>
+
+<blockquote>
+  <p>** Docker Trusted Registry **
+avec interface (commerciale)
+–&gt; interface web
+–&gt; gestion utilisateur avec accès</p>
+</blockquote>
+
+<blockquote>
+  <p>** Docker Registry open source **
+version gratuite sans interface</p>
+</blockquote>
+
+<h3 id="run">run</h3>
+<p>en envt dev ou prod : gestion des dockers</p>
+<ul>
+  <li>** docker cloud ** (plateforme en ligne payante ) qui permet de deployer les conteners crées</li>
+  <li>** docker Universal Control Plane ** / Docker data center
+    <blockquote>
+      <p>deploiement sur cloud, vm ou hybrides</p>
+    </blockquote>
+  </li>
+</ul>
+
+<p>Rq : toutes ces couches s appuient sur le Docker Engine</p>
+
+<p>===&gt; mettre image</p>
+
+<hr />
+
+<p><a name="module1-intro"></a></p>
+<h2 id="module-2-">Module 2 :</h2>
+
+<h3 id="docker-engine">Docker Engine</h3>
+
+<ul>
+  <li>Program that enables containers to be distribued and run</li>
+  <li>Several natives fonctionalities</li>
+  <li>keys :
+    <blockquote>
+      <p>NAMESPACES : isolation ps et syst fichiers
+CGROUPS : mesurer et limiter utilisation ressources + donner accès à des periphériques
+Regles IPTABLES : communication entre containers sur meme hote + comm entre containers et exterieur</p>
+    </blockquote>
+  </li>
+  <li>Archi client / server</li>
+  <li>Docker Containers and Images</li>
+  <li>
+    <p>Registry and repository
+image</p>
+  </li>
+  <li>Docker orchestration</li>
+</ul>
+
+<p>3 outils</p>
+<ul>
+  <li>Docker Machine : provisionne hotes dockers et installer Docker engine dessus</li>
+  <li>Docker Compose : pour creer et gerer applications multi containers</li>
+  <li>Docker Engine swarm mode : pour creer des clusters dans la version Engine facilement en 3 commandes</li>
+</ul>
+
+<p><a name="module3-install"></a></p>
+<h2 id="module-3--installation-docker">Module 3 : Installation Docker</h2>
+
+<h3 id="docker-engine-1">Docker Engine</h3>
+<ul>
+  <li>on linux : url / cf dia</li>
+  <li>on mac (&gt; yosemite) / window (&gt;)</li>
+  <li>community edition / entreprise edition</li>
+</ul>
+
+<p><a name="module4-image"></a></p>
+<h2 id="module-4--introduction-image">Module 4 : Introduction image</h2>
+
+<p><a name="module5-run"></a></p>
+<h3 id="module-5--running-and-managing-containers">Module 5 : Running and Managing containers</h3>
+
+<h3 id="module-6--building-images">Module 6 : Building images</h3>
+<p>image</p>
+
+<p>3 ways</p>
+<ul>
+  <li>commit changes from a container as a new image</li>
+  <li>build from a DockerFile</li>
+  <li>import a tarball into Docker as a standalone base layer</li>
+</ul>
+
+<h4 id="committing-changes-in-a-container">Committing changes in a container</h4>
+<p>pas automatisable!</p>
+
+<h4 id="build-from-a-dockerfile">build from a DockerFile</h4>
+<ul>
+  <li>programs to install</li>
+  <li>base images to use <strong>FROM</strong></li>
+  <li>commands to run ** RUN cmde **</li>
+</ul>
+
+<h3 id="module-8--volume">Module 8 : volume</h3>
+
+<h3 id="advanced-docker-topics">Advanced docker topics</h3>
 
 
 <!--

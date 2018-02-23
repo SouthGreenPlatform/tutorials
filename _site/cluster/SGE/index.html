@@ -1,0 +1,503 @@
+<!doctype html>
+<!--[if lt IE 7]><html class="no-js ie6 oldie" lang="ja"><![endif]-->
+<!--[if IE 7]>   <html class="no-js ie7 oldie" lang="ja"><![endif]-->
+<!--[if IE 8]>   <html class="no-js ie8 oldie" lang="ja"><![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="ja"><!--<![endif]-->
+<head>
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+
+	<title>SGE</title>
+	<meta name="description" content="Bioinformatics tutorials, Linux, HPC, NGS, NGS workflow manager, TOGGLe, galaxy">
+	<meta name="description" content="How use SGE on HPC">
+	
+	<meta name="author" content=" Sébastien RAVEL -- sebastien.ravel@cirad.fr">
+	
+	<meta name="author" content=" Christine Tranchant-Dubreuil -- christine.tranchant@ird.fr">
+	
+
+	<meta name="viewport" content="width=device-width,initial-scale=1">
+
+	<link rel="stylesheet" type="text/css" media="screen" href="http://toggle.ird.fr:4000/css/bootstrap.min.css" >
+	<link rel="stylesheet" type="text/css" media="screen" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
+	<link rel="stylesheet" type="text/css" media="screen" href="http://toggle.ird.fr:4000/css/monokai.css">
+	<link rel="stylesheet" type="text/css" media="screen" href="http://toggle.ird.fr:4000/css/stylesheet.css">
+	<link rel="icon" href="http://toggle.ird.fr:4000/images/southgreenlong.png">
+</head>
+ <body>
+
+	<!-- Static navbar -->
+	<nav class="navbar navbar-default navbar-inverse navbar-static-top">
+		<div class="container">
+		<div class="navbar-header">
+			<button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+			<span class="sr-only"></span>
+			<span class="icon-bar"></span>
+			<span class="icon-bar"></span>
+			<span class="icon-bar"></span>
+			</button>
+			<a class="navbar-brand visible-xs" href="#"></a>
+		</div>
+		<div id="navbar" class="navbar-collapse collapse">
+			<ul id="menu">
+				<li><a href="http://toggle.ird.fr:4000/">Home</a></li>
+				<li><a href="#">Bioanalysis</a><span class="caret" ></span>
+					<ul id="child">
+						<li><a href="http://toggle.ird.fr:4000/bioanalysis/polymorphism/">Polymorphism detection</a></li>
+						<li><a href="http://toggle.ird.fr:4000/bioanalysis/vcfExtract/">VCF manipulate</a></li>
+						<li><a href="http://toggle.ird.fr:4000/bioanalysis/rnaSeq/">RNA-Seq</a></li>
+					</ul>
+				</li>
+				<li><a href="#">Cluster</a><span class="caret" ></span>
+					<ul id="child">
+						<li><a href="http://toggle.ird.fr:4000/cluster/HPCConnection/">HPC connection</a></li>
+						<li><a href="http://toggle.ird.fr:4000/cluster/SGE/">SGE</a></li>
+						<li><a href="http://toggle.ird.fr:4000/cluster/moduleLoad/">Use module system</a></li>
+					</ul>
+				</li>
+				<li><a href="#">Toolbox&Trick</a><span class="caret" ></span>
+					<ul id="child">
+						<li><a href="http://toggle.ird.fr:4000/toolbox/linux/">Linux</a></li>
+						<li><a href="http://toggle.ird.fr:4000/toolbox/git/">Git</a></li>
+						<li><a href="http://toggle.ird.fr:4000/toolbox/docker/">Docker</a></li>
+					</ul>
+				</li>
+				<li><a href="http://toggle.ird.fr:4000/contact/">About Us</a></li>
+				<li><a id="forkme_banner" href="https://github.com/SouthGreenPlatform/trainings/">GitHub</a></li>
+			</ul>
+		</div>
+		</div>
+	</nav>
+	<!--/.nav-collapse -->
+	<!-- Header -->
+	<div id="header_wrap" class="outer">
+		<header class="inner">
+		<div class="header"><img class="img-responsive" width="25%" src="http://toggle.ird.fr:4000/images/southgreenlong.png" alt="South Green Logo" /></div>
+		<h2 id="project_tagline">South Green tutorials Web Site</h2>
+		</header>
+	</div>
+
+<body>
+<div id="main_content_wrap" class="outer">
+	 <section id="main_content" class="inner">
+<table class="table-contact">
+<tr>
+<td><img width="100%" src="http://toggle.ird.fr:4000/images/trainings-linux.png" alt="" />
+</td>
+<td>
+<h1> SGE Job submission for cc2 login cluster</h1><br />
+This page describes how you can submit job with SGE system.
+</td>
+</tr>
+</table>
+
+<table>
+  <thead>
+    <tr>
+      <th style="text-align: left">Authors</th>
+      <th style="text-align: left">Sébastien RAVEL</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td style="text-align: left">Research Unit</td>
+      <td style="text-align: left"><img src="http://printemps-baillarguet.e-monsite.com/medias/images/bgpi.jpg" width="10%" /></td>
+    </tr>
+    <tr>
+      <td style="text-align: left">Institut</td>
+      <td style="text-align: left"><img src="http://toggle.ird.fr:4000/images/logo-cirad.png" width="10%" /></td>
+    </tr>
+  </tbody>
+</table>
+
+<h4 id="keywords--qsub-qrsh-job-cc2-login"><em>Keywords</em> : <code class="highlighter-rouge">qsub, qrsh, job, cc2-login</code></h4>
+
+<h4 id="date--02062017"><em>Date</em> : 02/06/2017</h4>
+
+<p><a name="summary"></a></p>
+<h2 id="summary">Summary</h2>
+
+<ul>
+  <li><a href="#summary">Summary</a></li>
+  <li><a href="#how-to-run-correctly-jobs">How to run correctly Jobs</a></li>
+  <li><a href="#1-use-module-load">1 - Use Module load</a>
+    <ul>
+      <li><a href="#a-load-modules-by-default-on-connection">A - Load modules by default on connection</a></li>
+      <li><a href="#b-loading-before-job-submission-before-qsub">B - Loading before job submission (before qsub)</a></li>
+      <li><a href="#c-loading-in-job-script">C - Loading in Job Script</a></li>
+    </ul>
+  </li>
+  <li><a href="#2-run-job">2 - Run Job</a>
+    <ul>
+      <li><a href="#a-qsub-mode">A - qsub mode</a></li>
+      <li><a href="#b-qrsh-mode-for-test-script">B - qrsh mode (for test script)</a></li>
+    </ul>
+  </li>
+  <li><a href="#3-knowing-asking-for-resources">3 - Knowing / asking for resources</a></li>
+  <li><a href="#4-jobs-resources">4 - Jobs Resources</a>
+    <ul>
+      <li><a href="#a-request-more-ram">A - Request more RAM</a></li>
+      <li><a href="#b-request-more-threads">B - Request more Threads</a></li>
+    </ul>
+  </li>
+  <li><a href="#5-get-information-about-running-jobs">5 - Get information about running jobs</a></li>
+  <li><a href="#6-delete-job">6 - Delete job</a></li>
+  <li><a href="#7-more-infos">7 - More infos</a></li>
+</ul>
+
+<p><a name="how-to-run-correctly-jobs"></a></p>
+<h2 id="how-to-run-correctly-jobs">How to run correctly Jobs</h2>
+
+<p><strong>!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! WARNING !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+Not starting a program on the master node of the cluster: (cf: cc2-admin)</strong></p>
+
+<p><a name="1-use-module-load"></a></p>
+<h2 id="1---use-module-load">1 - Use Module load</h2>
+
+<p>On the cluster the tools do not load by default.
+Each user must “load” programs to use them.
+This system allows you to have different versions of the same tools without creating conflicts.
+The disadvantage is that if you forget to load the module the program does not work …
+Here are 3 methods to manage modules:</p>
+
+<p><a name="a-load-modules-by-default-on-connection"></a></p>
+<h3 id="a---load-modules-by-default-on-connection">A - Load modules by default on connection</h3>
+
+<p>If you often use the same program you can add to the .bashrc file
+For example the program GIT or python2.7 that I often use:</p>
+
+<figure class="highlight"><pre><code class="language-ruby" data-lang="ruby"><span class="n">gedit</span> <span class="sr">/homedir/</span><span class="p">{</span><span class="no">YourName</span><span class="p">}</span><span class="o">/</span><span class="p">.</span><span class="nf">bashrc</span>
+<span class="c1"># Copy/Paste the two lines:</span>
+<span class="c1"># add module load permanently</span>
+<span class="k">module</span> <span class="nn">load</span> <span class="nb">system</span><span class="o">/</span><span class="n">git</span><span class="o">/</span><span class="mf">2.8</span><span class="o">.</span><span class="mi">3</span> <span class="nb">system</span><span class="o">/</span><span class="n">python</span><span class="o">/</span><span class="mf">2.7</span><span class="o">.</span><span class="mi">9</span>
+<span class="c1"># Save file, quit gedit and actualise connection with: (or kill and open new connection):</span>
+<span class="n">source</span> <span class="o">~</span><span class="sr">/.bashrc</span></code></pre></figure>
+
+<p><a name="b-loading-before-job-submission-before-qsub"></a></p>
+<h3 id="b---loading-before-job-submission-before-qsub">B - Loading before job submission (before qsub)</h3>
+
+<p>This method loads modules before qsub.
+It will be <strong>MANDATORY</strong> to put the <strong>-V</strong> parameter in the qsub to pass the modules to the compute node.</p>
+
+<figure class="highlight"><pre><code class="language-ruby" data-lang="ruby"><span class="c1">##### load modules</span>
+<span class="k">module</span> <span class="nn">load</span> <span class="n">mpi</span><span class="o">/</span><span class="n">openmpi</span><span class="o">/</span><span class="mf">1.6</span><span class="o">.</span><span class="mi">5</span> <span class="n">compiler</span><span class="o">/</span><span class="n">gcc</span><span class="o">/</span><span class="mf">4.9</span><span class="o">.</span><span class="mi">2</span> <span class="n">bioinfo</span><span class="o">/</span><span class="no">RAxML</span><span class="o">/</span><span class="mf">8.2</span><span class="o">.</span><span class="mi">4</span>
+<span class="c1">##### run job</span>
+<span class="n">qsub</span> <span class="o">-</span><span class="no">V</span> <span class="o">-</span><span class="no">N</span> <span class="n">raxmlALL</span> <span class="o">-</span><span class="n">cwd</span> <span class="o">-</span><span class="n">q</span> <span class="n">long</span><span class="p">.</span><span class="nf">q</span> <span class="o">-</span><span class="n">pe</span> <span class="n">parallel_smp</span> <span class="mi">24</span> <span class="p">.</span><span class="nf">/</span><span class="n">run_raxml</span><span class="p">.</span><span class="nf">sh</span></code></pre></figure>
+
+<p><a name="c-loading-in-job-script"></a></p>
+<h3 id="c---loading-in-job-script">C - Loading in Job Script</h3>
+
+<p>The best way for the job to work. (We always forget to load before qsub ….)
+It’s simple enough to have the modules loaded by the compute node.
+It is enough to add in the script.sh the module load before the control of the program.
+Example in file <strong>__run_raxml.sh__</strong>:</p>
+
+<figure class="highlight"><pre><code class="language-ruby" data-lang="ruby"><span class="k">module</span> <span class="nn">load</span> <span class="n">mpi</span><span class="o">/</span><span class="n">openmpi</span><span class="o">/</span><span class="mf">1.6</span><span class="o">.</span><span class="mi">5</span> <span class="n">compiler</span><span class="o">/</span><span class="n">gcc</span><span class="o">/</span><span class="mf">4.9</span><span class="o">.</span><span class="mi">2</span> <span class="n">bioinfo</span><span class="o">/</span><span class="no">RAxML</span><span class="o">/</span><span class="mf">8.1</span><span class="o">.</span><span class="mi">17</span>
+<span class="n">raxmlHPC</span><span class="o">-</span><span class="no">PTHREADS</span> <span class="o">-</span><span class="no">T</span> <span class="mi">24</span> <span class="o">-</span><span class="n">n</span> <span class="mi">2241</span><span class="no">Ortho</span><span class="o">-</span><span class="mi">82</span><span class="n">souches</span> <span class="o">-</span><span class="n">f</span> <span class="n">d</span> <span class="o">-</span><span class="n">m</span> <span class="no">GTRGAMMA</span> <span class="o">-</span><span class="nb">p</span> <span class="mi">12345</span> <span class="o">-</span><span class="n">s</span> <span class="sr">/work/s</span><span class="n">ravel</span><span class="o">/</span><span class="n">phylogenomique3</span><span class="o">/</span><span class="n">raxmlConcat</span><span class="o">/</span><span class="mi">2241</span><span class="no">Ortho</span><span class="o">-</span><span class="mi">82</span><span class="n">souches</span><span class="p">.</span><span class="nf">fasta</span></code></pre></figure>
+
+<figure class="highlight"><pre><code class="language-ruby" data-lang="ruby"><span class="c1">##### run job</span>
+<span class="n">qsub</span> <span class="o">-</span><span class="no">V</span> <span class="o">-</span><span class="no">N</span> <span class="n">raxmlALL</span> <span class="o">-</span><span class="n">cwd</span> <span class="o">-</span><span class="n">q</span> <span class="n">long</span><span class="p">.</span><span class="nf">q</span> <span class="o">-</span><span class="n">pe</span> <span class="n">parallel_smp</span> <span class="mi">24</span> <span class="p">.</span><span class="nf">/</span><span class="n">run_raxml</span><span class="p">.</span><span class="nf">sh</span></code></pre></figure>
+
+<p>PS: leave the -V argument in your job, because sometimes it is necessary despite the loading of the modules in the script.</p>
+
+<p><a name="2-run-job"></a></p>
+<h2 id="2---run-job">2 - Run Job</h2>
+
+<p><a name="a-qsub-mode"></a></p>
+<h3 id="a---qsub-mode">A - qsub mode</h3>
+
+<p>To submit a job you must use the command <strong>qsub</strong></p>
+
+<figure class="highlight"><pre><code class="language-ruby" data-lang="ruby"><span class="c1"># For normal job</span>
+<span class="n">qsub</span> <span class="o">-</span><span class="no">V</span> <span class="o">-</span><span class="no">N</span> <span class="no">NomJob</span> <span class="o">-</span><span class="n">cwd</span> <span class="o">-</span><span class="n">q</span> <span class="n">long</span><span class="p">.</span><span class="nf">q</span> <span class="n">script</span><span class="p">.</span><span class="nf">sh</span>
+
+<span class="c1"># example if the program command is in a script.sh (here run_Lorma.sh)</span>
+<span class="n">qsub</span> <span class="o">-</span><span class="no">V</span> <span class="o">-</span><span class="no">N</span> <span class="no">Lorma</span> <span class="o">-</span><span class="n">cwd</span> <span class="o">-</span><span class="n">q</span> <span class="n">long</span><span class="p">.</span><span class="nf">q</span> <span class="n">run_Lorma</span><span class="p">.</span><span class="nf">sh</span>
+
+<span class="c1"># OR you can run the command directly (to avoid because no trace of the parameters)</span>
+<span class="n">qsub</span> <span class="o">-</span><span class="no">V</span> <span class="o">-</span><span class="no">N</span> <span class="no">Lorma</span> <span class="o">-</span><span class="n">cwd</span> <span class="o">-</span><span class="n">q</span> <span class="n">long</span><span class="p">.</span><span class="nf">q</span> <span class="sr">/work/s</span><span class="n">ravel</span><span class="o">/</span><span class="n">lorma</span><span class="p">.</span><span class="nf">sh</span> <span class="o">-</span><span class="n">s</span> <span class="sr">/work/s</span><span class="n">ravel</span><span class="o">/</span><span class="no">MinION</span><span class="o">/</span><span class="no">Minion_Sanger</span><span class="o">/</span><span class="n">eBSMYV_SeqSangerBAC29H14</span><span class="p">.</span><span class="nf">fasta</span></code></pre></figure>
+
+<p>With the following arguments:</p>
+
+<table>
+  <thead>
+    <tr>
+      <th style="text-align: left">Arguments submission Jobs</th>
+      <th style="text-align: left"> </th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td style="text-align: left"><strong>-i file</strong></td>
+      <td style="text-align: left">Use file as standard input for this job</td>
+    </tr>
+    <tr>
+      <td style="text-align: left"><strong>-o file</strong></td>
+      <td style="text-align: left">Set the job’s standard output to a file (which should be displayed in the terminal)</td>
+    </tr>
+    <tr>
+      <td style="text-align: left"><strong>-e file</strong></td>
+      <td style="text-align: left">Set the standard error output of the job to the file (when returns error)</td>
+    </tr>
+    <tr>
+      <td style="text-align: left"><strong>-N name</strong></td>
+      <td style="text-align: left">Name the job for output files (replaces STDIN by default)</td>
+    </tr>
+    <tr>
+      <td style="text-align: left"><strong>-cwd</strong></td>
+      <td style="text-align: left">Uses the current working directory for input and output, rather than /homedir/username/</td>
+    </tr>
+    <tr>
+      <td style="text-align: left"><strong>-q queue</strong></td>
+      <td style="text-align: left">Specifies a queue</td>
+    </tr>
+    <tr>
+      <td style="text-align: left"><strong>-M my address@work</strong></td>
+      <td style="text-align: left">Receive by e-mail job info:</td>
+    </tr>
+    <tr>
+      <td style="text-align: left"> </td>
+      <td style="text-align: left"><strong>-m beas</strong>: Allows you to select events to receive:</td>
+    </tr>
+    <tr>
+      <td style="text-align: left"> </td>
+      <td style="text-align: left">-b: warned at first</td>
+    </tr>
+    <tr>
+      <td style="text-align: left"> </td>
+      <td style="text-align: left">-e: end of the job</td>
+    </tr>
+    <tr>
+      <td style="text-align: left"> </td>
+      <td style="text-align: left">-a: job interrupted</td>
+    </tr>
+    <tr>
+      <td style="text-align: left"> </td>
+      <td style="text-align: left">-s: job suspended</td>
+    </tr>
+    <tr>
+      <td style="text-align: left"><strong>-l mem_free=nG</strong></td>
+      <td style="text-align: left">run job with “n” Go de RAM (see below)</td>
+    </tr>
+    <tr>
+      <td style="text-align: left"><strong>-pe parallel_smp n</strong></td>
+      <td style="text-align: left">run job with “n” threads (see below)</td>
+    </tr>
+  </tbody>
+</table>
+
+<p><a name="b-qrsh-mode-for-test-script"></a></p>
+<h3 id="b---qrsh-mode-for-test-script">B - qrsh mode (for test script)</h3>
+
+<p>There is a method for not running tests on the master node:
+Request an <strong>interactive job</strong>
+This type of job brings advantages but also disadvantages:</p>
+<ul>
+  <li><strong>Benefits</strong>: allows you to test scripts to debug programs</li>
+  <li><strong>Disadvantages</strong>: the job and kill if the terminal and closed</li>
+</ul>
+
+<p>It is therefore necessary to use it ONLY for the debug.</p>
+
+<p>The command is similar to the * qrsh * and takes at least the -q argument:</p>
+
+<figure class="highlight"><pre><code class="language-ruby" data-lang="ruby"><span class="c1"># For interactive job</span>
+<span class="n">qrsh</span> <span class="o">-</span><span class="n">q</span> <span class="n">normal</span><span class="p">.</span><span class="nf">q</span></code></pre></figure>
+
+<p><a name="3-knowing-asking-for-resources"></a></p>
+<h2 id="3---knowing--asking-for-resources">3 - Knowing / asking for resources</h2>
+
+<p>In computer science there are 2 types of resources to make a program:</p>
+<ul>
+  <li>CPU / Thread</li>
+  <li>RAM</li>
+</ul>
+
+<p>The CPU is the number of cores of a machine, and each core divides into threads.
+A program uses the CPU when it needs to do a lot of calculations.</p>
+
+<p>RAM, express in Go or To corresponds to the active memory of the computer. It preloads information to perform the calculation more quickly.
+(The access time is much faster than reading from disk)
+A program that needs to load files in memory uses more RAM</p>
+
+<p>Once this theory is understood, one can see in the programs parameters such as</p>
+<ul>
+  <li>CPU</li>
+  <li>Thread</li>
+  <li>Java -Xmx18G</li>
+  <li>…</li>
+</ul>
+
+<p>These are the famous parameters to increase the computing power.</p>
+
+<p>On the Cluster the available resources are quite important:</p>
+
+<table>
+  <thead>
+    <tr>
+      <th style="text-align: left">queue</th>
+      <th style="text-align: left">NB Threads</th>
+      <th style="text-align: left">NB RAM</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td style="text-align: left">long.q and normal.q</td>
+      <td style="text-align: left">48</td>
+      <td style="text-align: left">200Go</td>
+    </tr>
+    <tr>
+      <td style="text-align: left">bigmem.q</td>
+      <td style="text-align: left">96</td>
+      <td style="text-align: left">2.6To</td>
+    </tr>
+  </tbody>
+</table>
+
+<p><a name="4-jobs-resources"></a></p>
+<h2 id="4---jobs-resources">4 - Jobs Resources</h2>
+
+<p>By default a job uses 1 thread and 10GB of RAM</p>
+
+<figure class="highlight"><pre><code class="language-ruby" data-lang="ruby"><span class="c1"># for njob with default parameters</span>
+<span class="n">qsub</span> <span class="o">-</span><span class="no">V</span> <span class="o">-</span><span class="no">N</span> <span class="no">NomJob</span> <span class="o">-</span><span class="n">cwd</span> <span class="o">-</span><span class="n">q</span> <span class="n">long</span><span class="p">.</span><span class="nf">q</span> <span class="n">script</span><span class="p">.</span><span class="nf">sh</span></code></pre></figure>
+
+<p>To boost the job you have to ask for more resources.</p>
+
+<p><a name="a-request-more-ram"></a></p>
+<h3 id="a---request-more-ram">A - Request more RAM</h3>
+
+<figure class="highlight"><pre><code class="language-ruby" data-lang="ruby"><span class="c1"># for a job with 20Go of RAM:</span>
+<span class="n">qsub</span> <span class="o">-</span><span class="no">V</span> <span class="o">-</span><span class="no">N</span> <span class="no">NomJob</span> <span class="o">-</span><span class="n">cwd</span> <span class="o">-</span><span class="n">q</span> <span class="n">long</span><span class="p">.</span><span class="nf">q</span> <span class="o">-</span><span class="n">l</span> <span class="n">mem_free</span><span class="o">=</span><span class="mi">20</span><span class="no">G</span> <span class="n">script</span><span class="p">.</span><span class="nf">sh</span></code></pre></figure>
+
+<p><a name="b-request-more-threads"></a></p>
+<h3 id="b---request-more-threads">B - Request more Threads</h3>
+
+<figure class="highlight"><pre><code class="language-ruby" data-lang="ruby"><span class="c1"># for a parallele job with 24 threads:</span>
+<span class="n">qsub</span> <span class="o">-</span><span class="no">V</span> <span class="o">-</span><span class="no">N</span> <span class="no">NomJob</span> <span class="o">-</span><span class="n">cwd</span> <span class="o">-</span><span class="n">q</span> <span class="n">long</span><span class="p">.</span><span class="nf">q</span> <span class="o">-</span><span class="n">pe</span> <span class="n">parallel_smp</span> <span class="mi">24</span> <span class="n">script</span><span class="p">.</span><span class="nf">sh</span></code></pre></figure>
+
+<p><a name="5-get-information-about-running-jobs"></a></p>
+<h2 id="5---get-information-about-running-jobs">5 - Get information about running jobs</h2>
+
+<table>
+  <thead>
+    <tr>
+      <th style="text-align: left">Jobs status</th>
+      <th style="text-align: left"> </th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td style="text-align: left"><strong>qstat</strong></td>
+      <td style="text-align: left">Displays the status of all jobs</td>
+    </tr>
+    <tr>
+      <td style="text-align: left"><strong>qstat -f</strong></td>
+      <td style="text-align: left">Displays the status of all queues (long list)</td>
+    </tr>
+    <tr>
+      <td style="text-align: left"><strong>qstat -u “*“</strong></td>
+      <td style="text-align: left">Displays the status of all jobs belonging to all users</td>
+    </tr>
+    <tr>
+      <td style="text-align: left"><strong>qstat -g c</strong></td>
+      <td style="text-align: left">Resources available</td>
+    </tr>
+    <tr>
+      <td style="text-align: left"><strong>qstat -j jobid</strong></td>
+      <td style="text-align: left">Displays the status of a particular job (jobid = 1st qstat column)</td>
+    </tr>
+  </tbody>
+</table>
+
+<p><a name="6-delete-job"></a></p>
+<h2 id="6---delete-job">6 - Delete job</h2>
+
+<figure class="highlight"><pre><code class="language-ruby" data-lang="ruby"><span class="c1"># delete one job</span>
+<span class="n">qdel</span> <span class="n">jobID</span>
+
+<span class="c1"># delete  multiple jobs:</span>
+<span class="n">qdel</span> <span class="n">echo</span> <span class="sb">`seq -f "%.0f" 876775 876778`</span>
+
+<span class="c1"># where 876775 is the first job to delete and 876778 the last</span></code></pre></figure>
+
+<p><a name="7-more-infos"></a></p>
+<h2 id="7---more-infos">7 - More infos</h2>
+
+<p>https://doc.cc.in2p3.fr/en:ge_submit_a_job_qsub</p>
+
+<!--
+<aside>
+	<h3>aside</h3>
+	<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam sodales urna non odio egestas tempor. Nunc vel vehicula ante. Etiam bibendum iaculis libero, eget molestie nisl pharetra in. In semper consequat est, eu porta velit mollis nec. Curabitur posuere enim eget turpis feugiat tempor. Etiam ullamcorper lorem dapibus velit suscipit ultrices.</p>
+</aside>-->
+
+	</div> <!-- #main -->
+</div> <!-- #main-container -->
+    <!-- Placed at the end of the document so the pages load faster -->
+    <script src="http://toggle.ird.fr:4000/js/jquery-1.11.3.min.js"></script>
+    <script src="http://toggle.ird.fr:4000/js/bootstrap.min.js"></script>
+    <script src="http://toggle.ird.fr:4000/js/homepage.js"></script>
+    <script src="http://toggle.ird.fr:4000/js/libs/modernizr-2.0.6.min.js"></script>
+
+</script>
+
+    <!-- FOOTER  -->
+    <div id="footer_wrap" class="outer">
+      <footer class="inner">
+        <div id="footer">
+			<div class="logo-div" class="clearfix">
+				<a class="logo" href="http://www.ird.fr">
+					<img class="img-logo" src="http://toggle.ird.fr:4000/images/logo_ird.png" alt="IRD Logo"  width="" />
+				</a>
+
+				<a class="logo" href="http://www.cirad.fr">
+					<img class="img-logo" src="http://toggle.ird.fr:4000/images/logo-cirad.png" alt="CIRAD Logo"   width="" />
+				</a>
+
+				<a class="logo" href="http://www.inra.fr">
+					<img class="img-logo" src="http://toggle.ird.fr:4000/images/logo_inra.png" alt="INRA Logo"   width=""/>
+				</a>
+
+				<a class="logo" href="https://www.bioversityinternational.org/">
+					<img class="img-logo" src="http://toggle.ird.fr:4000/images/logo_bioversity.png" alt="Bioversity Logo"   width=""/>
+				</a>
+
+				<a class="logo" href="https://www.supagro.fr/">
+					<img class="img-logo" src="http://toggle.ird.fr:4000/images/logo_supagro.png" alt="SupAgro Logo"   width=""/>
+				</a>
+				
+				<a class="logo" href="http://www.southgreen.fr">
+					<img class="img-logo" src="http://toggle.ird.fr:4000/images/southgreenlong.png" alt="South Green Logo"   width=""/>
+				</a>
+
+			</div>
+		</div>
+
+		<div class="footer_txt">
+			<p>The contents of this website are &copy;&nbsp;2018 under the terms of the Licencied under
+				<a href="http://www.cecill.info/licences/Licence_CeCILL-C_V1-en.html">CeCill-C</a>
+				 and <a href="/blob/master/LICENSE">GPLv3</a>.
+			</p>
+		</div>
+      </footer>
+    </div>
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
+<script>window.jQuery || document.write('<script src="js/libs/jquery-1.7.1.min.js"><\/script>')</script>
+
+<!--<script src="http://toggle.ird.fr:4000/js/script.js"></script>
+<script>
+	var _gaq=[['_setAccount',''],['_trackPageview']];
+	(function(d,t){var g=d.createElement(t),s=d.getElementsByTagName(t)[0];g.async=1;
+	g.src=('https:'==location.protocol?'//ssl':'//www')+'.google-analytics.com/ga.js';
+	s.parentNode.insertBefore(g,s)}(document,'script'));
+</script>
+
+<!--[if lt IE 7 ]>
+	<script src="//ajax.googleapis.com/ajax/libs/chrome-frame/1.0.2/CFInstall.min.js"></script>
+	<script>window.attachEvent("onload",function(){CFInstall.check({mode:"overlay"})})</script>
+<![endif]-->
+
+</body>
+</html>

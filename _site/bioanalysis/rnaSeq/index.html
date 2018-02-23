@@ -1,0 +1,353 @@
+<!doctype html>
+<!--[if lt IE 7]><html class="no-js ie6 oldie" lang="ja"><![endif]-->
+<!--[if IE 7]>   <html class="no-js ie7 oldie" lang="ja"><![endif]-->
+<!--[if IE 8]>   <html class="no-js ie8 oldie" lang="ja"><![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="ja"><!--<![endif]-->
+<head>
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+
+	<title>RNASeq</title>
+	<meta name="description" content="Bioinformatics tutorials, Linux, HPC, NGS, NGS workflow manager, TOGGLe, galaxy">
+	<meta name="description" content="RNA Seq differential expression">
+	
+	<meta name="author" content=" Sébastien RAVEL -- sebastien.ravel@cirad.fr">
+	
+	<meta name="author" content=" Christine Tranchant-Dubreuil -- christine.tranchant@ird.fr">
+	
+
+	<meta name="viewport" content="width=device-width,initial-scale=1">
+
+	<link rel="stylesheet" type="text/css" media="screen" href="http://toggle.ird.fr:4000/css/bootstrap.min.css" >
+	<link rel="stylesheet" type="text/css" media="screen" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
+	<link rel="stylesheet" type="text/css" media="screen" href="http://toggle.ird.fr:4000/css/monokai.css">
+	<link rel="stylesheet" type="text/css" media="screen" href="http://toggle.ird.fr:4000/css/stylesheet.css">
+	<link rel="icon" href="http://toggle.ird.fr:4000/images/southgreenlong.png">
+</head>
+ <body>
+
+	<!-- Static navbar -->
+	<nav class="navbar navbar-default navbar-inverse navbar-static-top">
+		<div class="container">
+		<div class="navbar-header">
+			<button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+			<span class="sr-only"></span>
+			<span class="icon-bar"></span>
+			<span class="icon-bar"></span>
+			<span class="icon-bar"></span>
+			</button>
+			<a class="navbar-brand visible-xs" href="#"></a>
+		</div>
+		<div id="navbar" class="navbar-collapse collapse">
+			<ul id="menu">
+				<li><a href="http://toggle.ird.fr:4000/">Home</a></li>
+				<li><a href="#">Bioanalysis</a><span class="caret" ></span>
+					<ul id="child">
+						<li><a href="http://toggle.ird.fr:4000/bioanalysis/polymorphism/">Polymorphism detection</a></li>
+						<li><a href="http://toggle.ird.fr:4000/bioanalysis/vcfExtract/">VCF manipulate</a></li>
+						<li><a href="http://toggle.ird.fr:4000/bioanalysis/rnaSeq/">RNA-Seq</a></li>
+					</ul>
+				</li>
+				<li><a href="#">Cluster</a><span class="caret" ></span>
+					<ul id="child">
+						<li><a href="http://toggle.ird.fr:4000/cluster/HPCConnection/">HPC connection</a></li>
+						<li><a href="http://toggle.ird.fr:4000/cluster/SGE/">SGE</a></li>
+						<li><a href="http://toggle.ird.fr:4000/cluster/moduleLoad/">Use module system</a></li>
+					</ul>
+				</li>
+				<li><a href="#">Toolbox&Trick</a><span class="caret" ></span>
+					<ul id="child">
+						<li><a href="http://toggle.ird.fr:4000/toolbox/linux/">Linux</a></li>
+						<li><a href="http://toggle.ird.fr:4000/toolbox/git/">Git</a></li>
+						<li><a href="http://toggle.ird.fr:4000/toolbox/docker/">Docker</a></li>
+					</ul>
+				</li>
+				<li><a href="http://toggle.ird.fr:4000/contact/">About Us</a></li>
+				<li><a id="forkme_banner" href="https://github.com/SouthGreenPlatform/trainings/">GitHub</a></li>
+			</ul>
+		</div>
+		</div>
+	</nav>
+	<!--/.nav-collapse -->
+	<!-- Header -->
+	<div id="header_wrap" class="outer">
+		<header class="inner">
+		<div class="header"><img class="img-responsive" width="25%" src="http://toggle.ird.fr:4000/images/southgreenlong.png" alt="South Green Logo" /></div>
+		<h2 id="project_tagline">South Green tutorials Web Site</h2>
+		</header>
+	</div>
+
+<body>
+<div id="main_content_wrap" class="outer">
+	 <section id="main_content" class="inner">
+<table class="table-contact">
+<tr>
+<td><img width="100%" src="http://toggle.ird.fr:4000/images/trainings-linux.png" alt="" />
+</td>
+<td>
+<h1> RNA Seq differential expression</h1><br />
+This page describes a serie of tools and linux commands used to manipulate raw data (fastq file) for differential expression.
+</td>
+</tr>
+</table>
+
+<p>We need, in this tutorial:</p>
+<ul>
+  <li>a directory with fastq files</li>
+  <li>a reference file used for the mapping step.</li>
+</ul>
+
+<h3 id="authors">Author(s)</h3>
+
+<table>
+  <thead>
+    <tr>
+      <th style="text-align: left">Authors</th>
+      <th style="text-align: left">Gaetan Droc</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td style="text-align: left">Research Unit</td>
+      <td style="text-align: left">UMR DIADE</td>
+    </tr>
+    <tr>
+      <td style="text-align: left">Institut</td>
+      <td style="text-align: left"><img src="http://s3f-haiti.cirad.fr/var/projets/storage/images/media/media_s3f_haiti/logo_agap/54594-1-fre-FR/logo_agap_medium.jpg" width="20%" /></td>
+    </tr>
+  </tbody>
+</table>
+
+<h3 id="keywords">Keywords</h3>
+<p>fastqc, cutadapt, hitsat2, stringtie, ballgown, bedtools</p>
+
+<h3 id="files-format">Files format</h3>
+<p>fastq, sam, bam, bed</p>
+
+<h3 id="date">Date</h3>
+<p>16/03/2017</p>
+
+<hr />
+
+<h2 id="summary">Summary</h2>
+
+<!-- TOC depthFrom:2 depthTo:2 withLinks:1 updateOnSave:1 orderedList:0 -->
+
+<ul>
+  <li><a href="#fastqc">Performing a quality control check with <code class="highlighter-rouge">fastqc</code></a></li>
+  <li><a href="#cutadapt">Using <code class="highlighter-rouge">cutadapt</code> to remove adapters and to trim reads based on quality</a></li>
+  <li><a href="#hisat2">Mapping reads with <code class="highlighter-rouge">hisat2</code></a></li>
+  <li><a href="#samtools">Convert and sort SAM to BAM with <code class="highlighter-rouge">samtools</code></a></li>
+  <li><a href="#stringtie">Transcript assembly and quantification with <code class="highlighter-rouge">StringTie</code></a></li>
+</ul>
+
+<!-- /TOC -->
+
+<hr />
+<p><a name="fastqc"></a></p>
+<h2 id="performing-a-quality-control-check-with-fastqc">Performing a quality control check with <code class="highlighter-rouge">fastqc</code></h2>
+
+<p><code class="highlighter-rouge">FastQC</code> perform some simple quality control checks to ensure that the raw data looks good and there are no problems or biases in data which may affect how user can usefully use it.</p>
+
+<p>http://www.bioinformatics.babraham.ac.uk/projects/fastqc/</p>
+
+<h3 id="fastqc-command"><code class="highlighter-rouge">fastqc</code> command</h3>
+
+<p>For one file</p>
+
+<figure class="highlight"><pre><code class="language-ruby" data-lang="ruby"><span class="p">[</span><span class="n">droc</span><span class="vi">@cc2</span><span class="o">-</span><span class="n">login</span> <span class="no">RNASeq_fastq_MGX</span><span class="p">]</span><span class="err">$</span> <span class="n">mkdir</span> <span class="no">FastQC</span>
+<span class="p">[</span><span class="n">droc</span><span class="vi">@cc2</span><span class="o">-</span><span class="n">login</span> <span class="no">RNASeq_fastq_MGX</span><span class="p">]</span><span class="err">$</span> <span class="n">qsub</span> <span class="o">-</span><span class="n">b</span> <span class="n">y</span> <span class="o">-</span><span class="n">q</span> <span class="n">normal</span><span class="p">.</span><span class="nf">q</span> <span class="o">-</span><span class="no">N</span> <span class="n">fastqc</span> <span class="o">-</span><span class="no">V</span> <span class="n">fastqc</span> <span class="o">--</span><span class="nb">format</span> <span class="n">fastq</span> <span class="o">--</span><span class="n">outdir</span> <span class="no">FastQC</span> <span class="no">Leaf_CGATGT_L006_R2_017</span><span class="p">.</span><span class="nf">fastq</span></code></pre></figure>
+
+<p>Loop on every file for a directory and print command on terminal</p>
+
+<figure class="highlight"><pre><code class="language-ruby" data-lang="ruby"><span class="p">[</span><span class="n">droc</span><span class="vi">@cc2</span><span class="o">-</span><span class="n">login</span> <span class="no">RNASeq_fastq_MGX</span><span class="p">]</span><span class="err">$</span> <span class="k">for</span> <span class="n">i</span> <span class="k">in</span> <span class="o">*</span><span class="n">fastq</span><span class="p">;</span> <span class="k">do</span> <span class="n">echo</span> <span class="n">qsub</span> <span class="o">-</span><span class="n">b</span> <span class="n">y</span> <span class="o">-</span><span class="n">q</span> <span class="n">normal</span><span class="p">.</span><span class="nf">q</span> <span class="o">-</span><span class="no">N</span> <span class="n">fastqc</span> <span class="o">-</span><span class="no">V</span> <span class="n">fastqc</span> <span class="o">--</span><span class="nb">format</span> <span class="n">fastq</span> <span class="o">--</span><span class="n">outdir</span> <span class="o">~</span><span class="sr">/work/</span><span class="no">FastQC</span> <span class="vg">$i</span><span class="p">;</span><span class="n">done</span>
+<span class="n">qsub</span> <span class="o">-</span><span class="n">b</span> <span class="n">y</span> <span class="o">-</span><span class="n">q</span> <span class="n">normal</span><span class="p">.</span><span class="nf">q</span> <span class="o">-</span><span class="no">N</span> <span class="n">fastqc</span> <span class="o">-</span><span class="no">V</span> <span class="n">fastqc</span> <span class="o">--</span><span class="nb">format</span> <span class="n">fastq</span> <span class="o">--</span><span class="n">outdir</span> <span class="sr">/homedir/</span><span class="n">droc</span><span class="o">/</span><span class="n">work</span><span class="o">/</span><span class="no">FastQC</span> <span class="no">Leaf_CGATGT_L006_R1_001</span><span class="p">.</span><span class="nf">fastq</span>
+<span class="n">qsub</span> <span class="o">-</span><span class="n">b</span> <span class="n">y</span> <span class="o">-</span><span class="n">q</span> <span class="n">normal</span><span class="p">.</span><span class="nf">q</span> <span class="o">-</span><span class="no">N</span> <span class="n">fastqc</span> <span class="o">-</span><span class="no">V</span> <span class="n">fastqc</span> <span class="o">--</span><span class="nb">format</span> <span class="n">fastq</span> <span class="o">--</span><span class="n">outdir</span> <span class="sr">/homedir/</span><span class="n">droc</span><span class="o">/</span><span class="n">work</span><span class="o">/</span><span class="no">FastQC</span> <span class="no">Leaf_CGATGT_L006_R1_002</span><span class="p">.</span><span class="nf">fastq</span>
+<span class="n">qsub</span> <span class="o">-</span><span class="n">b</span> <span class="n">y</span> <span class="o">-</span><span class="n">q</span> <span class="n">normal</span><span class="p">.</span><span class="nf">q</span> <span class="o">-</span><span class="no">N</span> <span class="n">fastqc</span> <span class="o">-</span><span class="no">V</span> <span class="n">fastqc</span> <span class="o">--</span><span class="nb">format</span> <span class="n">fastq</span> <span class="o">--</span><span class="n">outdir</span> <span class="sr">/homedir/</span><span class="n">droc</span><span class="o">/</span><span class="n">work</span><span class="o">/</span><span class="no">FastQC</span> <span class="no">Leaf_CGATGT_L006_R1_003</span><span class="p">.</span><span class="nf">fastq</span>
+<span class="n">qsub</span> <span class="o">-</span><span class="n">b</span> <span class="n">y</span> <span class="o">-</span><span class="n">q</span> <span class="n">normal</span><span class="p">.</span><span class="nf">q</span> <span class="o">-</span><span class="no">N</span> <span class="n">fastqc</span> <span class="o">-</span><span class="no">V</span> <span class="n">fastqc</span> <span class="o">--</span><span class="nb">format</span> <span class="n">fastq</span> <span class="o">--</span><span class="n">outdir</span> <span class="sr">/homedir/</span><span class="n">droc</span><span class="o">/</span><span class="n">work</span><span class="o">/</span><span class="no">FastQC</span> <span class="no">Leaf_CGATGT_L006_R1_004</span><span class="p">.</span><span class="nf">fastq</span>
+<span class="n">qsub</span> <span class="o">-</span><span class="n">b</span> <span class="n">y</span> <span class="o">-</span><span class="n">q</span> <span class="n">normal</span><span class="p">.</span><span class="nf">q</span> <span class="o">-</span><span class="no">N</span> <span class="n">fastqc</span> <span class="o">-</span><span class="no">V</span> <span class="n">fastqc</span> <span class="o">--</span><span class="nb">format</span> <span class="n">fastq</span> <span class="o">--</span><span class="n">outdir</span> <span class="sr">/homedir/</span><span class="n">droc</span><span class="o">/</span><span class="n">work</span><span class="o">/</span><span class="no">FastQC</span> <span class="no">Leaf_CGATGT_L006_R1_005</span><span class="p">.</span><span class="nf">fastq</span>
+<span class="n">qsub</span> <span class="o">-</span><span class="n">b</span> <span class="n">y</span> <span class="o">-</span><span class="n">q</span> <span class="n">normal</span><span class="p">.</span><span class="nf">q</span> <span class="o">-</span><span class="no">N</span> <span class="n">fastqc</span> <span class="o">-</span><span class="no">V</span> <span class="n">fastqc</span> <span class="o">--</span><span class="nb">format</span> <span class="n">fastq</span> <span class="o">--</span><span class="n">outdir</span> <span class="sr">/homedir/</span><span class="n">droc</span><span class="o">/</span><span class="n">work</span><span class="o">/</span><span class="no">FastQC</span> <span class="no">Leaf_CGATGT_L006_R1_006</span><span class="p">.</span><span class="nf">fastq</span></code></pre></figure>
+
+<p>Loop on every file for a directory and write command on a file (cmd_fastqc.sh)</p>
+
+<p><code class="highlighter-rouge">[droc@cc2-login RNASeq_fastq_MGX]$ for i in *fastq; do echo qsub -b y -q normal.q -N fastqc -V fastqc --format fastq --outdir ~/work/FastQC $i &gt;&gt; cmd_fastqc.sh;done</code></p>
+
+<p><code class="highlighter-rouge">[droc@cc2-login RNASeq_fastq_MGX]$ ./cmd_fastqc.sh </code></p>
+
+<p>HTML Report</p>
+
+<figure class="highlight"><pre><code class="language-ruby" data-lang="ruby"><span class="p">[</span><span class="n">droc</span><span class="vi">@cc2</span><span class="o">-</span><span class="n">login</span> <span class="no">RNASeq_fastq_MGX</span><span class="p">]</span><span class="err">$</span> <span class="n">cd</span> <span class="no">FastQC</span>
+<span class="no">Leaf_CGATGT_L006_R2_017_fastqc</span><span class="p">.</span><span class="nf">html</span>  <span class="no">Leaf_CGATGT_L006_R2_017_fastqc</span><span class="p">.</span><span class="nf">zip</span></code></pre></figure>
+
+<p><a name="cutadapt"></a></p>
+<h2 id="using-cutadapt-to-remove-adapters-and-to-trim-reads-based-on-quality">Using <code class="highlighter-rouge">cutadapt</code> to remove adapters and to trim reads based on quality</h2>
+
+<p><code class="highlighter-rouge">Cutadapt</code> is a tool specifically designed to remove adapters from NGS data. 
+https://code.google.com/p/cutadapt/</p>
+
+<h3 id="cutadadapt-command"><code class="highlighter-rouge">cutadadapt</code> command</h3>
+
+<figure class="highlight"><pre><code class="language-ruby" data-lang="ruby"><span class="p">[</span><span class="n">droc</span><span class="vi">@cc2</span><span class="o">-</span><span class="n">login</span> <span class="no">RNASeq_fastq_MGX</span><span class="p">]</span><span class="err">$</span> <span class="k">module</span> <span class="nn">load</span> <span class="n">bioinfo</span><span class="o">/</span><span class="n">cutadapt</span><span class="o">/</span><span class="mf">1.8</span><span class="o">.</span><span class="mi">1</span>
+<span class="p">[</span><span class="n">droc</span><span class="vi">@cc2</span><span class="o">-</span><span class="n">login</span> <span class="no">RNASeq_fastq_MGX</span><span class="p">]</span><span class="err">$</span> <span class="k">for</span> <span class="n">i</span> <span class="k">in</span> <span class="o">*</span><span class="n">fastq</span><span class="p">;</span> <span class="k">do</span> <span class="n">echo</span> <span class="n">qsub</span> <span class="o">-</span><span class="n">q</span> <span class="n">normal</span><span class="p">.</span><span class="nf">q</span> <span class="o">-</span><span class="n">b</span> <span class="n">yes</span> <span class="o">-</span><span class="no">V</span> <span class="o">-</span><span class="no">N</span> <span class="no">CUTADAPT</span> <span class="n">cutadapt</span> <span class="o">-</span><span class="n">a</span> <span class="no">AGATCGGAAGAGCG</span> <span class="o">-</span><span class="no">O</span> <span class="mi">10</span> <span class="o">-</span><span class="n">q</span> <span class="mi">30</span><span class="p">,</span><span class="mi">30</span> <span class="o">-</span><span class="n">f</span> <span class="n">fastq</span> <span class="o">-</span><span class="n">m</span> <span class="mi">30</span> <span class="o">-</span><span class="n">o</span> <span class="sr">/work/</span><span class="n">droc</span><span class="o">/</span><span class="n">sugarcane</span><span class="o">/</span><span class="n">cutadapt</span><span class="o">/</span><span class="vg">$i</span><span class="p">.</span><span class="nf">cutadapt</span><span class="p">.</span><span class="nf">fastq</span> <span class="sr">/work/</span><span class="no">NGSwaiting4newNAS</span><span class="o">/</span><span class="n">sugarcane</span><span class="o">/</span><span class="no">BackupCarine</span><span class="o">/</span><span class="no">RNASeq</span><span class="o">/</span><span class="no">RNASeq_fastq_MGX</span><span class="o">/</span><span class="vg">$i</span> <span class="o">&gt;&gt;</span> <span class="n">cmd_cutadapt</span><span class="p">.</span><span class="nf">sh</span> <span class="p">;</span><span class="n">done</span>
+<span class="p">.</span><span class="nf">/</span><span class="n">cmd_cutadapt</span><span class="p">.</span><span class="nf">sh</span></code></pre></figure>
+
+<p>-q 30, 30 : by default, only the 3’ end of each read is quality-trimmed. If you want to trim the 5’ end as well, use the -q option with two comma-separated cutoffs</p>
+
+<p><a name="hisat2"></a></p>
+<h2 id="mapping-reads-with-hisat2">Mapping reads with <code class="highlighter-rouge">hisat2</code></h2>
+
+<p>https://ccb.jhu.edu/software/hisat2/index.shtml</p>
+
+<p>There are several steps involved in mapping sequence reads.</p>
+
+<h3 id="creating-an-index-of-the-reference-genome-if-necessary">Creating an index of the reference genome if necessary</h3>
+
+<figure class="highlight"><pre><code class="language-ruby" data-lang="ruby"><span class="p">[</span><span class="n">droc</span><span class="vi">@cc2</span><span class="o">-</span><span class="n">login</span> <span class="no">RNASeq_fastq_MGX</span><span class="p">]</span><span class="err">$</span> <span class="k">module</span> <span class="nn">load</span> <span class="n">bioinfo</span><span class="o">/</span><span class="n">hisat2</span><span class="o">/</span><span class="mf">2.0</span><span class="o">.</span><span class="mi">5</span>
+<span class="p">[</span><span class="n">droc</span><span class="vi">@cc2</span><span class="o">-</span><span class="n">login</span> <span class="no">RNASeq_fastq_MGX</span><span class="p">]</span><span class="err">$</span> <span class="n">qsub</span> <span class="o">-</span><span class="no">V</span> <span class="o">-</span><span class="n">b</span> <span class="n">y</span> <span class="o">-</span><span class="n">q</span> <span class="n">normal</span><span class="p">.</span><span class="nf">q</span> <span class="o">-</span><span class="no">N</span> <span class="n">index</span> <span class="n">hisat2</span><span class="o">-</span><span class="n">build</span> <span class="n">reference_genome</span> <span class="n">reference_genome</span></code></pre></figure>
+
+<h3 id="performing-mapping">Performing mapping</h3>
+
+<figure class="highlight"><pre><code class="language-ruby" data-lang="ruby"><span class="p">[</span><span class="n">droc</span><span class="vi">@cc2</span><span class="o">-</span><span class="n">login</span> <span class="no">RNASeq_fastq_MGX</span><span class="p">]</span><span class="err">$</span> <span class="n">qsub</span> <span class="o">-</span><span class="no">V</span> <span class="o">-</span><span class="n">b</span> <span class="n">y</span> <span class="o">-</span><span class="n">q</span> <span class="n">bigmem</span><span class="p">.</span><span class="nf">q</span> <span class="o">-</span><span class="no">N</span> <span class="n">hisat2</span> <span class="n">hisat2</span> <span class="o">-</span><span class="n">x</span> <span class="n">reference_genome</span> <span class="o">-</span><span class="mi">1</span> <span class="no">Leaf_CGATGT_L006_R1_001</span><span class="p">.</span><span class="nf">fastq</span> <span class="o">-</span><span class="mi">2</span>  <span class="no">Leaf_CGATGT_L006_R2_001</span><span class="p">.</span><span class="nf">fastq</span> <span class="o">-</span><span class="no">S</span> <span class="no">Leaf_CGATGT_L006</span><span class="p">.</span><span class="nf">sam</span></code></pre></figure>
+
+<p>Here is a description for the contents of the SAM file: https://samtools.github.io/hts-specs/SAMv1.pdf</p>
+
+<p>Do the same thing for all the library. For this you can use and adapt this Perl script</p>
+
+<figure class="highlight"><pre><code class="language-perl" data-lang="perl"><span class="p">[</span><span class="nv">droc@cc2</span><span class="o">-</span><span class="nv">login</span> <span class="nv">RNASeq_fastq_MGX</span><span class="p">]</span><span class="nv">$</span> <span class="nv">nedit</span> <span class="nv">fastq2tab</span><span class="o">.</span><span class="nv">pl</span><span class="o">&amp;</span>
+
+<span class="c1">#!/usr/bin/perl</span>
+<span class="k">use</span> <span class="nn">File::</span><span class="nv">Basename</span><span class="p">;</span>
+<span class="c1"># Get the directory of fastq</span>
+<span class="k">my</span> <span class="nv">$pwd</span> <span class="o">=</span> <span class="nb">shift</span><span class="p">;</span>
+
+<span class="c1"># List all of the file</span>
+<span class="nb">open</span><span class="p">(</span><span class="nv">IN</span><span class="p">,</span><span class="s">"ls $pwd/*fastq|"</span><span class="p">);</span>
+<span class="k">my</span> <span class="nv">%fastq</span><span class="p">;</span>
+<span class="k">while</span><span class="p">(</span><span class="sr">&lt;IN&gt;</span><span class="p">){</span>
+    <span class="nb">chomp</span><span class="p">;</span>
+    <span class="k">my</span> <span class="nv">$file</span> <span class="o">=</span> <span class="nv">fileparse</span><span class="p">(</span><span class="nv">$_</span><span class="p">);</span>
+    <span class="c1"># In this example, $file = Leaf_CGATGT_L006_R1_006.fastq</span>
+    <span class="c1"># Split the name by _</span>
+    <span class="k">my</span> <span class="p">(</span><span class="nv">$tissu</span><span class="p">,</span><span class="nv">$library</span><span class="p">,</span><span class="nv">$strand</span><span class="p">,</span><span class="nv">$number</span><span class="p">)</span> <span class="o">=</span> <span class="p">(</span><span class="nb">split</span><span class="p">(</span><span class="sr">/\_/</span><span class="p">,</span><span class="nv">$file</span><span class="p">))[</span><span class="mi">0</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">4</span><span class="p">];</span>
+    <span class="c1"># Create an uniq identifier $tag</span>
+    <span class="k">my</span> <span class="nv">$tag</span> <span class="o">=</span> <span class="nb">join</span><span class="p">(</span><span class="s">"_"</span><span class="p">,</span><span class="nv">$tissu</span><span class="p">,</span><span class="nv">$library</span><span class="p">,</span><span class="nv">$number</span><span class="p">);</span>
+    <span class="c1"># Create a hash with 2 keys, the uniq name ($tag) and strand (R1 or R2)</span>
+    <span class="nv">$fastq</span><span class="p">{</span><span class="nv">$tag</span><span class="p">}{</span><span class="nv">$strand</span><span class="p">}</span> <span class="o">=</span> <span class="nv">$_</span><span class="p">;</span>
+<span class="p">}</span>
+<span class="c1"># Next foreach</span>
+<span class="k">foreach</span> <span class="k">my</span> <span class="nv">$tag</span> <span class="p">(</span><span class="nb">keys</span> <span class="nv">%fastq</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">if</span> <span class="p">(</span><span class="nv">$fastq</span><span class="p">{</span><span class="nv">$tag</span><span class="p">}{</span><span class="nv">R1</span><span class="p">}</span> <span class="o">&amp;&amp;</span> <span class="nv">$fastq</span><span class="p">{</span><span class="nv">$tag</span><span class="p">}{</span><span class="nv">R2</span><span class="p">})</span> <span class="p">{</span>
+        <span class="k">print</span> <span class="s">"qsub -V -b y -q bigmem.q -N hisat2 hisat2 -x reference_genome -1 $fastq{$tag}{R1} -2  $fastq{$tag}{R2} -S $tag.sam\n"</span><span class="p">;</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+
+<span class="p">[</span><span class="nv">droc@cc2</span><span class="o">-</span><span class="nv">login</span> <span class="nv">RNASeq_fastq_MGX</span><span class="p">]</span><span class="nv">$</span> <span class="nv">perl</span> <span class="nv">fastq2tab</span><span class="o">.</span><span class="nv">pl</span> <span class="sr">/work/</span><span class="nv">NGSwaiting4newNAS</span><span class="sr">/sugarcane/</span><span class="nv">BackupCarine</span><span class="sr">/RNASeq/</span><span class="nv">RNASeq_fastq_MGX</span><span class="o">/</span> <span class="o">&gt;</span> <span class="nv">cmd_hisat2</span><span class="o">.</span><span class="nv">sh</span>
+<span class="p">[</span><span class="nv">droc@cc2</span><span class="o">-</span><span class="nv">login</span> <span class="nv">RNASeq_fastq_MGX</span><span class="p">]</span><span class="nv">$</span> <span class="err">./</span><span class="nv">cmd_hisat2</span><span class="o">.</span><span class="nv">sh</span></code></pre></figure>
+
+<p><a name="samtools"></a></p>
+<h2 id="convert-and-sort-sam-to-bam-with-samtools">Convert and sort SAM to BAM with <code class="highlighter-rouge">samtools</code></h2>
+<p>http://samtools.sourceforge.net/</p>
+
+<figure class="highlight"><pre><code class="language-ruby" data-lang="ruby"><span class="p">[</span><span class="n">droc</span><span class="vi">@cc2</span><span class="o">-</span><span class="n">login</span> <span class="no">RNASeq_fastq_MGX</span><span class="p">]</span><span class="err">$</span> <span class="k">module</span> <span class="nn">load</span> <span class="n">bioinfo</span><span class="o">/</span><span class="n">samtools</span><span class="o">/</span><span class="mf">1.3</span>
+<span class="p">[</span><span class="n">droc</span><span class="vi">@cc2</span><span class="o">-</span><span class="n">login</span> <span class="no">RNASeq_fastq_MGX</span><span class="p">]</span><span class="err">$</span> <span class="n">qsub</span> <span class="o">-</span><span class="no">V</span> <span class="o">-</span><span class="n">q</span> <span class="n">normal</span><span class="p">.</span><span class="nf">q</span> <span class="o">-</span><span class="no">N</span> <span class="n">samtools</span> <span class="o">-</span><span class="n">b</span> <span class="n">y</span> <span class="s2">"samtools view -bS Leaf_CGATGT_L006.sam -o Leaf_CGATGT_L006.bam"</span>
+<span class="p">[</span><span class="n">droc</span><span class="vi">@cc2</span><span class="o">-</span><span class="n">login</span> <span class="no">RNASeq_fastq_MGX</span><span class="p">]</span><span class="err">$</span> <span class="n">qsub</span> <span class="o">-</span><span class="no">V</span> <span class="o">-</span><span class="n">q</span> <span class="n">normal</span><span class="p">.</span><span class="nf">q</span> <span class="o">-</span><span class="no">N</span> <span class="n">samtools</span> <span class="o">-</span><span class="n">b</span> <span class="n">y</span> <span class="s2">"samtools sort Leaf_CGATGT_L006.bam -o Leaf_CGATGT_L006_sorted.bam"</span></code></pre></figure>
+
+<p>To run on batch, you can use the command for</p>
+
+<figure class="highlight"><pre><code class="language-ruby" data-lang="ruby"><span class="p">[</span><span class="n">droc</span><span class="vi">@cc2</span><span class="o">-</span><span class="n">login</span> <span class="no">RNASeq_fastq_MGX</span><span class="p">]</span><span class="err">$</span> <span class="k">for</span> <span class="n">i</span> <span class="k">in</span> <span class="o">*</span><span class="n">sam</span><span class="p">;</span> <span class="k">do</span> <span class="n">echo</span> <span class="n">qsub</span> <span class="o">-</span><span class="no">V</span> <span class="o">-</span><span class="n">q</span> <span class="n">normal</span><span class="p">.</span><span class="nf">q</span> <span class="o">-</span><span class="no">N</span> <span class="n">samtools</span> <span class="o">-</span><span class="n">b</span> <span class="n">y</span> <span class="n">samtools</span> <span class="n">view</span> <span class="o">-</span><span class="n">bS</span> <span class="vg">$i</span> <span class="o">-</span><span class="n">o</span> <span class="vg">$i</span><span class="p">.</span><span class="nf">bam</span> <span class="o">&gt;&gt;</span> <span class="n">cmd_samtools</span><span class="p">.</span><span class="nf">sh</span><span class="p">;</span><span class="n">done</span><span class="p">;</span>
+<span class="p">[</span><span class="n">droc</span><span class="vi">@cc2</span><span class="o">-</span><span class="n">login</span> <span class="no">RNASeq_fastq_MGX</span><span class="p">]</span><span class="err">$</span> <span class="n">rm</span> <span class="o">-</span><span class="n">f</span> <span class="o">*</span><span class="n">sam</span>
+<span class="p">[</span><span class="n">droc</span><span class="vi">@cc2</span><span class="o">-</span><span class="n">login</span> <span class="no">RNASeq_fastq_MGX</span><span class="p">]</span><span class="err">$</span> <span class="k">for</span> <span class="n">i</span> <span class="k">in</span> <span class="o">*</span><span class="n">bam</span><span class="p">;</span> <span class="k">do</span> <span class="n">echo</span> <span class="n">qsub</span> <span class="o">-</span><span class="no">V</span> <span class="o">-</span><span class="n">q</span> <span class="n">normal</span><span class="p">.</span><span class="nf">q</span> <span class="o">-</span><span class="no">N</span> <span class="n">samtools</span> <span class="o">-</span><span class="n">b</span> <span class="n">y</span> <span class="n">samtools</span> <span class="n">sort</span> <span class="vg">$i</span> <span class="o">-</span><span class="n">o</span> <span class="vg">$i</span><span class="p">.</span><span class="nf">sorted</span><span class="p">.</span><span class="nf">bam</span> <span class="o">&gt;&gt;</span> <span class="n">cmd_samtools_sorted</span><span class="p">.</span><span class="nf">sh</span><span class="p">;</span><span class="n">done</span><span class="p">;</span></code></pre></figure>
+
+<p><a name="stringtie"></a></p>
+<h2 id="transcript-assembly-and-quantification-with-stringtie">Transcript assembly and quantification with <code class="highlighter-rouge">StringTie</code></h2>
+<p>https://ccb.jhu.edu/software/stringtie/</p>
+
+<figure class="highlight"><pre><code class="language-ruby" data-lang="ruby"><span class="p">[</span><span class="n">droc</span><span class="vi">@cc2</span><span class="o">-</span><span class="n">login</span> <span class="no">RNASeq_fastq_MGX</span><span class="p">]</span><span class="err">$</span> <span class="k">module</span> <span class="nn">load</span> <span class="n">bioinfo</span><span class="o">/</span><span class="n">stringtie</span><span class="o">/</span><span class="mf">1.2</span><span class="o">.</span><span class="mi">1</span>
+<span class="p">[</span><span class="n">droc</span><span class="vi">@cc2</span><span class="o">-</span><span class="n">login</span> <span class="no">RNASeq_fastq_MGX</span><span class="p">]</span><span class="err">$</span> <span class="n">qsub</span> <span class="o">-</span><span class="no">V</span> <span class="o">-</span><span class="n">b</span> <span class="n">y</span> <span class="o">-</span><span class="n">q</span> <span class="n">normal</span><span class="p">.</span><span class="nf">q</span> <span class="o">-</span><span class="no">N</span> <span class="n">stringtie</span> <span class="n">stringtie</span>  <span class="o">-</span><span class="nb">p</span> <span class="mi">16</span> <span class="o">-</span><span class="n">o</span> <span class="no">Leaf_CGATGT_L006</span><span class="p">.</span><span class="nf">gtf</span> <span class="no">Leaf_CGATGT_L006_sorted</span><span class="p">.</span><span class="nf">bam</span></code></pre></figure>
+
+<p>For all sample</p>
+
+<figure class="highlight"><pre><code class="language-ruby" data-lang="ruby"><span class="p">[</span><span class="n">droc</span><span class="vi">@cc2</span><span class="o">-</span><span class="n">login</span> <span class="no">RNASeq_fastq_MGX</span><span class="p">]</span><span class="err">$</span> <span class="k">for</span> <span class="n">i</span> <span class="k">in</span> <span class="o">*</span><span class="n">sorted</span><span class="p">.</span><span class="nf">bam</span><span class="p">;</span> <span class="k">do</span> <span class="n">echo</span> <span class="n">qsub</span> <span class="o">-</span><span class="no">V</span> <span class="o">-</span><span class="n">b</span> <span class="n">y</span> <span class="o">-</span><span class="n">q</span> <span class="n">normal</span><span class="p">.</span><span class="nf">q</span> <span class="o">-</span><span class="no">N</span> <span class="n">stringtie</span> <span class="n">stringtie</span>  <span class="o">-</span><span class="nb">p</span> <span class="mi">16</span> <span class="o">-</span><span class="n">o</span> <span class="vg">$i</span><span class="p">.</span><span class="nf">gtf</span> <span class="vg">$i</span> <span class="o">&gt;&gt;</span> <span class="n">cmd_stringtie</span><span class="p">.</span><span class="nf">sh</span><span class="p">;</span><span class="n">done</span></code></pre></figure>
+
+<h3 id="merge-transcripts-from-all-sample">Merge transcripts from all sample</h3>
+
+<figure class="highlight"><pre><code class="language-ruby" data-lang="ruby"><span class="p">[</span><span class="n">droc</span><span class="vi">@cc2</span><span class="o">-</span><span class="n">login</span> <span class="no">RNASeq_fastq_MGX</span><span class="p">]</span><span class="err">$</span> <span class="n">qsub</span> <span class="o">-</span><span class="no">V</span> <span class="o">-</span><span class="n">b</span> <span class="n">y</span> <span class="o">-</span><span class="n">q</span> <span class="n">normal</span><span class="p">.</span><span class="nf">q</span> <span class="o">-</span><span class="no">N</span> <span class="n">merge</span> <span class="n">stringtie</span> <span class="o">--</span><span class="n">merge</span> <span class="o">-</span><span class="nb">p</span> <span class="mi">8</span> <span class="o">-</span><span class="n">o</span> <span class="n">stringtie_merged</span><span class="p">.</span><span class="nf">gtf</span> <span class="n">mergelist</span><span class="p">.</span><span class="nf">txt</span></code></pre></figure>
+
+<p>Here mergelist.txt is a text file that has the names of the gene transfer format (GTF) files created in the previous step, with each file name on a single line.</p>
+
+
+<!--
+<aside>
+	<h3>aside</h3>
+	<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam sodales urna non odio egestas tempor. Nunc vel vehicula ante. Etiam bibendum iaculis libero, eget molestie nisl pharetra in. In semper consequat est, eu porta velit mollis nec. Curabitur posuere enim eget turpis feugiat tempor. Etiam ullamcorper lorem dapibus velit suscipit ultrices.</p>
+</aside>-->
+
+	</div> <!-- #main -->
+</div> <!-- #main-container -->
+    <!-- Placed at the end of the document so the pages load faster -->
+    <script src="http://toggle.ird.fr:4000/js/jquery-1.11.3.min.js"></script>
+    <script src="http://toggle.ird.fr:4000/js/bootstrap.min.js"></script>
+    <script src="http://toggle.ird.fr:4000/js/homepage.js"></script>
+    <script src="http://toggle.ird.fr:4000/js/libs/modernizr-2.0.6.min.js"></script>
+
+</script>
+
+    <!-- FOOTER  -->
+    <div id="footer_wrap" class="outer">
+      <footer class="inner">
+        <div id="footer">
+			<div class="logo-div" class="clearfix">
+				<a class="logo" href="http://www.ird.fr">
+					<img class="img-logo" src="http://toggle.ird.fr:4000/images/logo_ird.png" alt="IRD Logo"  width="" />
+				</a>
+
+				<a class="logo" href="http://www.cirad.fr">
+					<img class="img-logo" src="http://toggle.ird.fr:4000/images/logo-cirad.png" alt="CIRAD Logo"   width="" />
+				</a>
+
+				<a class="logo" href="http://www.inra.fr">
+					<img class="img-logo" src="http://toggle.ird.fr:4000/images/logo_inra.png" alt="INRA Logo"   width=""/>
+				</a>
+
+				<a class="logo" href="https://www.bioversityinternational.org/">
+					<img class="img-logo" src="http://toggle.ird.fr:4000/images/logo_bioversity.png" alt="Bioversity Logo"   width=""/>
+				</a>
+
+				<a class="logo" href="https://www.supagro.fr/">
+					<img class="img-logo" src="http://toggle.ird.fr:4000/images/logo_supagro.png" alt="SupAgro Logo"   width=""/>
+				</a>
+				
+				<a class="logo" href="http://www.southgreen.fr">
+					<img class="img-logo" src="http://toggle.ird.fr:4000/images/southgreenlong.png" alt="South Green Logo"   width=""/>
+				</a>
+
+			</div>
+		</div>
+
+		<div class="footer_txt">
+			<p>The contents of this website are &copy;&nbsp;2018 under the terms of the Licencied under
+				<a href="http://www.cecill.info/licences/Licence_CeCILL-C_V1-en.html">CeCill-C</a>
+				 and <a href="/blob/master/LICENSE">GPLv3</a>.
+			</p>
+		</div>
+      </footer>
+    </div>
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
+<script>window.jQuery || document.write('<script src="js/libs/jquery-1.7.1.min.js"><\/script>')</script>
+
+<!--<script src="http://toggle.ird.fr:4000/js/script.js"></script>
+<script>
+	var _gaq=[['_setAccount',''],['_trackPageview']];
+	(function(d,t){var g=d.createElement(t),s=d.getElementsByTagName(t)[0];g.async=1;
+	g.src=('https:'==location.protocol?'//ssl':'//www')+'.google-analytics.com/ga.js';
+	s.parentNode.insertBefore(g,s)}(document,'script'));
+</script>
+
+<!--[if lt IE 7 ]>
+	<script src="//ajax.googleapis.com/ajax/libs/chrome-frame/1.0.2/CFInstall.min.js"></script>
+	<script>window.attachEvent("onload",function(){CFInstall.check({mode:"overlay"})})</script>
+<![endif]-->
+
+</body>
+</html>

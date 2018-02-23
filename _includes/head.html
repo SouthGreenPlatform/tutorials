@@ -1,83 +1,71 @@
 <head>
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
 
-    <title>{{ page.title }}</title>
-    <meta name="description" content="{{ site.description }}">
-    {% if page.description %}<meta name="description" content="{{ page.description }}">{% endif %}
-    {% for author in site.authors %}
-    <meta name="author" content=" {{ author[1].name }} -- {{ author[1].email }}">
-    {% endfor %}
+	<title>{{ page.title }}</title>
+	<meta name="description" content="{{ site.description }}">
+	{% if page.description %}<meta name="description" content="{{ page.description }}">{% endif %}
+	{% for author in site.authors %}
+	<meta name="author" content=" {{ author[1].name }} -- {{ author[1].email }}">
+	{% endfor %}
 
-    <meta name="viewport" content="width=device-width,initial-scale=1">
+	<meta name="viewport" content="width=device-width,initial-scale=1">
 
-    <link rel="stylesheet" type="text/css" media="screen" href="{{ site.url }}/css/bootstrap.min.css" >
-    <link rel="stylesheet" type="text/css" media="screen" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
-    <link rel="stylesheet" type="text/css" media="screen" href="{{ site.url }}/css/monokai.css">
-    <link rel="stylesheet" type="text/css" media="screen" href="{{ site.url }}/css/stylesheet.css">
-    <link rel="icon" href="{{ site.url }}/images/southgreenlong.png">
+	<link rel="stylesheet" type="text/css" media="screen" href="{{ site.url }}/css/bootstrap.min.css" >
+	<link rel="stylesheet" type="text/css" media="screen" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
+	<link rel="stylesheet" type="text/css" media="screen" href="{{ site.url }}/css/monokai.css">
+	<link rel="stylesheet" type="text/css" media="screen" href="{{ site.url }}/css/stylesheet.css">
+	<link rel="icon" href="{{ site.url }}/images/southgreenlong.png">
 </head>
  <body>
 
-      <!-- Static navbar -->
-      <nav class="navbar navbar-default navbar-inverse navbar-static-top">
-        <div class="container">
-          <div class="navbar-header">
-            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
-              <span class="sr-only"></span>
-              <span class="icon-bar"></span>
-              <span class="icon-bar"></span>
-              <span class="icon-bar"></span>
-            </button>
-            <a class="navbar-brand visible-xs" href="#"></a>
-          </div>
-          <div id="navbar" class="navbar-collapse collapse">
+	<!-- Static navbar -->
+	<nav class="navbar navbar-default navbar-inverse navbar-static-top">
+		<div class="container">
+		<div class="navbar-header">
+			<button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+			<span class="sr-only"></span>
+			<span class="icon-bar"></span>
+			<span class="icon-bar"></span>
+			<span class="icon-bar"></span>
+			</button>
+			<a class="navbar-brand visible-xs" href="#"></a>
+		</div>
+		<div id="navbar" class="navbar-collapse collapse">
 			<ul id="menu">
 				<li><a href="{{ site.url }}/">Home</a></li>
-				<li><a href="#">Linux</a><span class="caret" ></span>
+				<li><a href="#">Bioanalysis</a><span class="caret" ></span>
 					<ul id="child">
-						<li><a href="{{ site.url }}/linux/">Linux for dummies</a></li>
-						<li><a href="{{ site.url }}/linuxJedi/">Linux for Jedi</a></li>
+						<li><a href="{{ site.url }}/bioanalysis/polymorphism/">Polymorphism detection</a></li>
+						<li><a href="{{ site.url }}/bioanalysis/vcfExtract/">VCF manipulate</a></li>
+						<li><a href="{{ site.url }}/bioanalysis/rnaSeq/">RNA-Seq</a></li>
 					</ul>
 				</li>
-				<li><a href="{{ site.url }}/perl/">Perl</a></li>
-                                <li><a href="{{ site.url }}/R/">R</a></li>
-				<li><a href="#">HPC</a><span class="caret" ></span>
-					<ul>
-						<li><a href="{{ site.url }}/todo/">hpc IRD</a></li>
-						<li><a href="{{ site.url }}/todo/">hpc CIRAD</a></li>
-					</ul>
-				</li><li><a href="#">Workflow</a><span class="caret" ></span>
-					<ul>
-						<li><a href="{{ site.url }}/toggle/">TOGGLe</a></li>
-						<li><a href="{{ site.url }}/todo/">Galaxy</a></li>
-						<li><a href="{{ site.url }}/galaxyToggle/">Galaxy & TOGGLe</a></li>
+				<li><a href="#">Cluster</a><span class="caret" ></span>
+					<ul id="child">
+						<li><a href="{{ site.url }}/cluster/HPCConnection/">HPC connection</a></li>
+						<li><a href="{{ site.url }}/cluster/SGE/">SGE</a></li>
+						<li><a href="{{ site.url }}/cluster/moduleLoad/">Use module system</a></li>
 					</ul>
 				</li>
-                                <li><a href="#">NGS</a><span class="caret" ></span>
-                                        <ul>
-                                                <li><a href="{{ site.url }}/todo/">GBS</a></li>
-                                                <li><a href="{{ site.url }}/todo/">Transcriptomic</a></li>
-                                        </ul>
-                                </li>
-				<li><a href="#">Schools</a><span class="caret" ></span>
-                                        <ul>
-                                                <li><a href="{{ site.url }}/todo/">Musa genome</a></li>
-                                                <li><a href="{{ site.url }}/todo/">France</a></li>
-                                                <li><a href="{{ site.url }}/todo/">International</a></li>
-                                        </ul>
-                                </li>
+				<li><a href="#">Toolbox&Trick</a><span class="caret" ></span>
+					<ul id="child">
+						<li><a href="{{ site.url }}/toolbox/linux/">Linux</a></li>
+						<li><a href="{{ site.url }}/toolbox/git/">Git</a></li>
+						<li><a href="{{ site.url }}/toolbox/docker/">Docker</a></li>
+					</ul>
+				</li>
 				<li><a href="{{ site.url }}/contact/">About Us</a></li>
 				<li><a id="forkme_banner" href="https://github.com/SouthGreenPlatform/trainings/">GitHub</a></li>
 			</ul>
-          </div>
-        </div>
-      </nav>
-      <!--/.nav-collapse -->
-    <!-- Header -->
-    <div id="header_wrap" class="outer">
-        <header class="inner">
-          <div class="header"><img class="img-responsive" width="25%" src="{{ site.url }}/images/southgreenlong.png" alt="South Green Logo" /></div>
-          <h2 id="project_tagline">South Green Trainings Web Site</h2>
-        </header>
-    </div>
+		</div>
+		</div>
+	</nav>
+	<!--/.nav-collapse -->
+	<!-- Header -->
+	<div id="header_wrap" class="outer">
+		<header class="inner">
+		<div class="header"><img class="img-responsive" width="25%" src="{{ site.url }}/images/southgreenlong.png" alt="South Green Logo" /></div>
+		<h2 id="project_tagline">South Green tutorials Web Site</h2>
+		</header>
+	</div>

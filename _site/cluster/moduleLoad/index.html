@@ -1,0 +1,273 @@
+<!doctype html>
+<!--[if lt IE 7]><html class="no-js ie6 oldie" lang="ja"><![endif]-->
+<!--[if IE 7]>   <html class="no-js ie7 oldie" lang="ja"><![endif]-->
+<!--[if IE 8]>   <html class="no-js ie8 oldie" lang="ja"><![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="ja"><!--<![endif]-->
+<head>
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+
+	<title>SGE</title>
+	<meta name="description" content="Bioinformatics tutorials, Linux, HPC, NGS, NGS workflow manager, TOGGLe, galaxy">
+	<meta name="description" content="Build own module load">
+	
+	<meta name="author" content=" Sébastien RAVEL -- sebastien.ravel@cirad.fr">
+	
+	<meta name="author" content=" Christine Tranchant-Dubreuil -- christine.tranchant@ird.fr">
+	
+
+	<meta name="viewport" content="width=device-width,initial-scale=1">
+
+	<link rel="stylesheet" type="text/css" media="screen" href="http://toggle.ird.fr:4000/css/bootstrap.min.css" >
+	<link rel="stylesheet" type="text/css" media="screen" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
+	<link rel="stylesheet" type="text/css" media="screen" href="http://toggle.ird.fr:4000/css/monokai.css">
+	<link rel="stylesheet" type="text/css" media="screen" href="http://toggle.ird.fr:4000/css/stylesheet.css">
+	<link rel="icon" href="http://toggle.ird.fr:4000/images/southgreenlong.png">
+</head>
+ <body>
+
+	<!-- Static navbar -->
+	<nav class="navbar navbar-default navbar-inverse navbar-static-top">
+		<div class="container">
+		<div class="navbar-header">
+			<button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+			<span class="sr-only"></span>
+			<span class="icon-bar"></span>
+			<span class="icon-bar"></span>
+			<span class="icon-bar"></span>
+			</button>
+			<a class="navbar-brand visible-xs" href="#"></a>
+		</div>
+		<div id="navbar" class="navbar-collapse collapse">
+			<ul id="menu">
+				<li><a href="http://toggle.ird.fr:4000/">Home</a></li>
+				<li><a href="#">Bioanalysis</a><span class="caret" ></span>
+					<ul id="child">
+						<li><a href="http://toggle.ird.fr:4000/bioanalysis/polymorphism/">Polymorphism detection</a></li>
+						<li><a href="http://toggle.ird.fr:4000/bioanalysis/vcfExtract/">VCF manipulate</a></li>
+						<li><a href="http://toggle.ird.fr:4000/bioanalysis/rnaSeq/">RNA-Seq</a></li>
+					</ul>
+				</li>
+				<li><a href="#">Cluster</a><span class="caret" ></span>
+					<ul id="child">
+						<li><a href="http://toggle.ird.fr:4000/cluster/HPCConnection/">HPC connection</a></li>
+						<li><a href="http://toggle.ird.fr:4000/cluster/SGE/">SGE</a></li>
+						<li><a href="http://toggle.ird.fr:4000/cluster/moduleLoad/">Use module system</a></li>
+					</ul>
+				</li>
+				<li><a href="#">Toolbox&Trick</a><span class="caret" ></span>
+					<ul id="child">
+						<li><a href="http://toggle.ird.fr:4000/toolbox/linux/">Linux</a></li>
+						<li><a href="http://toggle.ird.fr:4000/toolbox/git/">Git</a></li>
+						<li><a href="http://toggle.ird.fr:4000/toolbox/docker/">Docker</a></li>
+					</ul>
+				</li>
+				<li><a href="http://toggle.ird.fr:4000/contact/">About Us</a></li>
+				<li><a id="forkme_banner" href="https://github.com/SouthGreenPlatform/trainings/">GitHub</a></li>
+			</ul>
+		</div>
+		</div>
+	</nav>
+	<!--/.nav-collapse -->
+	<!-- Header -->
+	<div id="header_wrap" class="outer">
+		<header class="inner">
+		<div class="header"><img class="img-responsive" width="25%" src="http://toggle.ird.fr:4000/images/southgreenlong.png" alt="South Green Logo" /></div>
+		<h2 id="project_tagline">South Green tutorials Web Site</h2>
+		</header>
+	</div>
+
+<body>
+<div id="main_content_wrap" class="outer">
+	 <section id="main_content" class="inner">
+<table class="table-contact">
+<tr>
+<td><img width="100%" src="http://toggle.ird.fr:4000/images/trainings-linux.png" alt="" />
+</td>
+<td>
+<h1> Build own module load</h1><br />
+This page describes how you can build own module load.
+</td>
+</tr>
+</table>
+
+<table>
+  <thead>
+    <tr>
+      <th style="text-align: left">Authors</th>
+      <th style="text-align: left">Sébastien RAVEL</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td style="text-align: left">Research Unit</td>
+      <td style="text-align: left"><img src="http://printemps-baillarguet.e-monsite.com/medias/images/bgpi.jpg" width="10%" /></td>
+    </tr>
+    <tr>
+      <td style="text-align: left">Institut</td>
+      <td style="text-align: left"><img src="http://toggle.ird.fr:4000/images/logo-cirad.png" width="10%" /></td>
+    </tr>
+  </tbody>
+</table>
+
+<h4 id="keywords--module-load-private-own-cc2-login"><em>Keywords</em> : <code class="highlighter-rouge">module load, private, own, cc2-login</code></h4>
+
+<h4 id="date--12062017"><em>Date</em> : 12/06/2017</h4>
+
+<h2 id="create-and-use-the-personal-module-directory">Create and use the personal module directory</h2>
+
+<figure class="highlight"><pre><code class="language-ruby" data-lang="ruby"><span class="n">mkdir</span> <span class="vg">$HOME</span><span class="o">/</span><span class="n">privatemodules</span></code></pre></figure>
+
+<p>add permanently into the .bashrc</p>
+
+<figure class="highlight"><pre><code class="language-ruby" data-lang="ruby"><span class="c1">#use own module</span>
+<span class="k">module</span> <span class="nn">use</span> <span class="o">--</span><span class="n">append</span> <span class="vg">$HOME</span><span class="o">/</span><span class="n">privatemodules</span></code></pre></figure>
+
+<h2 id="module-command">Module command</h2>
+
+<ul>
+  <li>module avail</li>
+  <li>module help</li>
+  <li>module whatis</li>
+</ul>
+
+<h2 id="example-of-file-module-load-name-toggledev">Example of file module load (name toggleDev)</h2>
+
+<p>Into <strong>$HOME/privatemodules</strong> add new file <strong>toggleDev</strong></p>
+
+<figure class="highlight"><pre><code class="language-ruby" data-lang="ruby"><span class="n">vim</span> <span class="vg">$HOME</span><span class="o">/</span><span class="n">privatemodules</span><span class="o">/</span><span class="n">toggleDev</span></code></pre></figure>
+
+<figure class="highlight"><pre><code class="language-ruby" data-lang="ruby"><span class="c1">#%Module1.0</span>
+<span class="c1">##</span>
+
+<span class="c1">## Required internal variables</span>
+<span class="n">set</span>     <span class="n">prefix</span>       <span class="vg">$env</span><span class="p">(</span><span class="no">HOME</span><span class="p">)</span><span class="o">/</span><span class="no">TOGGLE</span><span class="o">-</span><span class="no">DEV</span><span class="o">/</span>
+<span class="n">set</span>     <span class="n">version</span>      <span class="s2">"TOGGLE-DEV"</span>
+
+<span class="k">if</span> <span class="p">{</span><span class="o">!</span><span class="p">[</span><span class="n">file</span> <span class="n">exists</span> <span class="vg">$prefix</span><span class="p">]}</span> <span class="p">{</span>
+	<span class="nb">puts</span> <span class="n">stderr</span> <span class="s2">"</span><span class="se">\t</span><span class="s2">[module-info name] Load Error: $prefix does not exist"</span>
+	<span class="k">break</span>
+	<span class="nb">exit</span> <span class="mi">1</span>
+<span class="p">}</span>
+
+<span class="c1">## List conflicting modules here</span>
+<span class="n">conflict</span> <span class="n">toggleMerge</span>
+
+<span class="c1">## List prerequisite modules here</span>
+<span class="n">set</span>		<span class="n">fullname</span>	<span class="no">TOGGLE</span><span class="o">-</span><span class="no">DEV</span>
+<span class="n">set</span>		<span class="n">externalurl</span>	<span class="s2">"https://github.com/SouthGreenPlatform/TOGGLE-DEV</span><span class="se">\n</span><span class="s2">"</span>
+<span class="n">set</span>		<span class="n">description</span>	<span class="s2">"A framework to quickly build pipelines and to perform large-scale NGS analysis"</span>
+
+<span class="c1">## Required for "module help ..."</span>
+
+<span class="nb">proc</span> <span class="no">ModulesHelp</span> <span class="p">{</span> <span class="p">}</span> <span class="p">{</span>
+  <span class="n">global</span> <span class="n">description</span> <span class="n">externalurl</span>
+  <span class="nb">puts</span> <span class="n">stderr</span> <span class="s2">"Description - $description"</span>
+  <span class="nb">puts</span> <span class="n">stderr</span> <span class="s2">"More Docs   - $externalurl"</span>
+<span class="p">}</span>
+
+<span class="c1">## Required for "module display ..." and SWDB</span>
+<span class="n">module</span><span class="o">-</span><span class="n">whatis</span>   <span class="s2">"loads the [module-info name] environment"</span>
+
+<span class="c1">## Software-specific settings exported to user environment</span>
+<span class="k">module</span> <span class="nn">load</span> <span class="nb">system</span><span class="o">/</span><span class="n">java</span><span class="o">/</span><span class="n">jre</span><span class="o">-</span><span class="mf">1.8</span><span class="o">.</span><span class="mi">111</span>
+<span class="k">module</span> <span class="nn">load</span> <span class="nb">system</span><span class="o">/</span><span class="n">perl</span><span class="o">/</span><span class="mf">5.24</span><span class="o">.</span><span class="mi">0</span>
+<span class="k">module</span> <span class="nn">load</span> <span class="n">bioinfo</span><span class="o">/</span><span class="no">FastQC</span><span class="o">/</span><span class="mf">0.11</span><span class="o">.</span><span class="mi">5</span>
+<span class="k">module</span> <span class="nn">load</span> <span class="n">bioinfo</span><span class="o">/</span><span class="n">bwa</span><span class="o">/</span><span class="mf">0.7</span><span class="o">.</span><span class="mi">12</span>
+<span class="k">module</span> <span class="nn">load</span> <span class="n">bioinfo</span><span class="o">/</span><span class="n">picard</span><span class="o">-</span><span class="n">tools</span><span class="o">/</span><span class="mf">2.5</span><span class="o">.</span><span class="mi">0</span>
+<span class="k">module</span> <span class="nn">load</span> <span class="n">bioinfo</span><span class="o">/</span><span class="n">samtools</span><span class="o">/</span><span class="mf">1.3</span><span class="o">.</span><span class="mi">1</span>
+<span class="k">module</span> <span class="nn">load</span> <span class="n">bioinfo</span><span class="o">/</span><span class="n">gatk</span><span class="o">/</span><span class="mf">3.6</span>
+<span class="k">module</span> <span class="nn">load</span> <span class="n">bioinfo</span><span class="o">/</span><span class="n">cutadapt</span><span class="o">/</span><span class="mf">1.10</span>
+<span class="k">module</span> <span class="nn">load</span> <span class="nb">system</span><span class="o">/</span><span class="n">libgtextutils</span><span class="o">/</span><span class="mf">0.7</span>
+<span class="k">module</span> <span class="nn">load</span> <span class="n">bioinfo</span><span class="o">/</span><span class="n">fastx_toolkit</span><span class="o">/</span><span class="mf">0.0</span><span class="o">.</span><span class="mi">14</span>
+<span class="k">module</span> <span class="nn">load</span> <span class="n">bioinfo</span><span class="o">/</span><span class="n">tophat</span><span class="o">/</span><span class="mf">2.1</span><span class="o">.</span><span class="mi">1</span>
+<span class="k">module</span> <span class="nn">load</span> <span class="n">bioinfo</span><span class="o">/</span><span class="n">bowtie</span><span class="o">/</span><span class="mf">1.1</span><span class="o">.</span><span class="mi">2</span>
+<span class="k">module</span> <span class="nn">load</span> <span class="n">bioinfo</span><span class="o">/</span><span class="n">bowtie2</span><span class="o">/</span><span class="mf">2.2</span><span class="o">.</span><span class="mi">9</span>
+<span class="k">module</span> <span class="nn">load</span> <span class="n">bioinfo</span><span class="o">/</span><span class="n">cufflinks</span><span class="o">/</span><span class="mf">2.2</span><span class="o">.</span><span class="mi">1</span>
+<span class="k">module</span> <span class="nn">load</span> <span class="n">bioinfo</span><span class="o">/</span><span class="n">tgicl_linux</span><span class="o">/</span><span class="mf">1.0</span>
+<span class="k">module</span> <span class="nn">load</span> <span class="n">bioinfo</span><span class="o">/</span><span class="n">trinityrnaseq</span><span class="o">/</span><span class="mf">2.2</span><span class="o">.</span><span class="mi">0</span>
+<span class="k">module</span> <span class="nn">load</span> <span class="n">bioinfo</span><span class="o">/</span><span class="n">stacks</span><span class="o">/</span><span class="mf">1.43</span>
+<span class="k">module</span> <span class="nn">load</span> <span class="n">bioinfo</span><span class="o">/</span><span class="n">snpEff</span><span class="o">/</span><span class="mf">4.3</span>
+<span class="k">module</span> <span class="nn">load</span> <span class="n">bioinfo</span><span class="o">/</span><span class="n">ngsutils</span><span class="o">/</span><span class="mf">0.5</span><span class="o">.</span><span class="mi">9</span>
+
+<span class="c1"># Path</span>
+<span class="n">prepend</span><span class="o">-</span><span class="n">path</span> <span class="no">PATH</span> <span class="vg">$prefix</span>
+<span class="n">prepend</span><span class="o">-</span><span class="n">path</span> <span class="no">PERL5LIB</span> <span class="vg">$prefix</span><span class="o">/</span><span class="n">modules</span><span class="p">:</span><span class="vg">$prefix</span><span class="o">/</span><span class="nb">test</span><span class="o">/</span><span class="n">pipelines</span>
+<span class="n">prepend</span><span class="o">-</span><span class="n">path</span> <span class="no">TOGGLE_PATH</span> <span class="vg">$prefix</span></code></pre></figure>
+
+
+<!--
+<aside>
+	<h3>aside</h3>
+	<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam sodales urna non odio egestas tempor. Nunc vel vehicula ante. Etiam bibendum iaculis libero, eget molestie nisl pharetra in. In semper consequat est, eu porta velit mollis nec. Curabitur posuere enim eget turpis feugiat tempor. Etiam ullamcorper lorem dapibus velit suscipit ultrices.</p>
+</aside>-->
+
+	</div> <!-- #main -->
+</div> <!-- #main-container -->
+    <!-- Placed at the end of the document so the pages load faster -->
+    <script src="http://toggle.ird.fr:4000/js/jquery-1.11.3.min.js"></script>
+    <script src="http://toggle.ird.fr:4000/js/bootstrap.min.js"></script>
+    <script src="http://toggle.ird.fr:4000/js/homepage.js"></script>
+    <script src="http://toggle.ird.fr:4000/js/libs/modernizr-2.0.6.min.js"></script>
+
+</script>
+
+    <!-- FOOTER  -->
+    <div id="footer_wrap" class="outer">
+      <footer class="inner">
+        <div id="footer">
+			<div class="logo-div" class="clearfix">
+				<a class="logo" href="http://www.ird.fr">
+					<img class="img-logo" src="http://toggle.ird.fr:4000/images/logo_ird.png" alt="IRD Logo"  width="" />
+				</a>
+
+				<a class="logo" href="http://www.cirad.fr">
+					<img class="img-logo" src="http://toggle.ird.fr:4000/images/logo-cirad.png" alt="CIRAD Logo"   width="" />
+				</a>
+
+				<a class="logo" href="http://www.inra.fr">
+					<img class="img-logo" src="http://toggle.ird.fr:4000/images/logo_inra.png" alt="INRA Logo"   width=""/>
+				</a>
+
+				<a class="logo" href="https://www.bioversityinternational.org/">
+					<img class="img-logo" src="http://toggle.ird.fr:4000/images/logo_bioversity.png" alt="Bioversity Logo"   width=""/>
+				</a>
+
+				<a class="logo" href="https://www.supagro.fr/">
+					<img class="img-logo" src="http://toggle.ird.fr:4000/images/logo_supagro.png" alt="SupAgro Logo"   width=""/>
+				</a>
+				
+				<a class="logo" href="http://www.southgreen.fr">
+					<img class="img-logo" src="http://toggle.ird.fr:4000/images/southgreenlong.png" alt="South Green Logo"   width=""/>
+				</a>
+
+			</div>
+		</div>
+
+		<div class="footer_txt">
+			<p>The contents of this website are &copy;&nbsp;2018 under the terms of the Licencied under
+				<a href="http://www.cecill.info/licences/Licence_CeCILL-C_V1-en.html">CeCill-C</a>
+				 and <a href="/blob/master/LICENSE">GPLv3</a>.
+			</p>
+		</div>
+      </footer>
+    </div>
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
+<script>window.jQuery || document.write('<script src="js/libs/jquery-1.7.1.min.js"><\/script>')</script>
+
+<!--<script src="http://toggle.ird.fr:4000/js/script.js"></script>
+<script>
+	var _gaq=[['_setAccount',''],['_trackPageview']];
+	(function(d,t){var g=d.createElement(t),s=d.getElementsByTagName(t)[0];g.async=1;
+	g.src=('https:'==location.protocol?'//ssl':'//www')+'.google-analytics.com/ga.js';
+	s.parentNode.insertBefore(g,s)}(document,'script'));
+</script>
+
+<!--[if lt IE 7 ]>
+	<script src="//ajax.googleapis.com/ajax/libs/chrome-frame/1.0.2/CFInstall.min.js"></script>
+	<script>window.attachEvent("onload",function(){CFInstall.check({mode:"overlay"})})</script>
+<![endif]-->
+
+</body>
+</html>
