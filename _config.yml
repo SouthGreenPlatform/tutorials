@@ -64,7 +64,7 @@ unpublished: false
 
 # Plugins
 whitelist: []
-gems:      []
+plugins:      []
 
 # Conversion
 markdown:    kramdown
@@ -75,7 +75,7 @@ incremental: false
 # Serving
 detach:  false
 port:    4000
-host:    toggle.ird.fr
+host:    sg.ird.fr
 show_dir_listing: false
 
 # Outputting

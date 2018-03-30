@@ -22,6 +22,8 @@ This page describes how you can build own module load.
 | :------------- | :------------- |
 | Research Unit | <img src="http://printemps-baillarguet.e-monsite.com/medias/images/bgpi.jpg" width="10%">    |
 | Institut | <img src="{{ site.url }}/images/logo-cirad.png" width="10%">  |
+| Creation Date | 30/03/2018 |
+| Last Modified Date | 30/03/2018 |
 
 #### _Keywords_ : `module load, private, own, cc2-login`
 
