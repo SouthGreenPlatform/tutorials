@@ -1,9 +1,9 @@
 ---
 layout: page
-title: "Git for dumpies"
+title: "Git for dummies"
 permalink: /toolbox/git/
 tags: [ git ]
-description: Git for dumpies
+description: Git for dummies
 ---
 <table class="table-contact">
 <tr>
