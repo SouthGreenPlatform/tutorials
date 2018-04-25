@@ -38,6 +38,7 @@ fastq, sam, bam, vcf
 - [Variant calling using `GATK unifiedGenotyper` or `GATK haplotypeCaller` ](#gatk-ug-hc)
 - [Basic Filters vcf files using `GATK` ](#gatk-filters)
 
+-----------------------
 
 <a name="Getting-basic-informations-about-fastq-files"></a>
 ### Getting basic informations about _fastq_ files (file size, sequences number)
@@ -176,6 +177,9 @@ drwxr-xr-x 4 tranchant ggr                4096  9 mars  22:11 PdFIE94_R1.fq_fast
 -rw-r--r-- 1 tranchant ggr              225516  9 mars  22:11 PdFIE94_R1.fq_fastqc.zip
 {% endhighlight %}
 
+
+-----------------------
+
 <a name="cutadapt"></a>
 ### Using `cutadapt` to remove adapters and to trim reads based on quality
 
@@ -198,6 +202,7 @@ cutadapt  -q 30,30 -m 35  -B GATCGGAAGAGCACACGTCTGAACTCCAGTCACATCACGATCTCGTATGCC
 -p is the short form of --paired-output. The option -B is used here to specify an adapter sequence that cutadapt should remove from the second read in each pair.
 
 
+-----------------------
 
 <a name="bwa"></a>
 ### Mapping reads with `bwa`
@@ -242,33 +247,34 @@ bwa samse reference file.sai file.fastq file_reverse.fastq -f file.sam  -r '@RG 
 bwa mem  reference file.fastq  file_reverse.fastq  -R '@RG\tID:RC3\tSM:RC3\tPL:Illumina' > file.sam
 {% endhighlight %}
 
+
+-----------------------
+
 <a name="picardtools-samtools"></a>
 ### Processing sam file with `picardtools` and `samtools`
 https://broadinstitute.github.io/picard/
 http://samtools.sourceforge.net/
 
-### Creating Reference dictionary and indexes
-
-with `picardtools CreateSequenceDictionary`
+##### Creating Reference dictionary and indexes with `picardtools CreateSequenceDictionary`
 
 {% highlight bash %}
 /usr/bin/java -Xmx8g  -jar /us/local/picard-tools-2.5.0/picard.jar CreateSequenceDictionary REFERENCE=Reference.fasta OUTPUT=Reference.dict
 {% endhighlight %}
 
-with `samtools faidx`
+##### Creating Reference dictionary and indexes with `samtools faidx`
 
 {% highlight bash %}
 samtools faidx Rreference.fasta
 {% endhighlight %}
 
-### Converting the _sam_ file into a _bam_ file and sorting the _bam_ file
+##### Converting the _sam_ file into a _bam_ file and sorting the _bam_ file
 
 {% highlight bash %}
 /usr/bin/java -Xmx12g -jar /usr/local/picard-tools-2.5.0/picard.jar SortSam  CREATE_INDEX=TRUE VALIDATION_STRINGENCY=SILENT SORT_ORDER=coordinate  INPUT=file.BWASAMPE.sam OUTPUT=file.PICARDTOOLSSORT.bam
 {% endhighlight %}
 The _bam_ index (_.bai_) is created auomtically by `picardtools` (`samtools index` command unnecessary)
 
-### Getting some stats from _bam_ file
+##### Getting some stats from _bam_ file
 
 {% highlight bash %}
 samtools flagstat file.PICARDTOOLSSORT.bam
