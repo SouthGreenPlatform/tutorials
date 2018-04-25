@@ -161,11 +161,7 @@ PdFIE98_R2.fq.gz.fastq-stats 151 151.0000 0.0000 151 33 2000000 35 2 42 35.0267 
 <a name="fastqc"></a>
 ### Getting various statistics about _fastq_ and performing a quality control check with `fastqc`
 
-`FastQC` perform some simple quality control checks to ensure that the raw data looks good and there are no problems or biases in data which may affect how user can usefully use it.
-
-http://www.bioinformatics.babraham.ac.uk/projects/fastqc/
-
-##### `fastqc` command
+* to perform some simple quality control checks to ensure that the raw data looks good and there are no problems or biases in data which may affect how user can usefully use it. [fastqc website](http://www.bioinformatics.babraham.ac.uk/projects/fastqc/)
 
 {% highlight bash %}
 [tranchant@master0 ~]$ fastqc *.fastq -o .
@@ -178,8 +174,7 @@ drwxr-xr-x 4 tranchant ggr                4096  9 mars  22:11 PdFIE94_R1.fq_fast
 <a name="cutadapt"></a>
 ### Using `cutadapt` to remove adapters and to trim reads based on quality
 
-* `Cutadapt` is a tool specifically designed to remove adapters from NGS data.
-https://code.google.com/p/cutadapt/
+* [cutadapt website](https://code.google.com/p/cutadapt/)
 
 {% highlight bash %}
 cutadapt  -q 30,30 -m 35  -B GATCGGAAGAGCACACGTCTGAACTCCAGTCACATCACGATCTCGTATGCCGTCTTCTGCTTG -B GTTCGTCTTCTGCCGTATGCTCTAGCACTACACTGACCTCAAGTCTGCACACGAGAAGGCTAG -b GATCGGAAGAGCACACGTCTGAACTCCAGTCACATCACGATCTCGTATGCCGTCTTCTGCTTG -b GTTCGTCTTCTGCCGTATGCTCTAGCACTACACTGACCTCAAGTCTGCACACGAGAAGGCTAG-o P1_R1.CUTADAPT.fastq.gz -p P1_R2.CUTADAPT.fastq.gz P1_R1.fq.gz P1_R2.fq.gz
@@ -200,30 +195,29 @@ cutadapt  -q 30,30 -m 35  -B GATCGGAAGAGCACACGTCTGAACTCCAGTCACATCACGATCTCGTATGCC
 
 
 <a name="bwa"></a>
-## Mapping reads with `bwa`
+### Mapping reads with `bwa`
 
-http://bio-bwa.sourceforge.net/
+[bwa website](http://bio-bwa.sourceforge.net/)
 
-There are several steps involved in mapping sequence reads.
-
-### Creating an index of the reference genome with `bwa index`
+##### Creating an index of the reference genome with `bwa index`
 
 {% highlight bash %}
 bwa index -a is
 {% endhighlight %}
 
-{% highlight bash %}is{% endhighlight %} for short genome and {% highlight bash %}bwtsw{% endhighlight %} for genome >2Gb
+* `is` for short genome
+* `bwtsw` for genome >2Gb
 
-### Performing mapping with `bwa aln` and `bwa sampe/samse`
+##### Performing mapping with `bwa aln` and `bwa sampe/samse`
 
-Getting _sai_ files with `bwa aln`
+* Getting _sai_ files with `bwa aln`
 
 {% highlight bash %}
 bwa aln reference file_forward.fastq > file_forward.sai
 bwa aln reference file_reverse.fastq > file_reverse.sai
 {% endhighlight %}
 
-Getting _sam_ file with `bwa sampe` (paired)
+* Getting _sam_ file with `bwa sampe` (paired)
 
 Here is a description for the contents of the SAM file: https://samtools.github.io/hts-specs/SAMv1.pdf
 
@@ -231,20 +225,20 @@ Here is a description for the contents of the SAM file: https://samtools.github.
 bwa sampe reference file_forward.sai file_reverse.sai  file_forward.fastq file_reverse.fastq -f file.sam  -r '@RG        ID:RG  SM:RG  PL:Illumina'
 {% endhighlight %}
 
-Getting _sam_ file with `bwa samse` (single)
+* Getting _sam_ file with `bwa samse` (single)
 
 {% highlight bash %}
 bwa samse reference file.sai file.fastq file_reverse.fastq -f file.sam  -r '@RG        ID:RG  SM:RG  PL:Illumina'
 {% endhighlight %}
 
-### Performing mapping with `bwa mem`
+##### Performing mapping with `bwa mem`
 
 {% highlight bash %}
 bwa mem  reference file.fastq  file_reverse.fastq  -R '@RG\tID:RC3\tSM:RC3\tPL:Illumina' > file.sam
 {% endhighlight %}
 
 <a name="picardtools-samtools"></a>
-## Processing sam file with `picardtools` and `samtools`
+### Processing sam file with `picardtools` and `samtools`
 https://broadinstitute.github.io/picard/
 http://samtools.sourceforge.net/
 
