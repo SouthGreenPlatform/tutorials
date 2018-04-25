@@ -1,10 +1,10 @@
-------
+---
 layout: page
 title: "Linux Tutorial"
 permalink: /toolbox/linux/
 tags: [ linux, survival guide ]
 description: Linux page
-------
+---
 
 | Description |  Linux tutorial |
 | :------------- | :------------- | :------------- | :------------- |
