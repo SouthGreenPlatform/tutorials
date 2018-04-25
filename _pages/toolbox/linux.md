@@ -1,17 +1,16 @@
 ---
 layout: page
-title: "Linux Training"
+title: "Linux Tutorial"
 permalink: /toolbox/linux/
 tags: [ linux, survival guide ]
 description: Linux page
 ------
 
-| Description | Hands On Lab Exercises for Linux |
+| Description |  Linux tutorial |
 | :------------- | :------------- | :------------- | :------------- |
-| Related-course materials | [Linux for Dummies](https://southgreenplatform.github.io/trainings/linux/) |
 | Authors | christine Tranchant-Dubreuil (christine.tranchant@ird.fr)  |
 | Creation Date | 26/02/2018 |
-| Last Modified Date | 11/03/2018 |
+| Last Modified Date | 25/03/2018 |
 
 
 -----------------------
