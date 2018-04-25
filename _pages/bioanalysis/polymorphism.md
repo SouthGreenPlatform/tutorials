@@ -57,8 +57,8 @@ fastq, sam, bam, vcf
 [tranchant@master0 ~]$ wc -l *.fastq | awk '{ print $2" \t "$1/4}'
 C3KB2ACXX_5_12_11_debar.fastq 	 1354891
 C3KB2ACXX_5_12_12_debar.fastq 	 2249353
-{% endhighlight %}
 
+{% endhighlight %}
 
 -----------------------
 
@@ -172,8 +172,8 @@ PdFIE98_R2.fq.gz.fastq-stats 151 151.0000 0.0000 151 33 2000000 35 2 42 35.0267 
 total 543577236
 drwxr-xr-x 4 tranchant ggr                4096  9 mars  22:11 PdFIE94_R1.fq_fastqc
 -rw-r--r-- 1 tranchant ggr              225516  9 mars  22:11 PdFIE94_R1.fq_fastqc.zip
-{% endhighlight %}
 
+{% endhighlight %}
 
 -----------------------
 
