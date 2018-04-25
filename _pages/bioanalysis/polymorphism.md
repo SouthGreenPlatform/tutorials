@@ -70,7 +70,7 @@ This software runs quickly, faster than fastqc and the output can be parsed and 
 
 ##### How to use `fastq-stats` with one _fastq_ file
 
-{% highlight bash %}
+{% highlight bash %} 
 [tranchant@node11 FASTQ]$ fastq-stats -D PdFIE94_R1.fq.gz
 reads	15034838
 len	144
