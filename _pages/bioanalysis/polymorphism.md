@@ -410,5 +410,5 @@ samtools index file.SAMTOOLSVIEW-MAPPED.bam
 {% endhighlight %}
 
 ***
-## More informations
+### More informations
 cf. NGS trainings and linux trainings
