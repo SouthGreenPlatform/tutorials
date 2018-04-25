@@ -394,6 +394,8 @@ samtools index file.SAMTOOLSVIEW-MAPPED.bam
 /usr/bin/java -Xmx12g -jar /usr/local/gatk-3.7/GenomeAnalysisTK.jar -rf BadCigar   -T UnifiedGenotyper -R reference -I file.bam  -o file.GATKUNIFIEDGENOTYPER.vcf
 {% endhighlight %}
 
+-----------------------
+
 <a name="gatk-filters"></a>
 ### Basic Filters vcf files using `GATK`
 
@@ -409,6 +411,7 @@ samtools index file.SAMTOOLSVIEW-MAPPED.bam
 /usr/bin/java -Xmx12g -jar /usr/local/gatk-3.7/GenomeAnalysisTK.jar -selectType SNP -T SelectVariants  -R reference --variant file.GATKVARIANTFILTRATION.vcf -o file.GATKSELECTVARIANT.vcf
 {% endhighlight %}
 
-***
+-----------------------
+
 ### More informations
 cf. NGS trainings and linux trainings
