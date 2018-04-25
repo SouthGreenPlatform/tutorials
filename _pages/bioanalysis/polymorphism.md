@@ -313,8 +313,8 @@ Chromosome_8.8	535760	117502	0
 
 ##### Remove multimapping and improrubyy paired reads with `samtools view`
 
-[defining flag value](https://broadinstitute.github.io/picard/explain-flags.html)
-[more explanation](https://ppotato.wordpress.com/2010/08/25/samtool-bitwise-flag-paired-reads/)
+* [Defining flag value](https://broadinstitute.github.io/picard/explain-flags.html)
+* [more explanation](https://ppotato.wordpress.com/2010/08/25/samtool-bitwise-flag-paired-reads/)
 
 {% highlight bash %}
 # Reads correctly mapped extracted
