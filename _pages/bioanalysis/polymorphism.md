@@ -252,8 +252,8 @@ bwa mem  reference file.fastq  file_reverse.fastq  -R '@RG\tID:RC3\tSM:RC3\tPL:I
 
 <a name="picardtools-samtools"></a>
 ### Processing sam file with `picardtools` and `samtools`
-https://broadinstitute.github.io/picard/
-http://samtools.sourceforge.net/
+[picard website](https://broadinstitute.github.io/picard/)
+[samtools website](http://samtools.sourceforge.net/)
 
 ##### Creating Reference dictionary and indexes with `picardtools CreateSequenceDictionary`
 
@@ -267,20 +267,19 @@ http://samtools.sourceforge.net/
 samtools faidx Rreference.fasta
 {% endhighlight %}
 
-##### Converting the _sam_ file into a _bam_ file and sorting the _bam_ file
+##### Converting the _sam_ file into a _bam_ file and sorting the _bam_ file with `picardtools SortSam`
 
 {% highlight bash %}
 /usr/bin/java -Xmx12g -jar /usr/local/picard-tools-2.5.0/picard.jar SortSam  CREATE_INDEX=TRUE VALIDATION_STRINGENCY=SILENT SORT_ORDER=coordinate  INPUT=file.BWASAMPE.sam OUTPUT=file.PICARDTOOLSSORT.bam
 {% endhighlight %}
 The _bam_ index (_.bai_) is created auomtically by `picardtools` (`samtools index` command unnecessary)
 
-##### Getting some stats from _bam_ file
+##### Getting some stats from _bam_ file with `samtools flagstat`
 
 {% highlight bash %}
-samtools flagstat file.PICARDTOOLSSORT.bam
-{% endhighlight %}
+$samtools flagstat file.PICARDTOOLSSORT.bam
 
-{% highlight bash %}
+# output
 14524094 + 0 in total (QC-passed reads + QC-failed reads)
 0 + 0 secondary
 0 + 0 supplimentary
@@ -296,13 +295,12 @@ samtools flagstat file.PICARDTOOLSSORT.bam
 0 + 0 with mate mapped to a different chr (mapQ>=5)
 {% endhighlight %}
 
-{% highlight bash %}
-samtools idxstats file.PICARDTOOLSSORT.bam
-{% endhighlight %}
-
-The output is TAB-delimited with each line consisting of reference sequence name, sequence length, # mapped reads and # unmapped reads. It is written to stdout.
+##### Getting some stats from _bam_ file with `samtools idxstats`
 
 {% highlight bash %}
+$ samtools idxstats file.PICARDTOOLSSORT.bam
+
+#The output is TAB-delimited with each line consisting of reference sequence name, sequence length, # mapped reads and # unmapped reads. # It is written to stdout.
 Chromosome_8.1	7978604	2274010	0
 Chromosome_8.2	8319966	2274086	0
 Chromosome_8.3	6606598	1774006	0
@@ -314,10 +312,10 @@ Chromosome_8.8	535760	117502	0
 *	0	0	3304792
 {% endhighlight %}
 
-### Remove multimapping and improrubyy paired reads with `samtools view`
+##### Remove multimapping and improrubyy paired reads with `samtools view`
 
-https://broadinstitute.github.io/picard/explain-flags.html
-https://ppotato.wordpress.com/2010/08/25/samtool-bitwise-flag-paired-reads/
+[defining flag value](https://broadinstitute.github.io/picard/explain-flags.html)
+[more explanation](https://ppotato.wordpress.com/2010/08/25/samtool-bitwise-flag-paired-reads/)
 
 {% highlight bash %}
 # Reads correctly mapped extracted
@@ -327,13 +325,13 @@ samtools view -h -b -f=0*02 -o file.SAMTOOLSVIEW-MAPPED.bam file.PICARDTOOLSSORT
 samtools view -h -b -F=0*02 -o file.SAMTOOLSVIEW-UNMAPPED.bam file.PICARDTOOLSSORT.bam
 {% endhighlight %}
 
-### Creating index of the last bam generated with `samtools index`
+##### Creating index of the last bam generated with `samtools index`
 
 {% highlight bash %}
 samtools index file.SAMTOOLSVIEW-MAPPED.bam
 {% endhighlight %}
 
-### Adding read group with `picardtools AddOrReplaceReadGroups`
+##### Adding read group with `picardtools AddOrReplaceReadGroups`
 
 ... if they haven't been added precedently
 
@@ -346,13 +344,16 @@ samtools index file.SAMTOOLSVIEW-MAPPED.bam
 - RGPU= Read Group Platform Unit (i.e Barcode)
 - RGSM= Read Group Sample Name (i.e. Sample Name)
 
-### Marking duplicates with `picardtools AddOrReplaceReadGroups`
+##### Marking duplicates with `picardtools AddOrReplaceReadGroups`
 
 ... if it is necessary
 
 {% highlight bash %}
 /usr/bin/java -Xmx12g -jar /usr/local/picard-tools-2.5.0/picard.jar MarkDuplicates INPUT=20135.SAMTOOLSVIEW-MAPPED.bam OUTPUT=20135.PICARDTOOLSMARKDUPLICATES.bam METRICS_FIL=metrics.txt CREATE_INDEX=True VALIDATION_STRINGENCY=LENIENT > 20135.PICARDTOOLSADDORREPLACEREADGROUPS.log
 {% endhighlight %}
+
+
+-----------------------
 
 <a name="gatk-indelrealigner"></a>
 ## Local realignment around INDELS using `GATK`
