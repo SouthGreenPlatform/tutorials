@@ -5,28 +5,18 @@ permalink: /bioanalysis/polymorphism/
 tags: [ polymorphism, SNP, indel ]
 description: Polymorphism detection from fastq files on a linux terminal
 ---
-<table class="table-contact">
-<tr>
-<td><img width="100%" src="{{ site.url }}/images/trainings-linux.png" alt="" />
-</td>
-<td>
-<h1> Polymorphism detection from fastq files on a linux terminal</h1><br />
-This page describes a serie of tools and linux commands used to detect polymorphism from raw data (fastq files) to polymorphism file (vcf).
-</td>
-</tr>
-</table>
 
+| Description | Polymorphism detection from fastq files on a linux terminal</h1><br />
+This page describes a serie of tools and linux commands used to detect polymorphism from raw data (fastq files) to polymorphism file (vcf). |
+| :------------- | :------------- | :------------- | :------------- |
+| Authors | christine Tranchant-Dubreuil (christine.tranchant@ird.fr)  |
+| Creation Date | 26/02/2017 |
+| Last Modified Date | 25/03/2018 |
 
 We need, in this tutorial:
 * 2 fastq files paired
 * a reference file used for the mapping step.
 
-### Author(s)
-
-| Authors  | Christine Tranchant-Dubreuil  |
-| :------------- | :------------- |
-| Research Unit | UMR DIADE   |
-| Institut |  <img src="https://www.ird.fr/extension/ird/design/ird/images/picto/logo_ird.png" width="20%"> |
 
 ### Keywords
 fastq-stats, fastqc, cutadapt, bwa, samtools, gatk, picardtools
@@ -36,7 +26,6 @@ fastq, sam, bam, vcf
 
 ### Date
 10/03/2017
-
 
 
 ## Summary
@@ -53,9 +42,9 @@ fastq, sam, bam, vcf
 
 
 <a name="Getting-basic-informations-about-fastq-files"></a>
-## Getting basic informations about _fastq_ files (file size, sequences number)
+### Getting basic informations about _fastq_ files (file size, sequences number)
 
-### How to get _fastq_ file size
+##### How to get _fastq_ file size
 
 {% highlight ruby %}
 [tranchant@master0 ~]$ du -sh *.fastq
@@ -63,7 +52,7 @@ fastq, sam, bam, vcf
 525M    C3KB2ACXX_5_12_12_debar.fastq
 {% endhighlight %}
 
-### How to get sequences number by _fastq_ files  (uncompressed files only)
+##### How to get sequences number by _fastq_ files  (uncompressed files only)
 
 {% highlight sh %}
 [tranchant@master0 ~]$ wc -l *.fastq | awk '{ print $2" \t "$1/4}'
@@ -72,12 +61,12 @@ C3KB2ACXX_5_12_12_debar.fastq 	 2249353
 {% endhighlight %}
 
 <a name="ea-utils"></a>
-## Getting a report with various statistics about _fastq_ file with `ea-utils`
+### Getting a report with various statistics about _fastq_ file with `ea-utils`
 
 This software runs quickly, faster than fastqc and the output can be parsed and formatted with some basics linux command
 https://code.google.com/p/ea-utils/
 
-### How to use `fastq-stats` with one _fastq_ file
+##### How to use `fastq-stats` with one _fastq_ file
 
 {% highlight ruby %}
 [tranchant@node11 FASTQ]$ fastq-stats -D PdFIE94_R1.fq.gz
@@ -101,7 +90,7 @@ qual stdev	4.8129
 total bases	2165016672
 {% endhighlight %}
 
-### How to use `fastq-stats` on several _fastq_ files
+##### How to use `fastq-stats` on several _fastq_ files
 
 {% highlight ruby %}
 [tranchant@node2 tranchant]$ ls
@@ -173,13 +162,13 @@ PdFIE98_R2.fq.gz.fastq-stats 151 151.0000 0.0000 151 33 2000000 35 2 42 35.0267 
 {% endhighlight %}
 
 <a name="fastqc"></a>
-## Getting various statistics about _fastq_ and performing a quality control check with `fastqc`
+### Getting various statistics about _fastq_ and performing a quality control check with `fastqc`
 
 `FastQC` perform some simple quality control checks to ensure that the raw data looks good and there are no problems or biases in data which may affect how user can usefully use it.
 
 http://www.bioinformatics.babraham.ac.uk/projects/fastqc/
 
-### `fastqc` command
+##### `fastqc` command
 
 {% highlight ruby %}
 [tranchant@master0 ~]$ fastqc *.fastq -o .
