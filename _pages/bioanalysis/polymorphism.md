@@ -49,6 +49,7 @@ fastq, sam, bam, vcf
 [tranchant@master0 ~]$ du -sh *.fastq
 311M    C3KB2ACXX_5_12_11_debar.fastq
 525M    C3KB2ACXX_5_12_12_debar.fastq
+
 {% endhighlight %}
 
 ##### How to get sequences number by _fastq_ files  (uncompressed files only)
@@ -204,7 +205,7 @@ cutadapt  -q 30,30 -m 35  -B GATCGGAAGAGCACACGTCTGAACTCCAGTCACATCACGATCTCGTATGCC
 <a name="bwa"></a>
 ### Mapping reads with `bwa`
 
-[bwa website](http://bio-bwa.sourceforge.net/)
+* [bwa website](http://bio-bwa.sourceforge.net/)
 
 ##### Creating an index of the reference genome with `bwa index`
 
@@ -249,9 +250,8 @@ bwa mem  reference file.fastq  file_reverse.fastq  -R '@RG\tID:RC3\tSM:RC3\tPL:I
 
 <a name="picardtools-samtools"></a>
 ### Processing sam file with `picardtools` and `samtools`
-[picard website](https://broadinstitute.github.io/picard/)
-
-[samtools website](http://samtools.sourceforge.net/)
+* [picard website](https://broadinstitute.github.io/picard/)
+* [samtools website](http://samtools.sourceforge.net/)
 
 ##### Creating Reference dictionary with `picardtools CreateSequenceDictionary`
 
