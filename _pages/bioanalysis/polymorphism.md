@@ -58,6 +58,8 @@ C3KB2ACXX_5_12_11_debar.fastq 	 1354891
 C3KB2ACXX_5_12_12_debar.fastq 	 2249353
 {% endhighlight %}
 
+-----------------------
+
 <a name="ea-utils"></a>
 ### Getting a report with various statistics about _fastq_ file with `ea-utils`
 
@@ -157,6 +159,8 @@ PdFIE96_R2.fq.gz.fastq-stats 151 151.0000 0.0000 151 33 2000000 35 2 42 34.9494 
 PdFIE98_R1.fq.gz.fastq-stats 143 143.0000 0.0000 143 33 2000000 35 2 42 40.2191 4.8173 25.3874 26.4649 22.4244 25.7031 0.0201 1443785200
 PdFIE98_R2.fq.gz.fastq-stats 151 151.0000 0.0000 151 33 2000000 35 2 42 35.0267 10.3824 26.6316 23.8662 22.8668 26.2791 0.3564 1524556400
 {% endhighlight %}
+
+-----------------------
 
 <a name="fastqc"></a>
 ### Getting various statistics about _fastq_ and performing a quality control check with `fastqc`
