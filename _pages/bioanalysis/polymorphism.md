@@ -313,7 +313,6 @@ Chromosome_8.8	535760	117502	0
 ##### Remove multimapping and improrubyy paired reads with `samtools view`
 
 * [Defining flag value](https://broadinstitute.github.io/picard/explain-flags.html)
-
 * [more explanation](https://ppotato.wordpress.com/2010/08/25/samtool-bitwise-flag-paired-reads/)
 
 {% highlight bash %}
@@ -361,7 +360,7 @@ samtools index file.SAMTOOLSVIEW-MAPPED.bam
 <a name="gatk-indelrealigner"></a>
 ### Local realignment around INDELS using `GATK`
 
-[gatk website](https://www.broadinstitute.org/gatk/)
+* [gatk website](https://www.broadinstitute.org/gatk/)
 
 ##### Firstly, creating a target list of intervals which need to be realigned with `gatk realignerTargetCreator`
 
@@ -380,31 +379,31 @@ samtools index file.SAMTOOLSVIEW-MAPPED.bam
 -----------------------
 
 <a name="gatk-ug-hc"></a>
-## Variant calling using `GATK unifiedGenotyper` or `GATK haplotypeCaller`
+### Variant calling using `GATK unifiedGenotyper` or `GATK haplotypeCaller`
 
 
-### `GATK haplotypeCaller`
+##### `GATK haplotypeCaller`
 
 {% highlight bash %}
 /usr/bin/java -Xmx12g -jar /usr/local/gatk-3.7/GenomeAnalysisTK.jar -rf BadCigar  -T HaplotypeCaller  -R reference -I file-ind1.PICARDTOOLSMARKDUPLICATES.bam -I  file-ind2.PICARDTOOLSMARKDUPLICATES.bam  -o file.GATKHAPLOTYPECALLER.vcf
 {% endhighlight %}
 
-### `GATK unifiedGenotyper`
+##### `GATK unifiedGenotyper`
 
 {% highlight bash %}
 /usr/bin/java -Xmx12g -jar /usr/local/gatk-3.7/GenomeAnalysisTK.jar -rf BadCigar   -T UnifiedGenotyper -R reference -I file.bam  -o file.GATKUNIFIEDGENOTYPER.vcf
 {% endhighlight %}
 
 <a name="gatk-filters"></a>
-## Basic Filters vcf files using `GATK`
+### Basic Filters vcf files using `GATK`
 
-### gatk variantFiltration
+##### gatk variantFiltration
 
 {% highlight bash %}
 /usr/bin/java -Xmx12g -jar /usr/local/gatk-3.7/GenomeAnalysisTK.jar -T VariantFiltration --filterName 'FILTER-DP' --filterExpression 'DP<10 || DP>600' --filterName 'LowQual' --filterExpression 'QUAL<30'   -R /reference -o file.GATKVARIANTFILTRATION.vcf --variant file.GATKHAPLOTYPECALLER.vcf
 {% endhighlight %}
 
-### gatk selectVariants
+##### gatk selectVariants
 
 {% highlight bash %}
 /usr/bin/java -Xmx12g -jar /usr/local/gatk-3.7/GenomeAnalysisTK.jar -selectType SNP -T SelectVariants  -R reference --variant file.GATKVARIANTFILTRATION.vcf -o file.GATKSELECTVARIANT.vcf
