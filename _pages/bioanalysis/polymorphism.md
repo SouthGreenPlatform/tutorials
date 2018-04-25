@@ -249,16 +249,16 @@ bwa mem  reference file.fastq  file_reverse.fastq  -R '@RG\tID:RC3\tSM:RC3\tPL:I
 
 <a name="picardtools-samtools"></a>
 ### Processing sam file with `picardtools` and `samtools`
-[picard website](https://broadinstitute.github.io/picard/)
-[samtools website](http://samtools.sourceforge.net/)
+* [picard website](https://broadinstitute.github.io/picard/)
+* [samtools website](http://samtools.sourceforge.net/)
 
-##### Creating Reference dictionary and indexes with `picardtools CreateSequenceDictionary`
+##### Creating Reference dictionary with `picardtools CreateSequenceDictionary`
 
 {% highlight bash %}
 /usr/bin/java -Xmx8g  -jar /us/local/picard-tools-2.5.0/picard.jar CreateSequenceDictionary REFERENCE=Reference.fasta OUTPUT=Reference.dict
 {% endhighlight %}
 
-##### Creating Reference dictionary and indexes with `samtools faidx`
+##### Creating Reference indexes with `samtools faidx`
 
 {% highlight bash %}
 samtools faidx Rreference.fasta
@@ -274,9 +274,10 @@ The _bam_ index (_.bai_) is created auomtically by `picardtools` (`samtools inde
 ##### Getting some stats from _bam_ file with `samtools flagstat`
 
 {% highlight bash %}
+#command
 $samtools flagstat file.PICARDTOOLSSORT.bam
 
-# output
+#output
 14524094 + 0 in total (QC-passed reads + QC-failed reads)
 0 + 0 secondary
 0 + 0 supplimentary
@@ -295,9 +296,10 @@ $samtools flagstat file.PICARDTOOLSSORT.bam
 ##### Getting some stats from _bam_ file with `samtools idxstats`
 
 {% highlight bash %}
-$ samtools idxstats file.PICARDTOOLSSORT.bam
+#command
+$samtools idxstats file.PICARDTOOLSSORT.bam
 
-#The output is TAB-delimited with each line consisting of reference sequence name, sequence length, # mapped reads and # unmapped reads. # It is written to stdout.
+#The output is TAB-delimited with each line consisting of reference sequence name, sequence length, # mapped reads and # unmapped reads. #It is written to stdout.
 Chromosome_8.1	7978604	2274010	0
 Chromosome_8.2	8319966	2274086	0
 Chromosome_8.3	6606598	1774006	0
@@ -325,6 +327,7 @@ samtools view -h -b -F=0*02 -o file.SAMTOOLSVIEW-UNMAPPED.bam file.PICARDTOOLSSO
 ##### Creating index of the last bam generated with `samtools index`
 
 {% highlight bash %}
+#Command
 samtools index file.SAMTOOLSVIEW-MAPPED.bam
 {% endhighlight %}
 
@@ -333,6 +336,7 @@ samtools index file.SAMTOOLSVIEW-MAPPED.bam
 ... if they haven't been added precedently
 
 {% highlight bash %}
+#Command
 /usr/bin/java -Xmx12g -jar /usr/local/picard-tools-2.5.0/picard.jar AddOrReplaceReadGroups INPUT=20135.SAMTOOLSVIEW-MAPPED.bam OUTPUT=20135.PICARDTOOLSADDORREPLACEREADGROUPS.bam RGPL=Illumina RGLB=20135 RGPU=20135 RGSM=20135 CREATE_INDEX=True VALIDATION_STRINGENCY=LENIENT > 20135.PICARDTOOLSADDORREPLACEREADGROUPS.log
 {% endhighlight %}
 
@@ -346,6 +350,7 @@ samtools index file.SAMTOOLSVIEW-MAPPED.bam
 ... if it is necessary
 
 {% highlight bash %}
+#Command
 /usr/bin/java -Xmx12g -jar /usr/local/picard-tools-2.5.0/picard.jar MarkDuplicates INPUT=20135.SAMTOOLSVIEW-MAPPED.bam OUTPUT=20135.PICARDTOOLSMARKDUPLICATES.bam METRICS_FIL=metrics.txt CREATE_INDEX=True VALIDATION_STRINGENCY=LENIENT > 20135.PICARDTOOLSADDORREPLACEREADGROUPS.log
 {% endhighlight %}
 
@@ -353,21 +358,25 @@ samtools index file.SAMTOOLSVIEW-MAPPED.bam
 -----------------------
 
 <a name="gatk-indelrealigner"></a>
-## Local realignment around INDELS using `GATK`
+### Local realignment around INDELS using `GATK`
 
-https://www.broadinstitute.org/gatk/
+[gatk website](https://www.broadinstitute.org/gatk/)
 
-### Firstly, creating a target list of intervals which need to be realigned with `gatk realignerTargetCreator`
+##### Firstly, creating a target list of intervals which need to be realigned with `gatk realignerTargetCreator`
 
 {% highlight bash %}
+#command
 /usr/bin/java -Xmx12g -jar /usr/local/gatk-3.7/GenomeAnalysisTK.jar -T RealignerTargetCreator  -R reference -I file.bam -o file.GATKREALIGNERTARGETCREATOR.intervals
-``{% endhighlight %}`
+{% endhighlight %}
 
-### Then, perform realignment of the target intervals with `gatk indelRealigner`
+##### Then, perform realignment of the target intervals with `gatk indelRealigner`
 
 {% highlight bash %}
+#Command
 /usr/bin/java -Xmx12g -jar /usr/local/gatk-3.7/GenomeAnalysisTK.jar -T IndelRealigner  -R reference -I file.bam -targetIntervals file.GATKREALIGNERTARGETCREATOR.intervals -o file.GATKINDELREALIGNER.bam
 {% endhighlight %}
+
+-----------------------
 
 <a name="gatk-ug-hc"></a>
 ## Variant calling using `GATK unifiedGenotyper` or `GATK haplotypeCaller`
