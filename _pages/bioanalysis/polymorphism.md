@@ -312,9 +312,9 @@ Chromosome_8.8	535760	117502	0
 
 ##### Remove multimapping and improrubyy paired reads with `samtools view`
 
-[Defining flag value](https://broadinstitute.github.io/picard/explain-flags.html)
+* [Defining flag value](https://broadinstitute.github.io/picard/explain-flags.html)
 
-[more explanation](https://ppotato.wordpress.com/2010/08/25/samtool-bitwise-flag-paired-reads/)
+* [more explanation](https://ppotato.wordpress.com/2010/08/25/samtool-bitwise-flag-paired-reads/)
 
 {% highlight bash %}
 # Reads correctly mapped extracted
@@ -322,6 +322,7 @@ samtools view -h -b -f=0*02 -o file.SAMTOOLSVIEW-MAPPED.bam file.PICARDTOOLSSORT
 
 # Unmapped reads extracted
 samtools view -h -b -F=0*02 -o file.SAMTOOLSVIEW-UNMAPPED.bam file.PICARDTOOLSSORT.bam
+
 {% endhighlight %}
 
 ##### Creating index of the last bam generated with `samtools index`
