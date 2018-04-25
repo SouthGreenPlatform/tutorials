@@ -99,8 +99,6 @@ total bases	2165016672
 [tranchant@node2 tranchant]$ ls
 DV.UNMAPPED_1.fastq              DV.UNMAPPED_2.fastq
 DT.UNMAPPED_1.fastq              DT.UNMAPPED_2.fastq
-{% endhighlight %}
-
 
 # you can execute every fastq-stats command by using for loop (bash)
 [tranchant@node2 tranchant]$ for file in *fastq; do fastq-stats -D $file > $file.fastq-stats ; done;
