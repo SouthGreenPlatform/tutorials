@@ -6,7 +6,7 @@ tags: [ polymorphism, SNP, indel ]
 description: Polymorphism detection from fastq files on a linux terminal
 ---
 
-| Description | Polymorphism detection from fastq files on a linux terminal</h1><br />
+| Description | Polymorphism detection from fastq files on a linux terminal.
 This page describes a serie of tools and linux commands used to detect polymorphism from raw data (fastq files) to polymorphism file (vcf). |
 | :------------- | :------------- | :------------- | :------------- |
 | Authors | christine Tranchant-Dubreuil (christine.tranchant@ird.fr)  |
