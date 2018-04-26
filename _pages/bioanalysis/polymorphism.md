@@ -35,8 +35,10 @@ fastq, sam, bam, vcf
   - [Getting various statistics about _fastq_ and performing a quality control check with `fastqc`](#fastqc)
 - [FASTQ cleaning](#fastq-cleaning)
   - [Using `cutadapt` to remove adapters and to trim reads based on quality](#cutadapt)
-- [Mapping step](#mapping)
-  - [Mapping reads with `bwa`](#bwa)
+- [Mapping step with `bwa`](#mapping)
+  - [Creating an index of the reference genome with `bwa index`](#mapping-index)
+  - [Performing mapping with `bwa aln` and `bwa sampe/samse`](#mapping-aln)
+  - [Performing mapping with `bwa mem`](#mapping-mem)
 - [Processing _sam_ file with `picardtools` and `samtools`](#picardtools-samtools)
 - [Local realignment around INDELS using `GATK`](#gatk-indelrealigner)
 - [Variant calling using `GATK unifiedGenotyper` or `GATK haplotypeCaller` ](#gatk-ug-hc)
@@ -70,7 +72,7 @@ C3KB2ACXX_5_12_12_debar.fastq 	 2249353
 -----------------------
 
 <a name="ea-utils"></a>
-#### Getting quickly a report with various statistics about _fastq_ file with `ea-utils`
+##### Getting quickly a report with various statistics about _fastq_ file with `ea-utils`
 
 This software runs quickly, faster than fastqc and the output can be parsed and formatted with some basics linux command
 [ea-utils website](https://code.google.com/p/ea-utils/)
@@ -182,8 +184,11 @@ drwxr-xr-x 4 tranchant ggr                4096  9 mars  22:11 PdFIE94_R1.fq_fast
 
 -----------------------
 
+<a name="fastq-cleaning"></a>
+### FASTQ cleaning
+
 <a name="cutadapt"></a>
-### Using `cutadapt` to remove adapters and to trim reads based on quality
+##### Using `cutadapt` to remove adapters and to trim reads based on quality
 
 * [cutadapt website](https://code.google.com/p/cutadapt/)
 
@@ -206,11 +211,12 @@ cutadapt  -q 30,30 -m 35  -B GATCGGAAGAGCACACGTCTGAACTCCAGTCACATCACGATCTCGTATGCC
 
 -----------------------
 
-<a name="bwa"></a>
-### Mapping reads with `bwa`
+<a name="mapping"></a>
+### Mapping step with `bwa`
 
 * [bwa website](http://bio-bwa.sourceforge.net/)
 
+<a name="mapping-index"></a>
 ##### Creating an index of the reference genome with `bwa index`
 
 {% highlight bash %}
@@ -220,16 +226,18 @@ bwa index -a is
 * `is` for short genome
 * `bwtsw` for genome >2Gb
 
+
+<a name="mapping-aln"></a>
 ##### Performing mapping with `bwa aln` and `bwa sampe/samse`
 
-* Getting _sai_ files with `bwa aln`
+###### Getting _sai_ files with `bwa aln`
 
 {% highlight bash %}
 bwa aln reference file_forward.fastq > file_forward.sai
 bwa aln reference file_reverse.fastq > file_reverse.sai
 {% endhighlight %}
 
-* Getting _sam_ file with `bwa sampe` (paired)
+###### Getting _sam_ file with `bwa sampe` (paired)
 
 Here is a description for the contents of the SAM file: https://samtools.github.io/hts-specs/SAMv1.pdf
 
@@ -237,12 +245,14 @@ Here is a description for the contents of the SAM file: https://samtools.github.
 bwa sampe reference file_forward.sai file_reverse.sai  file_forward.fastq file_reverse.fastq -f file.sam  -r '@RG        ID:RG  SM:RG  PL:Illumina'
 {% endhighlight %}
 
-* Getting _sam_ file with `bwa samse` (single)
+###### Getting _sam_ file with `bwa samse` (single)
 
 {% highlight bash %}
 bwa samse reference file.sai file.fastq file_reverse.fastq -f file.sam  -r '@RG        ID:RG  SM:RG  PL:Illumina'
 {% endhighlight %}
 
+
+<a name="mapping-mem"></a>
 ##### Performing mapping with `bwa mem`
 
 {% highlight bash %}
