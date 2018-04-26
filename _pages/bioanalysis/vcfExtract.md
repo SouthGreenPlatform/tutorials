@@ -5,37 +5,21 @@ permalink: /bioanalysis/vcfExtract/
 tags: [ polymorphism, SNP, indel, vcf ]
 description: Commands to manipulate VCF files
 ---
-<table class="table-contact">
-<tr>
-<td><img width="100%" src="{{ site.url }}/images/trainings-linux.png" alt="" />
-</td>
-<td>
-<h1> Commands to manipulate VCF files</h1><br />
-This page describes a serie of tools and linux commands used to manipulate VCF files.
-</td>
-</tr>
-</table>
-
+| Name | Commands to manipulate VCF files. |
+| :------------- | :------------- | :------------- | :------------- |
+| Description | This page describes a serie of tools and linux commands used to manipulate VCF files. |
+| Authors | christine Tranchant-Dubreuil (christine.tranchant@ird.fr)  |
+| Creation Date | 10/03/2017 |
+| Last Modified Date | 25/03/2018 |
 
 We need, in this tutorial:
 * 1 vcf file
 * GATK tools
 * bcftools
 
-### Author(s)
-
-| Authors  | Christine Tranchant-Dubreuil  |
-| :------------- | :------------- |
-| Research Unit | UMR DIADE   |
-| Institut |  <img src="https://www.ird.fr/extension/ird/design/ird/images/picto/logo_ird.png" width="20%"> |
-
-
 #### _Keywords_ : `gatk`,`bcftools`
 
 #### _Files format_ : vcf
-
-#### _Date_ : 10/03/2017
-
 
 ***
 
