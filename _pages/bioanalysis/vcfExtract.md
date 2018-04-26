@@ -40,13 +40,13 @@ We need, in this tutorial:
 ### Extracting list of samples from a vcf file 
 
 <a name="sample-list1"></a>
-#### one line with all samples with `grep`
+##### one line with all samples with `grep`
 {% highlight ruby %}
 $grep "#CHROM" output | cut -f 10-
 {% endhighlight %}
 
 <a name="sample-list2"></a>
-#### one line by sample with `grep | cut | xargs`
+##### one line by sample with `grep | cut | xargs`
 
 {% highlight ruby %}
 $grep "#CHROM" output | cut -f 10- | xargs -n 1
@@ -60,32 +60,32 @@ $grep "#CHROM" output | cut -f 10- | xargs -n 1 | wc -l
 ### Extracting a subset of samples from a multigenome vcf file 
 
 <a name="sample-from-vcf-gatk1"></a>
-#### Select two samples out of a vcf with many samples with `GATK selectVariants`
+##### Select two samples out of a vcf with many samples with `GATK selectVariants`
 
 {% highlight ruby %}
 java -Xmx12g -jar /usr/local/gatk-3.6/GenomeAnalysisTK.jar -T SelectVariants -R reference.fa -V inputFileName.vcf -o outputFilename.vcf -sn sample1 -sn sample2
 {% endhighlight %}
 
-###### Rk : if you get the following error message "_Fasta dict file ... for reference ... does not exist_", please see https://www.broadinstitute.org/gatk/guide/article?id=1601
+> Rk : if you get the following error message "_Fasta dict file ... for reference ... does not exist_", please see https://www.broadinstitute.org/gatk/guide/article?id=1601
 
 <a name="sample-from-vcf-gatk2"></a>
-#### Select genotypes from a file containing a list of samples to include with `GATK selectVariants`
+##### Select genotypes from a file containing a list of samples to include with `GATK selectVariants`
 
 {% highlight ruby %}
 java -Xmx12g -jar /usr/local/gatk-3.6/GenomeAnalysisTK.jar -T SelectVariants -R reference.fa -V inputFileName.vcf -o outputFileName.vcf --sample_file barthii.only.RG.list  --ALLOW_NONOVERLAPPING_COMMAND_LINE_SAMPLES
 {% endhighlight %}
 
 <a name="sample-from-vcf-gatk3"></a>
-#### Select genotypes from a file containing a list of samples to exclude with `GATK selectVariants`
+##### Select genotypes from a file containing a list of samples to exclude with `GATK selectVariants`
 
 {% highlight ruby %}
 java -Xmx12g -jar /usr/local/gatk-3.6/GenomeAnalysisTK.jar -T SelectVariants -R reference.fa -V inputFileName.vcf -o outputFileName.vcf --exclude_sample_file barthii.only.RG.list  --ALLOW_NONOVERLAPPING_COMMAND_LINE_SAMPLES
 {% endhighlight %}
 
-###### Rk : if you get the following error message : "_Bad input: Samples entered on command line (through -sf or -sn)) that are not present in the VCF_", run with --ALLOW_NONOVERLAPPING_COMMAND_LINE_SAMPLES
+> Rk : if you get the following error message : "_Bad input: Samples entered on command line (through -sf or -sn)) that are not present in the VCF_", run with --ALLOW_NONOVERLAPPING_COMMAND_LINE_SAMPLES
 
 <a name="sample-from-vcf-bcftools1"></a>
-#### Select genotypes from a file containing a list of samples to include with `bcftools`
+##### Select genotypes from a file containing a list of samples to include with `bcftools`
 
 {% highlight bash %}
 bcftools view -S barthii.only.RG.list inputFileName.vcf --force-samples -o outputFilename.vcf
