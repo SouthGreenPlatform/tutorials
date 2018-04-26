@@ -30,7 +30,7 @@ fastq, sam, bam, vcf
 
 - [Getting basic informations about FASTQ files](#fastq-info)
   - [How to get _fastq_ file size?  `du -sh`](#fastq-files-size)
-  - [How to get sequences number by _fastq_ files  (uncompressed files only)?](#fastq-seq]
+  - [How to get sequences number by _fastq_ files (uncompressed files only)?](#fastq-seq)
   - [Getting a report with various statistics about  file with `ea-utils` ](#ea-utils)
   - [Getting various statistics about _fastq_ and performing a quality control check with `fastqc`](#fastqc)
 - [FASTQ cleaning](#fastq-cleaning)
@@ -49,7 +49,7 @@ fastq, sam, bam, vcf
 ### Getting basic informations about FASTQ files
 
 <a name="fastq-files-size"></a>
-####### How to get _fastq_ file size?  `du -sh`
+#### How to get _fastq_ file size?  `du -sh`
 
 {% highlight bash %}
 [tranchant@master0 ~]$ du -sh *.fastq
@@ -59,7 +59,7 @@ fastq, sam, bam, vcf
 {% endhighlight %}
 
 <a name="fastq-seq"></a>
-####### How to get sequences number by _fastq_ files  (uncompressed files only)?
+##### How to get sequences number by _fastq_ files  (uncompressed files only)?
 
 {% highlight sh %}
 [tranchant@master0 ~]$ wc -l *.fastq | awk '{ print $2" \t "$1/4}'
@@ -70,12 +70,12 @@ C3KB2ACXX_5_12_12_debar.fastq 	 2249353
 -----------------------
 
 <a name="ea-utils"></a>
-##### Getting a report with various statistics about _fastq_ file with `ea-utils`
+#### Getting a report with various statistics about _fastq_ file with `ea-utils`
 
 This software runs quickly, faster than fastqc and the output can be parsed and formatted with some basics linux command
 [ea-utils website](https://code.google.com/p/ea-utils/)
 
-##### How to use `fastq-stats` with one _fastq_ file
+###### How to use `fastq-stats` with one _fastq_ file
 
 {% highlight bash %} 
 [tranchant@node11 FASTQ]$ fastq-stats -D PdFIE94_R1.fq.gz
