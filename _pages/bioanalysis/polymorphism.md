@@ -28,22 +28,28 @@ fastq, sam, bam, vcf
 
 ### Summary
 
-- [Getting basic informations about _fastq_ files](#Getting-basic-informations-about-fastq-files)
-- [Getting a report with various statistics about  file with `ea-utils` ](#ea-utils)
-- [Getting various statistics about _fastq_ and performing a quality control check with `fastqc`](#fastqc)
-- [Using `cutadapt` to remove adapters and to trim reads based on quality](#cutadapt)
-- [Mapping reads with `bwa`](#bwa)
+- [Getting basic informations about FASTQ files](#fastq-info)
+  - [How to get _fastq_ file size?  `du -sh`](#fastq-files-size)
+  - [How to get sequences number by _fastq_ files  (uncompressed files only)?](#fastq-seq]
+  - [Getting a report with various statistics about  file with `ea-utils` ](#ea-utils)
+  - [Getting various statistics about _fastq_ and performing a quality control check with `fastqc`](#fastqc)
+- [FASTQ cleaning](#fastq-cleaning)
+  - [Using `cutadapt` to remove adapters and to trim reads based on quality](#cutadapt)
+- [Mapping step](#mapping)
+  - [Mapping reads with `bwa`](#bwa)
 - [Processing _sam_ file with `picardtools` and `samtools`](#picardtools-samtools)
 - [Local realignment around INDELS using `GATK`](#gatk-indelrealigner)
 - [Variant calling using `GATK unifiedGenotyper` or `GATK haplotypeCaller` ](#gatk-ug-hc)
 - [Basic Filters vcf files using `GATK` ](#gatk-filters)
 
+- [License](#license) 
 -----------------------
 
-<a name="Getting-basic-informations-about-fastq-files"></a>
-### Getting basic informations about _fastq_ files (file size, sequences number)
+<a name="fastq-info"></a>
+### Getting basic informations about FASTQ files
 
-##### How to get _fastq_ file size `du -sh`
+<a name="fastq-files-size"></a>
+####### How to get _fastq_ file size?  `du -sh`
 
 {% highlight bash %}
 [tranchant@master0 ~]$ du -sh *.fastq
@@ -52,19 +58,19 @@ fastq, sam, bam, vcf
 
 {% endhighlight %}
 
-##### How to get sequences number by _fastq_ files  (uncompressed files only)
+<a name="fastq-seq"></a>
+####### How to get sequences number by _fastq_ files  (uncompressed files only)?
 
 {% highlight sh %}
 [tranchant@master0 ~]$ wc -l *.fastq | awk '{ print $2" \t "$1/4}'
 C3KB2ACXX_5_12_11_debar.fastq 	 1354891
 C3KB2ACXX_5_12_12_debar.fastq 	 2249353
-
 {% endhighlight %}
 
 -----------------------
 
 <a name="ea-utils"></a>
-### Getting a report with various statistics about _fastq_ file with `ea-utils`
+##### Getting a report with various statistics about _fastq_ file with `ea-utils`
 
 This software runs quickly, faster than fastqc and the output can be parsed and formatted with some basics linux command
 [ea-utils website](https://code.google.com/p/ea-utils/)
@@ -415,3 +421,12 @@ samtools index file.SAMTOOLSVIEW-MAPPED.bam
 
 ### More informations
 cf. NGS trainings and linux trainings
+
+### License
+<a name="license"></a>
+
+<div>
+The resource material is licensed under the Creative Commons Attribution 4.0 International License (<a href="http://creativecommons.org/licenses/by-nc-sa/4.0/">here</a>).
+<center><img width="25%" class="img-responsive" src="http://creativecommons.org.nz/wp-content/uploads/2012/05/by-nc-sa1.png"/>
+</center> 
+</div>
