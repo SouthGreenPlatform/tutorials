@@ -9,7 +9,7 @@ description: Polymorphism detection from fastq files on a linux terminal
 | :------------- | :------------- | :------------- | :------------- |
 | Description | This page describes a serie of tools and linux commands used to detect polymorphism from raw data (fastq files) to polymorphism file (vcf). |
 | Authors | christine Tranchant-Dubreuil (christine.tranchant@ird.fr)  |
-| Creation Date | 26/02/2017 |
+| Creation Date | 10/03/2017 |
 | Last Modified Date | 25/03/2018 |
 
 We need, in this tutorial:
@@ -21,10 +21,6 @@ fastq-stats, fastqc, cutadapt, bwa, samtools, gatk, picardtools
 
 ### Files format
 fastq, sam, bam, vcf
-
-### Date
-10/03/2017
-
 
 ### Summary
 
