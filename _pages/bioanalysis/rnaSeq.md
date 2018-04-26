@@ -26,7 +26,7 @@ We need, in this tutorial:
 
 | Authors  | Gaetan Droc  |
 | :------------- | :------------- |
-| Research Unit | UMR DIADE   |
+| Research Unit | UMR AGAP   |
 | Institut |  <img src="http://s3f-haiti.cirad.fr/var/projets/storage/images/media/media_s3f_haiti/logo_agap/54594-1-fre-FR/logo_agap_medium.jpg" width="20%"> |
 
 ### Keywords
