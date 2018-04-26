@@ -17,42 +17,44 @@ We need, in this tutorial:
 * GATK tools
 * bcftools
 
-#### _Keywords_ : `gatk`,`bcftools`
+### Keywords 
+`gatk`,`bcftools`
 
-#### _Files format_ : vcf
+-----------------------
 
-***
+### Summary
 
-## Summary
-
-<!-- TOC depthFrom:2 depthTo:2 withLinks:1 updateOnSave:1 orderedList:0 -->
-
-- [Extracting list of samples from a vcf file with `grep`and `cut`commands](#sample-list)
+- [Extracting list of samples from a vcf file](#sample-list)
+  - [one line with all samples with `grep`](#sample-list1)
+  - [one line by sample with `grep | cut | xargs`](#sample-list1)
 - [Extracting a subset of samples from a multigenome vcf file with `GATK selectVariants`](#sample-from-vcf-gatk)
 - [Extracting a subset of samples from a multigenome vcf file with `bcftools`](#sample-from-vcf-bcftools)
 - [Calculating the nucleotide diversity from a vcf file with `vcftools`](#calculating-pi)
 
-<!-- /TOC -->
-
-***
+-----------------------
 
 <a name="sample-list"></a>
-## Extracting list of samples from a vcf file with `grep`and `cut`commands
+### Extracting list of samples from a vcf file 
 
-one line with all samples
-
+<a name="sample-list1"></a>
+#### one line with all samples with `grep`
 {% highlight ruby %}
-grep "#CHROM" output | cut -f 10-
+$grep "#CHROM" output | cut -f 10-
 {% endhighlight %}
 
-one line by sample
+<a name="sample-list2"></a>
+#### one line by sample with `grep | cut | xargs`
 
 {% highlight ruby %}
-grep "#CHROM" output | cut -f 10- | xargs -n 1
+$grep "#CHROM" output | cut -f 10- | xargs -n 1
+#Getting the sample number
+$grep "#CHROM" output | cut -f 10- | xargs -n 1 | wc -l
 {% endhighlight %}
+
+-----------------------
 
 <a name="sample-from-vcf-gatk"></a>
-## Extracting a subset of samples from a multigenome vcf file with `GATK selectVariants`
+### Extracting a subset of samples from a multigenome vcf file with `GATK selectVariants`
 
 #### Select two samples out of a vcf with many samples
 
@@ -79,21 +81,22 @@ java -Xmx12g -jar /usr/local/gatk-3.6/GenomeAnalysisTK.jar -T SelectVariants -R 
 
 
 <a name="sample-from-vcf-bcftools"></a>
-## Extracting a subset of samples from a multigenome vcf file with `bcftools`
+### Extracting a subset of samples from a multigenome vcf file with `bcftools`
+
 #### Select genotypes from a file containing a list of samples to include with `bcftools`
 
-{% highlight ruby %}
-bcftools view -S barthii.only.RG.list inputFileName.vcf --force-samples -o outputFilename.vcf`
+{% highlight bash %}
+bcftools view -S barthii.only.RG.list inputFileName.vcf --force-samples -o outputFilename.vcf
 {% endhighlight %}
 
 
 <a name="calculating-pi"></a>
-## Calculating the nucleotide diversity from a vcf file with `vcftools`
+### Calculating the nucleotide diversity from a vcf file with `vcftools`
 
-{% highlight ruby %}
+{% highlight bash %}
 vcftools --vcf inputFilename.vcf  --out outputFilename.PI  --window-pi 100000 --remove-filtered-all
 {% endhighlight %}
 
-{% highlight ruby %}
+{% highlight bash %}
 grep "PI" OgOb-all-MSU7-CHR2.GATKSV.VCFTOOLS.stats-100000.windowed.pi -v | awk '{ sum+=$5; print $5,"; ",sum , "* ", NR ; } END { print "PI average :", sum / NR; }'
 {% endhighlight %}
