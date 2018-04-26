@@ -40,10 +40,24 @@ fastq, sam, bam, vcf
   - [Performing mapping with `bwa aln` and `bwa sampe/samse`](#mapping-aln)
   - [Performing mapping with `bwa mem`](#mapping-mem)
 - [Processing _sam_ file with `picardtools` and `samtools`](#picardtools-samtools)
+  - [Creating Reference dictionary with `picardtools CreateSequenceDictionary`](#picardtools-dictionary)
+  - [Creating Reference indexes with `samtools faidx`](#samtools-faidx)
+  - [Converting the _sam_ file into a _bam_ file and sorting the _bam_ file with `picardtools SortSam`](#picardtools-sortSam)
+  - [Getting some stats from _bam_ file with `samtools flagstat`](#samtools-flagstat)
+  - [Getting some stats from _bam_ file with `samtools idxstats`](#samtools-idxstats)
+  - [Remove multimapping and incorrectly mapping reads with `samtools view`](#samtools-view)
+  - [Creating index of the last bam generated with `samtools index`](#samtools-index)
+  - [Adding read group with `picardtools AddOrReplaceReadGroups`](#picardtools-rg)
+  - [Marking duplicates with `picardtools MarkDuplicates`](#picardtools-duplicate)
 - [Local realignment around INDELS using `GATK`](#gatk-indelrealigner)
-- [Variant calling using `GATK unifiedGenotyper` or `GATK haplotypeCaller` ](#gatk-ug-hc)
-- [Basic Filters vcf files using `GATK` ](#gatk-filters)
-
+  - [Creating a target list of intervals which need to be realigned with `gatk realignerTargetCreator`](#gatk-indelrealigner1)
+  - [Performing realignment of the target intervals with `gatk indelRealigner`](#gatk-indelrealigner2)
+- [SNP/INDEL calling](#snp-calling)
+  - [with `GATK haplotypeCaller`](#gatk-hc) 
+  - [with `GATK unifiedGenotyper`](#gatk-ug)
+- [Basic Filtering vcf files using `GATK`](#gatk-filters)
+  - [with `gatk variantFiltration`](#gatk-vf)
+  - [with `gatk selectVariants`](#gatk-sv)
 - [License](#license) 
 -----------------------
 
@@ -51,7 +65,7 @@ fastq, sam, bam, vcf
 ### Getting basic informations about FASTQ files
 
 <a name="fastq-files-size"></a>
-##### How to get _fastq_ file size?  `du -sh`
+#### How to get _fastq_ file size?  `du -sh`
 
 {% highlight bash %}
 [tranchant@master0 ~]$ du -sh *.fastq
@@ -61,7 +75,7 @@ fastq, sam, bam, vcf
 {% endhighlight %}
 
 <a name="fastq-seq"></a>
-##### How to get sequences number by _fastq_ files  (uncompressed files only)?
+#### How to get sequences number by _fastq_ files  (uncompressed files only)?
 
 {% highlight sh %}
 [tranchant@master0 ~]$ wc -l *.fastq | awk '{ print $2" \t "$1/4}'
@@ -72,7 +86,7 @@ C3KB2ACXX_5_12_12_debar.fastq 	 2249353
 -----------------------
 
 <a name="ea-utils"></a>
-##### Getting quickly a report with various statistics about _fastq_ file with `ea-utils`
+#### Getting quickly a report with various statistics about _fastq_ file with `ea-utils`
 
 This software runs quickly, faster than fastqc and the output can be parsed and formatted with some basics linux command
 [ea-utils website](https://code.google.com/p/ea-utils/)
@@ -169,7 +183,7 @@ PdFIE98_R2.fq.gz.fastq-stats 151 151.0000 0.0000 151 33 2000000 35 2 42 35.0267 
 -----------------------
 
 <a name="fastqc"></a>
-##### Getting various statistics about _fastq_ and performing a quality control check with `fastqc`
+#### Getting various statistics about _fastq_ and performing a quality control check with `fastqc`
 
 * to perform some simple quality control checks to ensure that the raw data looks good and there are no problems or biases in data which may affect how user can usefully use it. [fastqc website](http://www.bioinformatics.babraham.ac.uk/projects/fastqc/)
 
@@ -188,7 +202,7 @@ drwxr-xr-x 4 tranchant ggr                4096  9 mars  22:11 PdFIE94_R1.fq_fast
 ### FASTQ cleaning
 
 <a name="cutadapt"></a>
-##### Using `cutadapt` to remove adapters and to trim reads based on quality
+#### Using `cutadapt` to remove adapters and to trim reads based on quality
 
 * [cutadapt website](https://code.google.com/p/cutadapt/)
 
@@ -217,18 +231,18 @@ cutadapt  -q 30,30 -m 35  -B GATCGGAAGAGCACACGTCTGAACTCCAGTCACATCACGATCTCGTATGCC
 * [bwa website](http://bio-bwa.sourceforge.net/)
 
 <a name="mapping-index"></a>
-##### Creating an index of the reference genome with `bwa index`
+#### Creating an index of the reference genome with `bwa index`
 
 {% highlight bash %}
 bwa index -a is
 {% endhighlight %}
 
-* `is` for short genome
-* `bwtsw` for genome >2Gb
+> `is` for short genome
+> `bwtsw` for genome >2Gb
 
 
 <a name="mapping-aln"></a>
-##### Performing mapping with `bwa aln` and `bwa sampe/samse`
+#### Performing mapping with `bwa aln` and `bwa sampe/samse`
 
 ###### Getting _sai_ files with `bwa aln`
 
@@ -253,7 +267,7 @@ bwa samse reference file.sai file.fastq file_reverse.fastq -f file.sam  -r '@RG 
 
 
 <a name="mapping-mem"></a>
-##### Performing mapping with `bwa mem`
+#### Performing mapping with `bwa mem`
 
 {% highlight bash %}
 bwa mem  reference file.fastq  file_reverse.fastq  -R '@RG\tID:RC3\tSM:RC3\tPL:Illumina' > file.sam
@@ -267,26 +281,31 @@ bwa mem  reference file.fastq  file_reverse.fastq  -R '@RG\tID:RC3\tSM:RC3\tPL:I
 * [picard website](https://broadinstitute.github.io/picard/)
 * [samtools website](http://samtools.sourceforge.net/)
 
-##### Creating Reference dictionary with `picardtools CreateSequenceDictionary`
+<a name="picardtools-dictionary"></a>
+#### Creating Reference dictionary with `picardtools CreateSequenceDictionary`
 
 {% highlight bash %}
 /usr/bin/java -Xmx8g  -jar /us/local/picard-tools-2.5.0/picard.jar CreateSequenceDictionary REFERENCE=Reference.fasta OUTPUT=Reference.dict
 {% endhighlight %}
 
-##### Creating Reference indexes with `samtools faidx`
+
+<a name="samtools-faidx"></a>
+#### Creating Reference indexes with `samtools faidx`
 
 {% highlight bash %}
 samtools faidx Rreference.fasta
 {% endhighlight %}
 
-##### Converting the _sam_ file into a _bam_ file and sorting the _bam_ file with `picardtools SortSam`
+<a name="picardtools-sortSam"></a>
+#### Converting the _sam_ file into a _bam_ file and sorting the _bam_ file with `picardtools SortSam`
 
 {% highlight bash %}
 /usr/bin/java -Xmx12g -jar /usr/local/picard-tools-2.5.0/picard.jar SortSam  CREATE_INDEX=TRUE VALIDATION_STRINGENCY=SILENT SORT_ORDER=coordinate  INPUT=file.BWASAMPE.sam OUTPUT=file.PICARDTOOLSSORT.bam
 {% endhighlight %}
 The _bam_ index (_.bai_) is created auomtically by `picardtools` (`samtools index` command unnecessary)
 
-##### Getting some stats from _bam_ file with `samtools flagstat`
+<a name="samtools-flagstat"></a>
+#### Getting some stats from _bam_ file with `samtools flagstat`
 
 {% highlight bash %}
 #command
@@ -308,7 +327,9 @@ $samtools flagstat file.PICARDTOOLSSORT.bam
 0 + 0 with mate mapped to a different chr (mapQ>=5)
 {% endhighlight %}
 
-##### Getting some stats from _bam_ file with `samtools idxstats`
+
+<a name="samtools-idxstats"></a>
+#### Getting some stats from _bam_ file with `samtools idxstats`
 
 {% highlight bash %}
 #command
@@ -326,7 +347,9 @@ Chromosome_8.8	535760	117502	0
 *	0	0	3304792
 {% endhighlight %}
 
-##### Remove multimapping and improrubyy paired reads with `samtools view`
+
+<a name="samtools-view"></a>
+#### Remove multimapping and incorrectly mapping reads with `samtools view`
 
 * [Defining flag value](https://broadinstitute.github.io/picard/explain-flags.html)
 * [more explanation](https://ppotato.wordpress.com/2010/08/25/samtool-bitwise-flag-paired-reads/)
@@ -340,14 +363,17 @@ samtools view -h -b -F=0*02 -o file.SAMTOOLSVIEW-UNMAPPED.bam file.PICARDTOOLSSO
 
 {% endhighlight %}
 
-##### Creating index of the last bam generated with `samtools index`
+
+<a name="samtools-index"></a>
+#### Creating index of the last bam generated with `samtools index`
 
 {% highlight bash %}
 #Command
 samtools index file.SAMTOOLSVIEW-MAPPED.bam
 {% endhighlight %}
 
-##### Adding read group with `picardtools AddOrReplaceReadGroups`
+<a name="picardtools-rg"></a>
+#### Adding read group with `picardtools AddOrReplaceReadGroups`
 
 ... if they haven't been added precedently
 
@@ -361,7 +387,9 @@ samtools index file.SAMTOOLSVIEW-MAPPED.bam
 - RGPU= Read Group Platform Unit (i.e Barcode)
 - RGSM= Read Group Sample Name (i.e. Sample Name)
 
-##### Marking duplicates with `picardtools AddOrReplaceReadGroups`
+
+<a name="picardtools-duplicate"></a
+#### Marking duplicates with `picardtools MarkDuplicates`
 
 ... if it is necessary
 
@@ -378,14 +406,17 @@ samtools index file.SAMTOOLSVIEW-MAPPED.bam
 
 * [gatk website](https://www.broadinstitute.org/gatk/)
 
-##### Firstly, creating a target list of intervals which need to be realigned with `gatk realignerTargetCreator`
+<a name="gatk-indelrealigner1"></a>
+#### Creating a target list of intervals which need to be realigned with `gatk realignerTargetCreator`
 
 {% highlight bash %}
 #command
 /usr/bin/java -Xmx12g -jar /usr/local/gatk-3.7/GenomeAnalysisTK.jar -T RealignerTargetCreator  -R reference -I file.bam -o file.GATKREALIGNERTARGETCREATOR.intervals
 {% endhighlight %}
 
-##### Then, perform realignment of the target intervals with `gatk indelRealigner`
+
+<a name="gatk-indelrealigner2"></a>
+#### Performing realignment of the target intervals with `gatk indelRealigner`
 
 {% highlight bash %}
 #Command
@@ -395,16 +426,17 @@ samtools index file.SAMTOOLSVIEW-MAPPED.bam
 -----------------------
 
 <a name="gatk-ug-hc"></a>
-### Variant calling using `GATK unifiedGenotyper` or `GATK haplotypeCaller`
+### SNP/INDEL calling
 
-
-##### `GATK haplotypeCaller`
+<a name="gatk-hc"></a>
+#### with `GATK haplotypeCaller` 
 
 {% highlight bash %}
 /usr/bin/java -Xmx12g -jar /usr/local/gatk-3.7/GenomeAnalysisTK.jar -rf BadCigar  -T HaplotypeCaller  -R reference -I file-ind1.PICARDTOOLSMARKDUPLICATES.bam -I  file-ind2.PICARDTOOLSMARKDUPLICATES.bam  -o file.GATKHAPLOTYPECALLER.vcf
 {% endhighlight %}
 
-##### `GATK unifiedGenotyper`
+<a name="gatk-ug"></a>
+#### with `GATK unifiedGenotyper`
 
 {% highlight bash %}
 /usr/bin/java -Xmx12g -jar /usr/local/gatk-3.7/GenomeAnalysisTK.jar -rf BadCigar   -T UnifiedGenotyper -R reference -I file.bam  -o file.GATKUNIFIEDGENOTYPER.vcf
@@ -413,15 +445,15 @@ samtools index file.SAMTOOLSVIEW-MAPPED.bam
 -----------------------
 
 <a name="gatk-filters"></a>
-### Basic Filters vcf files using `GATK`
+### Basic Filtering vcf files using `GATK`
 
-##### gatk variantFiltration
-
+#### with `gatk variantFiltration`
 {% highlight bash %}
 /usr/bin/java -Xmx12g -jar /usr/local/gatk-3.7/GenomeAnalysisTK.jar -T VariantFiltration --filterName 'FILTER-DP' --filterExpression 'DP<10 || DP>600' --filterName 'LowQual' --filterExpression 'QUAL<30'   -R /reference -o file.GATKVARIANTFILTRATION.vcf --variant file.GATKHAPLOTYPECALLER.vcf
 {% endhighlight %}
 
-##### gatk selectVariants
+<a name="gatk-sv"></a>
+#### with `gatk selectVariants`
 
 {% highlight bash %}
 /usr/bin/java -Xmx12g -jar /usr/local/gatk-3.7/GenomeAnalysisTK.jar -selectType SNP -T SelectVariants  -R reference --variant file.GATKVARIANTFILTRATION.vcf -o file.GATKSELECTVARIANT.vcf
@@ -431,6 +463,8 @@ samtools index file.SAMTOOLSVIEW-MAPPED.bam
 
 ### More informations
 cf. NGS trainings and linux trainings
+
+-----------------------
 
 ### License
 <a name="license"></a>
