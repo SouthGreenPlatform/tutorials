@@ -462,7 +462,7 @@ samtools index file.SAMTOOLSVIEW-MAPPED.bam
 -----------------------
 
 ### More informations
-cf. NGS trainings and linux trainings
+[NGS workflow Managers and linux trainings realized by the South Green Platform](https://southgreenplatform.github.io/trainings/)
 
 -----------------------
 
