@@ -27,8 +27,11 @@ We need, in this tutorial:
 - [Extracting list of samples from a vcf file](#sample-list)
   - [one line with all samples with `grep`](#sample-list1)
   - [one line by sample with `grep | cut | xargs`](#sample-list1)
-- [Extracting a subset of samples from a multigenome vcf file with `GATK selectVariants`](#sample-from-vcf-gatk)
-- [Extracting a subset of samples from a multigenome vcf file with `bcftools`](#sample-from-vcf-bcftools)
+- [Extracting a subset of samples from a multigenome vcf file](#sample-from-vcf-gatk)
+  - [Select two samples out of a vcf with many samples with `GATK selectVariants`](#sample-from-vcf-gatk1)
+  - [Select genotypes from a file containing a list of samples to include with `GATK selectVariants`](#sample-from-vcf-gatk2)
+  - [Select genotypes from a file containing a list of samples to exclude with `GATK selectVariants`](#sample-from-vcf-gatk3)
+  - [Select genotypes from a file containing a list of samples to include with `bcftools`](#sample-from-vcf-bcftools1)
 - [Calculating the nucleotide diversity from a vcf file with `vcftools`](#calculating-pi)
 
 -----------------------
@@ -54,24 +57,26 @@ $grep "#CHROM" output | cut -f 10- | xargs -n 1 | wc -l
 -----------------------
 
 <a name="sample-from-vcf-gatk"></a>
-### Extracting a subset of samples from a multigenome vcf file with `GATK selectVariants`
+### Extracting a subset of samples from a multigenome vcf file 
 
-#### Select two samples out of a vcf with many samples
+<a name="sample-from-vcf-gatk1"></a>
+#### Select two samples out of a vcf with many samples with `GATK selectVariants`
 
 {% highlight ruby %}
 java -Xmx12g -jar /usr/local/gatk-3.6/GenomeAnalysisTK.jar -T SelectVariants -R reference.fa -V inputFileName.vcf -o outputFilename.vcf -sn sample1 -sn sample2
 {% endhighlight %}
 
-###### Rk : if you get the following error message "_Fasta dict file ... for reference ... does not exist_", please see https://www.broadinstitute.org/gatk/guide/article?id=1601 for help creating in.
+###### Rk : if you get the following error message "_Fasta dict file ... for reference ... does not exist_", please see https://www.broadinstitute.org/gatk/guide/article?id=1601
 
-
-#### Select genotypes from a file containing a list of samples to include
+<a name="sample-from-vcf-gatk2"></a>
+#### Select genotypes from a file containing a list of samples to include with `GATK selectVariants`
 
 {% highlight ruby %}
 java -Xmx12g -jar /usr/local/gatk-3.6/GenomeAnalysisTK.jar -T SelectVariants -R reference.fa -V inputFileName.vcf -o outputFileName.vcf --sample_file barthii.only.RG.list  --ALLOW_NONOVERLAPPING_COMMAND_LINE_SAMPLES
 {% endhighlight %}
 
-#### Select genotypes from a file containing a list of samples to exclude
+<a name="sample-from-vcf-gatk3"></a>
+#### Select genotypes from a file containing a list of samples to exclude with `GATK selectVariants`
 
 {% highlight ruby %}
 java -Xmx12g -jar /usr/local/gatk-3.6/GenomeAnalysisTK.jar -T SelectVariants -R reference.fa -V inputFileName.vcf -o outputFileName.vcf --exclude_sample_file barthii.only.RG.list  --ALLOW_NONOVERLAPPING_COMMAND_LINE_SAMPLES
@@ -79,16 +84,14 @@ java -Xmx12g -jar /usr/local/gatk-3.6/GenomeAnalysisTK.jar -T SelectVariants -R 
 
 ###### Rk : if you get the following error message : "_Bad input: Samples entered on command line (through -sf or -sn)) that are not present in the VCF_", run with --ALLOW_NONOVERLAPPING_COMMAND_LINE_SAMPLES
 
-
-<a name="sample-from-vcf-bcftools"></a>
-### Extracting a subset of samples from a multigenome vcf file with `bcftools`
-
+<a name="sample-from-vcf-bcftools1"></a>
 #### Select genotypes from a file containing a list of samples to include with `bcftools`
 
 {% highlight bash %}
 bcftools view -S barthii.only.RG.list inputFileName.vcf --force-samples -o outputFilename.vcf
 {% endhighlight %}
 
+-----------------------
 
 <a name="calculating-pi"></a>
 ### Calculating the nucleotide diversity from a vcf file with `vcftools`
