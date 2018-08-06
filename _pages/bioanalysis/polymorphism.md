@@ -344,7 +344,7 @@ Chromosome_8.8	535760	117502	0
 *	0	0	3304792
 {% endhighlight %}
 
-<a name="#bedtools-coverage"></a>
+<a name="bedtools-coverage"></a>
 #### Getting coverage from _bam_ file with `bedtools coverage`
 
 * [bedtools coverage manual](http://bedtools.readthedocs.io/en/latest/content/tools/genomecov.html)
@@ -356,11 +356,24 @@ Chromosome_8.8	535760	117502	0
 # -bga option : a complete report including the regions with zero coverage.
 $bedtools genomecov -ibam AAOSW.PICARDTOOLSSORT.bam -g /scratch/tranchant/referenceFiles/OglaRS2ADWL02.fa -bga > AAOSW.PICARDTOOLSSORT.bam.BEDTOOLSGENOMECOV
 
-#The output is TAB-delimited with each line consisting of reference sequence name, sequence length, # mapped reads and # unmapped reads. #It is written to stdout.
-
-
-# Note the first record reports that the first 554304
-# base pairs of chr1 had zero coverage
+#The output is TAB-delimited with each line consisting of reference sequence name, start position, end position,  coverage level
+Chr01   0       2       1
+Chr01   2       7       3
+Chr01   7       13      6
+Chr01   13      14      8
+Chr01   14      15      9
+Chr01   15      16      11
+Chr01   16      18      12
+Chr01   18      19      13
+Chr01   19      23      14
+Chr01   23      29      16
+Chr01   29      32      18
+Chr01   32      33      19
+Chr01   33      34      20
+Chr01   34      36      21
+Chr01   36      38      22
+Chr01   38      39      24
+Chr01   39      40      26
 
 
 {% endhighlight %}
