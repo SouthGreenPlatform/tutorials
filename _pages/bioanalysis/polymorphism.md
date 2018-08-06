@@ -10,7 +10,7 @@ description: Polymorphism detection from fastq files on a linux terminal
 | Description | This page describes a serie of tools and linux commands used to detect polymorphism from raw data (fastq files) to polymorphism file (vcf). |
 | Authors | christine Tranchant-Dubreuil (christine.tranchant@ird.fr)  |
 | Creation Date | 10/03/2017 |
-| Last Modified Date | 25/03/2018 |
+| Last Modified Date | 06/08/2018 |
 
 We need, in this tutorial:
 * 2 fastq files paired
@@ -41,6 +41,7 @@ fastq, sam, bam, vcf
   - [Converting the _sam_ file into a _bam_ file and sorting the _bam_ file with `picardtools SortSam`](#picardtools-sortSam)
   - [Getting some stats from _bam_ file with `samtools flagstat`](#samtools-flagstat)
   - [Getting some stats from _bam_ file with `samtools idxstats`](#samtools-idxstats)
+  - [Getting coverage from _bam_ file with `bedtools coverage`](#bedtools-coverage)
   - [Remove multimapping and incorrectly mapping reads with `samtools view`](#samtools-view)
   - [Creating index of the last bam generated with `samtools index`](#samtools-index)
   - [Adding read group with `picardtools AddOrReplaceReadGroups`](#picardtools-rg)
@@ -341,6 +342,27 @@ Chromosome_8.6	4133993	1132535	0
 Chromosome_8.7	3415785	945505	0
 Chromosome_8.8	535760	117502	0
 *	0	0	3304792
+{% endhighlight %}
+
+<a name="#bedtools-coverage"></a>
+#### Getting coverage from _bam_ file with `bedtools coverage`
+
+* [bedtools coverage manual](http://bedtools.readthedocs.io/en/latest/content/tools/genomecov.html)
+
+{% highlight bash %}
+#command
+# -bg option : reports coverage in BEDGRAPH format only for those regions of the genome that actually have coverage. 
+# This option produces genome-wide coverage output in BEDGRAPH format much more concise since consecutive positions with the same coverage are reported as a single output line describing the start and end coordinate of the interval having the coverage level, followed by the coverage level itself.
+# -bga option : a complete report including the regions with zero coverage.
+$bedtools genomecov -ibam AAOSW.PICARDTOOLSSORT.bam -g /scratch/tranchant/referenceFiles/OglaRS2ADWL02.fa -bga > AAOSW.PICARDTOOLSSORT.bam.BEDTOOLSGENOMECOV
+
+#The output is TAB-delimited with each line consisting of reference sequence name, sequence length, # mapped reads and # unmapped reads. #It is written to stdout.
+
+
+# Note the first record reports that the first 554304
+# base pairs of chr1 had zero coverage
+
+
 {% endhighlight %}
 
 
