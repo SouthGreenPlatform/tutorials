@@ -351,12 +351,15 @@ Chromosome_8.8	535760	117502	0
 
 {% highlight bash %}
 #command
-# -bg option : reports coverage in BEDGRAPH format only for those regions of the genome that actually have coverage. 
+# -bg option : reports in BEDGRAPH format only for those regions of the genome that actually have coverage. 
+
 # This option produces genome-wide coverage output in BEDGRAPH format much more concise since consecutive positions with the same coverage are reported as a single output line describing the start and end coordinate of the interval having the coverage level, followed by the coverage level itself.
+
 # -bga option : a complete report including the regions with zero coverage.
 $bedtools genomecov -ibam AAOSW.PICARDTOOLSSORT.bam -g /scratch/tranchant/referenceFiles/OglaRS2ADWL02.fa -bga > AAOSW.PICARDTOOLSSORT.bam.BEDTOOLSGENOMECOV
 
 #The output is TAB-delimited with each line consisting of reference sequence name, start position, end position,  coverage level
+$less AAOSW.PICARDTOOLSSORT.bam.BEDTOOLSGENOMECOV
 Chr01   0       2       1
 Chr01   2       7       3
 Chr01   7       13      6
