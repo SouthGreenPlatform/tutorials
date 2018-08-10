@@ -1,44 +1,42 @@
 ---
 layout: page
-title: "RNASeq"
-permalink: /bioanalysis/rnaSeq/
-tags: [ rnaSeq, ]
-description: RNA Seq differential expression
+title: "AssemblyTrinity"
+permalink: /bioanalysis/trinity/
+tags: [ rnaSeq, trinity, transcriptomics ]
+description: De novo transcriptome assembly and functional annotation of transcrits
 ---
 <table class="table-contact">
 <tr>
-<td><img width="100%" src="{{ site.url }}/images/trainings-linux.png" alt="" />
+<td><img width="70%" src="{{ site.url }}/images/trainings-trinity.png" alt="" />
 </td>
 <td>
-<h1> RNA Seq differential expression</h1><br />
-This page describes a serie of tools and linux commands used to manipulate raw data (fastq file) for differential expression.
+<h3> De novo transcriptome assembly and functional annotation of transcrits </h3><br />
+
 </td>
 </tr>
 </table>
 
+| Name | Transcriptome Assembly and Funtional Annotation |
+| :------------- | :------------- | :------------- | :------------- |
+| Description | This page describes a serie of tools and linux commands used to manipulate raw data (fastq file) for transcriptome assembly  and funtional annotation of transcrits using Trinity and Trinonate. |
+| Authors | Julie Orjuela (julie.orjuela_at_ird.fr)  |
+| Research Unit | UMR BOREA IPME DIADE |
+| Institut |  IRD |
+| Creation Date | 10/08/2018 |
+| Last Modified Date | 10/08/2018 |
 
 We need, in this tutorial:
-* a directory with fastq files
-* a reference file used for the mapping step.
-
-
-### Author(s)
-
-| Authors  | Gaetan Droc  |
-| :------------- | :------------- |
-| Research Unit | UMR AGAP   |
-| Institut |  <img src="http://s3f-haiti.cirad.fr/var/projets/storage/images/media/media_s3f_haiti/logo_agap/54594-1-fre-FR/logo_agap_medium.jpg" width="20%"> |
+* A directory with fastq files
+* Samples information (biological replicates?).
 
 ### Keywords
-fastqc, cutadapt, hitsat2, stringtie, ballgown, bedtools
+Trinity, assembly, de novo, normalisation, RNAseq, transcriptomics
 
 ### Files format
-fastq, sam, bam, bed
+fastq, sam, bam
 
 ### Date
-16/03/2017
-
-
+10/08/2018
 
 ***
 
@@ -46,171 +44,118 @@ fastq, sam, bam, bed
 
 <!-- TOC depthFrom:2 depthTo:2 withLinks:1 updateOnSave:1 orderedList:0 -->
 
-- [Performing a quality control check with `fastqc`](#fastqc)
-- [Using `cutadapt` to remove adapters and to trim reads based on quality](#cutadapt)
-- [Mapping reads with `hisat2`](#hisat2)
-- [Convert and sort SAM to BAM with `samtools`](#samtools)
-- [Transcript assembly and quantification with `StringTie`](#stringtie)
+- [1. Checking quality control and cleaning reads](#preAssembly)
+  - [1.1. Quality control using `fastqc`](#fastqc)
+  - [1.2. Quality trimming and adapter removal using `Trimmomatic`](#trimmomatic)
+  - [1.3. Normalization using `Trinity`](#ReadsNormalisation)
+  - [1.4. Removing Ribosomal RNA using `sortmerna`](#SORTMERNA)
+  
+  
+- [2. Generating a Trinity de novo RNA-Seq assembly](#trinity)
+  - [2.1. Evaluating the quality of the assembly](#assemblyQuality)
+  - [2.2. Quantifying transcript expression levels](#QuantifyingTranscriptExpression)
+  - [2.3. Identifying differentially expressed (DE) transcripts](#DEtranscrits)
+  
+  
+- [3. Functional annotation of transcripts using `Trinotate` and predicting coding regions using `TransDecoder`](#trinonate)
+  - [3.1. Examining functional enrichments for DE transcripts using GOseq](#GO)
+  - [3.2. Interactively Exploring annotations and expression data via TrinotateWeb](#trinonateWeb)
 
 
 <!-- /TOC -->
 
 ***
+In this section, $shortName it is the sample name.
+
+<a name="preAssembly"></a>
+## 1. Checking quality control and cleaning reads
+
 <a name="fastqc"></a>
-## Performing a quality control check with `fastqc`
+### 1.1. Quality control of reads using `fastqc`
+Follow fastqc protocol from bioanalysis/polymorphism/#fastq-info (creer lien)
 
-`FastQC` perform some simple quality control checks to ensure that the raw data looks good and there are no problems or biases in data which may affect how user can usefully use it.
+<a name="trimmomatic"></a>
+### 1.2. Quality trimming and adapter removal using `Trimmomatic`
 
-http://www.bioinformatics.babraham.ac.uk/projects/fastqc/
-
-### `fastqc` command
-
-For one file
-
-{% highlight ruby %}
-[droc@cc2-login RNASeq_fastq_MGX]$ mkdir FastQC
-[droc@cc2-login RNASeq_fastq_MGX]$ qsub -b y -q normal.q -N fastqc -V fastqc --format fastq --outdir FastQC Leaf_CGATGT_L006_R2_017.fastq
+{% highlight bash %}
+java -Xmx4G -jar $path_to_trimmomatic/trimmomatic-0.33.jar PE -phred33 -threads 16 \
+-trimlog logfile_$shortName $shortName_R1.fastq.gz $shortName_R2.fastq.gz \
+$path_to_trimmomatic_results/$shortName_R1.PairedTrimmed.fastq.gz \
+$path_to_trimmomatic_results/$shortName_R1.PairedUntrimmed.fastq.gz \
+$path_to_trimmomatic_results/$shortName_R2.PairedTrimmed.fastq.gz \
+$path_to_trimmomatic_results/$shortName_R2.PairedUntrimmed.fastq.gz \
+ILLUMINACLIP:"$path_to_trimmomatic_adapters":2:30:10 SLIDINGWINDOW:5:20 LEADING:5 TRAILING:5 MINLEN:50"
 {% endhighlight %}
 
-Loop on every file for a directory and print command on terminal
 
-{% highlight ruby %}
-[droc@cc2-login RNASeq_fastq_MGX]$ for i in *fastq; do echo qsub -b y -q normal.q -N fastqc -V fastqc --format fastq --outdir ~/work/FastQC $i;done
-qsub -b y -q normal.q -N fastqc -V fastqc --format fastq --outdir /homedir/droc/work/FastQC Leaf_CGATGT_L006_R1_001.fastq
-qsub -b y -q normal.q -N fastqc -V fastqc --format fastq --outdir /homedir/droc/work/FastQC Leaf_CGATGT_L006_R1_002.fastq
-qsub -b y -q normal.q -N fastqc -V fastqc --format fastq --outdir /homedir/droc/work/FastQC Leaf_CGATGT_L006_R1_003.fastq
-qsub -b y -q normal.q -N fastqc -V fastqc --format fastq --outdir /homedir/droc/work/FastQC Leaf_CGATGT_L006_R1_004.fastq
-qsub -b y -q normal.q -N fastqc -V fastqc --format fastq --outdir /homedir/droc/work/FastQC Leaf_CGATGT_L006_R1_005.fastq
-qsub -b y -q normal.q -N fastqc -V fastqc --format fastq --outdir /homedir/droc/work/FastQC Leaf_CGATGT_L006_R1_006.fastq
+<a name="ReadsNormalisation"></a>
+### 1.3. Normalization using `Trinity`
+
+{% highlight bash %}
+perl $path_to_trinity/util/insilico_read_normalization.pl --seqType fq --JM 100G --max_cov 50 \
+--left $path_to_trimmomatic_results/$shortName_R1.PairedTrimmed.fastq.gz \
+--right $path_to_trimmomatic_results/$shortName_R2.PairedTrimmed.fastq.gz \
+--pairs_together --PARALLEL_STATS --CPU 8 --output $path_to_normalized_data/
 {% endhighlight %}
 
-Loop on every file for a directory and write command on a file (cmd_fastqc.sh)
+<a name="SORTMERNA"></a>
+### 1.4. Removing Ribosomal RNA using `sortmerna`
 
-`[droc@cc2-login RNASeq_fastq_MGX]$ for i in *fastq; do echo qsub -b y -q normal.q -N fastqc -V fastqc --format fastq --outdir ~/work/FastQC $i >> cmd_fastqc.sh;done`
+##### i. indexing the rRNA databases
 
-`[droc@cc2-login RNASeq_fastq_MGX]$ ./cmd_fastqc.sh `
-
-HTML Report
-
-{% highlight ruby %}
-[droc@cc2-login RNASeq_fastq_MGX]$ cd FastQC
-Leaf_CGATGT_L006_R2_017_fastqc.html  Leaf_CGATGT_L006_R2_017_fastqc.zip
+{% highlight bash %}
+echo "indexing sortmerna" 
+path_to_sortmerna="/usr/local/sortmerna-2.1/";
+$path_to_sortmerna/indexdb_rna --ref \
+$path_to_sortmerna/rRNA_databases/silva-bac-16s-id90.fasta,$path_to_sortmerna/index/silva-bac-16s-db:\
+$path_to_sortmerna/rRNA_databases/silva-bac-23s-id98.fasta,$path_to_sortmerna/index/silva-bac-23s-db:\
+$path_to_sortmerna/rRNA_databases/silva-arc-16s-id95.fasta,$path_to_sortmerna/index/silva-arc-16s-db:\
+$path_to_sortmerna/rRNA_databases/silva-arc-23s-id98.fasta,$path_to_sortmerna/index/silva-arc-23s-db:\
+$path_to_sortmerna/rRNA_databases/silva-euk-18s-id95.fasta,$path_to_sortmerna/index/silva-euk-18s-db:\
+$path_to_sortmerna/rRNA_databases/silva-euk-28s-id98.fasta,$path_to_sortmerna/index/silva-euk-28s:\
+$path_to_sortmerna/rRNA_databases/rfam-5s-database-id98.fasta,$path_to_sortmerna/index/rfam-5s-db:\
+$path_to_sortmerna/rRNA_databases/rfam-5.8s-database-id98.fasta,$path_to_sortmerna/index/rfam-5.8s-db 
+echo "done"
 {% endhighlight %}
 
-<a name="cutadapt"></a>
-## Using `cutadapt` to remove adapters and to trim reads based on quality
-
-`Cutadapt` is a tool specifically designed to remove adapters from NGS data. 
-https://code.google.com/p/cutadapt/
-
-### `cutadadapt` command
-
-{% highlight ruby %}
-[droc@cc2-login RNASeq_fastq_MGX]$ module load bioinfo/cutadapt/1.8.1
-[droc@cc2-login RNASeq_fastq_MGX]$ for i in *fastq; do echo qsub -q normal.q -b yes -V -N CUTADAPT cutadapt -a AGATCGGAAGAGCG -O 10 -q 30,30 -f fastq -m 30 -o /work/droc/sugarcane/cutadapt/$i.cutadapt.fastq /work/NGSwaiting4newNAS/sugarcane/BackupCarine/RNASeq/RNASeq_fastq_MGX/$i >> cmd_cutadapt.sh ;done
-./cmd_cutadapt.sh
+##### ii.  merging reads
+{% highlight bash %}
+cd $path_sortmerna_results/
+echo "=> Starting Interleaving of reads .."
+zcat $path_to_normalized_data/$shortName_R1.fastq.gz | perl -pe 's/\n/\t/ if $. %4' - > $path_sortmerna_results/TMP_$shortName_R1.fastq
+zcat $path_to_normalized_data/$shortName_R2.fastq.gz | perl -pe 's/\n/\t/ if $. %4' - > $path_sortmerna_results/TMP_$shortName_R2.fastq
+echo "   Interleaving R1 and R2 .."
+paste -d '\n' $path_sortmerna_results/TMP_$shortName_R1.fastq $path_sortmerna_results/TMP_$shortName_R2.fastq |\
+tr "\t" "\n" > $path_sortmerna_results/$shortName.interleaved.fastq
+echo "   Removing temporal files  .."
+rm $path_sortmerna_results/TMP_$shortName_R1.fastq $path_sortmerna_results/TMP_$shortName_R2.fastq
+echo "   Interleaving was done."
 {% endhighlight %}
 
--q 30, 30 : by default, only the 3’ end of each read is quality-trimmed. If you want to trim the 5’ end as well, use the -q option with two comma-separated cutoffs
-
-<a name="hisat2"></a>
-## Mapping reads with `hisat2`
-
-https://ccb.jhu.edu/software/hisat2/index.shtml
-
-There are several steps involved in mapping sequence reads.
-
-### Creating an index of the reference genome if necessary
-
-{% highlight ruby %}
-[droc@cc2-login RNASeq_fastq_MGX]$ module load bioinfo/hisat2/2.0.5
-[droc@cc2-login RNASeq_fastq_MGX]$ qsub -V -b y -q normal.q -N index hisat2-build reference_genome reference_genome
+##### iii. Filtering out rRNA from reads
+{% highlight bash %}
+$path_to_sortmerna/sortmerna --fastx -a 8 --log --paired_out -e 0.1 --id 0.97 --coverage 0.97 --otu_map\
+--ref $path_to_sortmerna/rRNA_databases/silva-bac-16s-id90.fasta,$path_to_sortmerna/index/silva-bac-16s-db:\
+$path_to_sortmerna/rRNA_databases/silva-bac-23s-id98.fasta,$path_to_sortmerna/index/silva-bac-23s-db:\
+$path_to_sortmerna/rRNA_databases/silva-arc-16s-id95.fasta,$path_to_sortmerna//index/silva-arc-16s-db: \
+$path_to_sortmerna/rRNA_databases/silva-arc-23s-id98.fasta,$path_to_sortmerna//index/silva-arc-23s-db:\
+$path_to_sortmerna/rRNA_databases/silva-euk-18s-id95.fasta,$path_to_sortmerna//index/silva-euk-18s-db:\
+$path_to_sortmerna/rRNA_databases/silva-euk-28s-id98.fasta,$path_to_sortmerna//index/silva-euk-28s:\
+$path_to_sortmerna/rRNA_databases/rfam-5s-database-id98.fasta,$path_to_sortmerna//index/rfam-5s-db:\
+$path_to_sortmerna/rRNA_databases/rfam-5.8s-database-id98.fasta,$path_to_sortmerna//index/rfam-5.8s-db \
+--reads $path_sortmerna_results/$shortName.interleaved.fastq \
+--other $path_sortmerna_results/$shortName.sortmerna.mRNA \
+--aligned $path_sortmerna_results/$shortName.sortmerna.aligned -v
 {% endhighlight %}
 
-### Performing mapping
 
-{% highlight ruby %}
-[droc@cc2-login RNASeq_fastq_MGX]$ qsub -V -b y -q bigmem.q -N hisat2 hisat2 -x reference_genome -1 Leaf_CGATGT_L006_R1_001.fastq -2  Leaf_CGATGT_L006_R2_001.fastq -S Leaf_CGATGT_L006.sam
+##### iv.  unmerging reads
+{% highlight bash %}
+echo "=> Starting un-interleave .."
+echo "   Processing R1 .. "
+perl -pe 's/\n/\t/ if $. %4' $path_sortmerna_results/$shortName.sortmerna.mRNA.fastq | awk 'NR%2 {print}' | tr "\t" "\n" >| $path_sortmerna_results/$shortName_R1.sortmerna.mRNA.fastq
+echo "   Processing R2 .."
+perl -pe 's/\n/\t/ if $. %4' $path_sortmerna_results/$shortName.sortmerna.mRNA.fastq | awk '(NR+1)%2 {print}'| tr "\t" "\n" >| $path_sortmerna_results/$shortName_R2.sortmerna.mRNA.fastq
+echo "   Un-interleaving was done."
+
 {% endhighlight %}
-
-Here is a description for the contents of the SAM file: https://samtools.github.io/hts-specs/SAMv1.pdf
-
-Do the same thing for all the library. For this you can use and adapt this Perl script
-
-
-
-{% highlight perl %}
-[droc@cc2-login RNASeq_fastq_MGX]$ nedit fastq2tab.pl&
-
-#!/usr/bin/perl
-use File::Basename;
-# Get the directory of fastq
-my $pwd = shift;
-
-# List all of the file
-open(IN,"ls $pwd/*fastq|");
-my %fastq;
-while(<IN>){
-    chomp;
-    my $file = fileparse($_);
-    # In this example, $file = Leaf_CGATGT_L006_R1_006.fastq
-    # Split the name by _
-    my ($tissu,$library,$strand,$number) = (split(/\_/,$file))[0,2,3,4];
-    # Create an uniq identifier $tag
-    my $tag = join("_",$tissu,$library,$number);
-    # Create a hash with 2 keys, the uniq name ($tag) and strand (R1 or R2)
-    $fastq{$tag}{$strand} = $_;
-}
-# Next foreach
-foreach my $tag (keys %fastq) {
-    if ($fastq{$tag}{R1} && $fastq{$tag}{R2}) {
-        print "qsub -V -b y -q bigmem.q -N hisat2 hisat2 -x reference_genome -1 $fastq{$tag}{R1} -2  $fastq{$tag}{R2} -S $tag.sam\n";
-    }
-}
-
-[droc@cc2-login RNASeq_fastq_MGX]$ perl fastq2tab.pl /work/NGSwaiting4newNAS/sugarcane/BackupCarine/RNASeq/RNASeq_fastq_MGX/ > cmd_hisat2.sh
-[droc@cc2-login RNASeq_fastq_MGX]$ ./cmd_hisat2.sh
-{% endhighlight %}
-
-<a name="samtools"></a>
-## Convert and sort SAM to BAM with `samtools`
-http://samtools.sourceforge.net/
-
-
-{% highlight ruby %}
-[droc@cc2-login RNASeq_fastq_MGX]$ module load bioinfo/samtools/1.3
-[droc@cc2-login RNASeq_fastq_MGX]$ qsub -V -q normal.q -N samtools -b y "samtools view -bS Leaf_CGATGT_L006.sam -o Leaf_CGATGT_L006.bam"
-[droc@cc2-login RNASeq_fastq_MGX]$ qsub -V -q normal.q -N samtools -b y "samtools sort Leaf_CGATGT_L006.bam -o Leaf_CGATGT_L006_sorted.bam"
-{% endhighlight %}
-
-To run on batch, you can use the command for
-
-{% highlight ruby %}
-[droc@cc2-login RNASeq_fastq_MGX]$ for i in *sam; do echo qsub -V -q normal.q -N samtools -b y samtools view -bS $i -o $i.bam >> cmd_samtools.sh;done;
-[droc@cc2-login RNASeq_fastq_MGX]$ rm -f *sam
-[droc@cc2-login RNASeq_fastq_MGX]$ for i in *bam; do echo qsub -V -q normal.q -N samtools -b y samtools sort $i -o $i.sorted.bam >> cmd_samtools_sorted.sh;done;
-{% endhighlight %}
-
-<a name="stringtie"></a>
-## Transcript assembly and quantification with `StringTie`
-https://ccb.jhu.edu/software/stringtie/
-
-{% highlight ruby %}
-[droc@cc2-login RNASeq_fastq_MGX]$ module load bioinfo/stringtie/1.2.1
-[droc@cc2-login RNASeq_fastq_MGX]$ qsub -V -b y -q normal.q -N stringtie stringtie  -p 16 -o Leaf_CGATGT_L006.gtf Leaf_CGATGT_L006_sorted.bam
-{% endhighlight %}
-
-For all sample
-
-{% highlight ruby %}
-[droc@cc2-login RNASeq_fastq_MGX]$ for i in *sorted.bam; do echo qsub -V -b y -q normal.q -N stringtie stringtie  -p 16 -o $i.gtf $i >> cmd_stringtie.sh;done
-{% endhighlight %}
-
-### Merge transcripts from all sample
-
-{% highlight ruby %}
-[droc@cc2-login RNASeq_fastq_MGX]$ qsub -V -b y -q normal.q -N merge stringtie --merge -p 8 -o stringtie_merged.gtf mergelist.txt
-{% endhighlight %}
-
-Here mergelist.txt is a text file that has the names of the gene transfer format (GTF) files created in the previous step, with each file name on a single line.
-
