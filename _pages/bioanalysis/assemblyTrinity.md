@@ -2,7 +2,7 @@
 layout: page
 title: "AssemblyTrinity"
 permalink: /bioanalysis/trinity/
-tags: [ rnaSeq, trinity, transcriptomics ]
+tags: [ RNASeq, trinity, transcriptomics ]
 description: De novo transcriptome assembly and functional annotation of transcrits
 ---
 <table class="table-contact">
