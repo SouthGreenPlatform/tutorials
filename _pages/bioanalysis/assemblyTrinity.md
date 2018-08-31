@@ -271,12 +271,22 @@ You have to obtain two matrices: The firts one containing the estimated counts, 
 $path_to_trinity/util/misc/contig_ExN50_statistic.pl Trinity_trans.TMM.EXPR.matrix Trinity.fasta > ExN50.stats
 {% endhighlight %}
 
+{% highlight bash %}
+$path_to_trinity/util/misc/contig_ExN50_statistic.pl Trinity_trans.TMM.EXPR.matrix Trinity.fasta | tee ExN50.stats
+{% endhighlight %}
+
 Plotting ExN50
 
 {% highlight bash %}
 % /usr/local/trinityrnaseq-2.5.1/util/misc/plot_ExN50_statistic.Rscript ExN50.stats
 {% endhighlight %}
 
+If you want to know, how many transcripts correspond to the Ex 90 peak, you could:
+{% highlight bash %}
+cat transcripts.TMM.EXPR.matrix.E-inputs |  egrep -v ^\# | awk '$1 <= 90' | wc -l
+{% endhighlight %}
+
+https://github.com/trinityrnaseq/trinityrnaseq/wiki/Transcriptome-Contig-Nx-and-ExN50-stats
 
 ##### Tools to evaluate transcriptomes
 
@@ -372,10 +382,22 @@ $path_to_trinity/Analysis/DifferentialExpression/run_DE_analysis.pl \
 
 https://github.com/trinityrnaseq/trinityrnaseq/wiki/Trinity-FAQ#ques_why_so_many_transcripts
 
+- Most downstream analyses should be applied to the entire set of assembled transcripts, including functional annotation and differential expression analysis.
+
+If you decide that you want to filter transcripts to exclude those that are lowly expressed, you can use the following script:
+
+{% highlight bash %}
+$path_to_trinity/util/filter_low_expr_transcripts.pl
+{% endhighlight %}
+
 <a name="trinonate"></a>
 ## 3. Functional annotation of transcripts using `Trinotate` and predicting coding regions using `TransDecoder`
-  
-- [3. Functional annotation of transcripts using `Trinotate` and predicting coding regions using `TransDecoder`](#trinonate)
-  - [3.1. Examining functional enrichments for DE transcripts using GOseq](#GO)
-  - [3.2. Interactively Exploring annotations and expression data via TrinotateWeb](#trinonateWeb)
+
+<a name="GO"></a>
+## 3.1. Examining functional enrichments for DE transcripts using GOseq
+
+
+<a name="trinonateWeb"></a>
+## 3.2. Interactively Exploring annotations and expression data via TrinotateWeb
+
 
