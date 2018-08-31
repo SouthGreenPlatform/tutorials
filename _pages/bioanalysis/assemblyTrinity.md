@@ -151,7 +151,7 @@ echo "   Un-interleaving was done."
 <a name="ReadsNormalisation"></a>
 ### 1.4. Normalisation using `Trinity` 
 
-If you don't have biological replicates, you can directly done a alone normalisation of reads by sample :
+If you don't have biological replicates, you can directly done a alone normalisation of reads by sample.
 
 {% highlight bash %}
 perl $path_to_trinity/util/insilico_read_normalization.pl --seqType fq --JM 100G --max_cov 50 \
