@@ -31,7 +31,7 @@ description: R tutoroal
   - [Getting basic stats about te content of a dataframe - `summary(dataframe)`](#statDF)
 
 - [Displaying basic informations about the dataframe structure](#info)
-  - [Column names - `names(dataframe)` or  `colnames(dataframe)`](#readCsv)
+  - [Column names - `names(dataframe)` or  `colnames(dataframe)`](#colnames)
   - [Lines and columns number - `dim(dataframe)`](#dim)
   - [Lines number - `nrow(dataframe)`](#nrow)
   - [Columns number - `ncol(dataframe)`](#ncol)
@@ -121,7 +121,7 @@ ADWL01002881.1	N	2284	63.09	dna:scaffold	v1
 {% endhighlight %}
 
 <a name="printDF"></a>
-### Displaying the whole dataframe
+##### Displaying the whole dataframe
 
 {% highlight bash %}
 >myGenome
@@ -137,7 +137,7 @@ Chr07	N	21799424	43.09	dna:chromosome	v1
 {% endhighlight %}
 
 <a name="getType"></a>
-### Get the type - `class(dataframe)` 
+##### Get the type - `class(dataframe)` 
 
 {% highlight bash %}
 >class(myGenome)
@@ -146,7 +146,7 @@ Chr07	N	21799424	43.09	dna:chromosome	v1
 
 
 <a name="structureDF"></a>
-### Get the structure of the dataframe (data type, number of levels) - `str(dataframe)`
+##### Get the structure of the dataframe (data type, number of levels) - `str(dataframe)`
 
 {% highlight bash %}
 >str(myGenome) 
@@ -160,7 +160,7 @@ Chr07	N	21799424	43.09	dna:chromosome	v1
 {% endhighlight %}
 
 <a name="statDF"></a>
-### Get basics stats about dataframe content - `summary(dataframe)`
+##### Get basics stats about dataframe content - `summary(dataframe)`
 
 {% highlight bash %}
 >summary(myGenome)
@@ -174,8 +174,41 @@ Chr07	N	21799424	43.09	dna:chromosome	v1
  (Other):1998                               (Other):1973  
 {% endhighlight %}
 
-***
+-----------------------
 
+<a name="info"></a>
+### Displaying basic informations about the dataframe structure]
+
+<a name="colnames"></a>
+##### Column names - `names(dataframe)` or  `colnames(dataframe)`
+{% highlight bash %}
+> names(myGenome)
+[1] "Name"     "Type"     "Length"   "X.GC"     "Organism" "Type.1"  
+
+> colnames(myGenome)
+[1] "Name"     "Type"     "Length"   "X.GC"     "Organism" "Type.1"  
+{% endhighlight %}
+
+<a name="dim"></a>
+##### Lines and columns number - `dim(dataframe)`
+{% highlight bash %}
+> dim(myGenome) 
+[1] 2010    6
+{% endhighlight %}
+
+<a name="nrow"></a>
+##### Lines number - `nrow(dataframe)`
+{% highlight bash %}
+> nrow(myGenome)
+[1] 2010
+{% endhighlight %}
+
+<a name="ncol"></a>
+##### Columns number - `ncol(dataframe)`]  
+{% highlight bash %}
+> ncol(myGenome)
+[1] 6
+{% endhighlight %}  
 
 ### License
 <a name="license"></a>
