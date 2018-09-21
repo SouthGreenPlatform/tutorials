@@ -6,14 +6,13 @@ tags: [ linux, survival guide ]
 description: Linux page
 ---
 
-| Description |  Linux tutorial |
+| Description |  Linux Command-Line Cheat Sheet |
 | :------------- | :------------- | :------------- | :------------- |
 | Authors | christine Tranchant-Dubreuil (christine.tranchant@ird.fr)  |
 | Creation Date | 26/02/2018 |
 | Last Modified Date | 25/03/2018 |
 
 
------------------------
 
 ### Summary
 
