@@ -17,27 +17,47 @@ description: R tutoroal
 ### Summary
 
 <!-- TOC depthFrom:2 depthTo:2 withLinks:1 updateOnSave:1 orderedList:0 -->
-- [Starting slowly `install.packages(packages)`, `library`, `setwd`,`getwd` ](#start)
-  
+- [Starting slowly on R](#start)
+  - [Installing new packages `install.packages(packages)`](#install)
+  - [Loading library`library`](#library)
+  - [Setting a working directory](#setwd)
+  - [Getting the current working directory `getwd`](#getwd)
 - [License](#license) 
 
 -----------------------
 <a name="start"></a>
-### Starting slowly `install.packages(packages)`, `library`, `setwd`,`getwd` 
+### Starting slowly on R
 
-##### Installing New Packages - `install.packages(package) `  and load them - `library(package)`
+<a name="install"></a>
+##### Installing New Packages/libraries - `install.packages(package) `
 
 {% highlight bash %}
-#install.packages('ggplot2')
+install.packages('ggplot2')
+{% endhighlight %}
+
+<a name="library"></a>
+##### Loading libraries  - `library(package)`
+
+{% highlight bash %}
 library(ggplot2) # plot
 library(scales)  # plot scales
 library(stringr) # str_detect
 library(gridExtra) # grid`
 {% endhighlight %}
 
-#####  Set a Working Directory `setwd(path)`
+<a name="setwd"></a>
+#####  Setting a Working Directory `setwd(path)`
 
-#####  Get the Working Directory `getwd()`
+{% highlight bash %}
+setwd(/users/tranchant/riceAnalysis)
+{% endhighlight %}
+
+<a name="getwd"></a>
+#####  Getting the current Working Directory `getwd()`
+
+{% highlight bash %}
+getwd()
+{% endhighlight %}
 
 
 ### License
