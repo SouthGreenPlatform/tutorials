@@ -22,6 +22,8 @@ description: R tutoroal
   - [Loading library`library`](#library)
   - [Setting a working directory](#setwd)
   - [Getting the current working directory `getwd`](#getwd)
+  
+- [Import Data From `csv` File Into a `Dataframe`](#importCsv)
 - [License](#license) 
 
 -----------------------
@@ -49,7 +51,7 @@ library(gridExtra) # grid`
 #####  Setting a Working Directory `setwd(path)`
 
 {% highlight bash %}
-setwd(/users/tranchant/riceAnalysis)
+setwd(/users/tranchan/riceAnalysis)
 {% endhighlight %}
 
 <a name="getwd"></a>
@@ -57,8 +59,13 @@ setwd(/users/tranchant/riceAnalysis)
 
 {% highlight bash %}
 getwd()
+[1] "/Users/tranchan/Documents/Bioanalyse/panGenome"
 {% endhighlight %}
 
+<a name="importCsv"></a>
+### Import Data From `csv` File Into a `Dataframe`
+
+<a name="importCsv"></a>
 
 ### License
 <a name="license"></a>
@@ -68,3 +75,7 @@ The resource material is licensed under the Creative Commons Attribution 4.0 Int
 <center><img width="25%" class="img-responsive" src="http://creativecommons.org.nz/wp-content/uploads/2012/05/by-nc-sa1.png"/>
 </center> 
 </div>
+
+
+
+
