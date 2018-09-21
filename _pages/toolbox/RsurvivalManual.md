@@ -24,7 +24,7 @@ description: R tutoroal
   - [Getting the current working directory `getwd`](#getwd)
   
 - [Importing Data From `csv` File Into a `Dataframe`](#importCsv)
-  - [Storing the contebnt of a file *allGenomeVersion.csv* into a dataframe *myGenome* - `read.csv2()` (french format)](#
+  - [Storing the content of a file *allGenomeVersion.csv* into a dataframe *myGenome* - `read.csv2()` (french format)](#readCsv)
   - [Displaying the whole dataframe](#printDF)
   - [Getting the type - `class(dataframe)`](#getType)
   - [Getting the structure of the dataframe (data type, number of levels) - `str(dataframe)`](#structureDF)
@@ -67,6 +67,8 @@ description: R tutoroal
 >getwd()
 [1] "/Users/tranchan/Documents/Bioanalyse/panGenome"
 {% endhighlight %}
+
+-----------------------
 
 <a name="importCsv"></a>
 ### Importing Data From `csv` File Into a `Dataframe`
