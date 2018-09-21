@@ -30,6 +30,12 @@ description: R tutoroal
   - [Getting the structure of the dataframe (data type, number of levels) - `str(dataframe)`](#structureDF)
   - [Getting basic stats about te content of a dataframe - `summary(dataframe)`](#statDF)
 
+- [Displaying basic informations about the dataframe structure](#info)
+  - [Column names - `names(dataframe)` or  `colnames(dataframe)`](#readCsv)
+  - [Lines and columns number - `dim(dataframe)`](#dim)
+  - [Lines number - `nrow(dataframe)`](#nrow)
+  - [Columns number - `ncol(dataframe)`](#ncol)
+
 - [License](#license) 
 
 -----------------------
