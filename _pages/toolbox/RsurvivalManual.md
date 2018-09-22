@@ -52,16 +52,14 @@ description: R tutoroal
   - [Calculating a sum - `sum(dataframe)` with filtering on an other column](#cal)
   - [Ordering dataframe on one column](#order)
 
-- [Creating a barplot graphic](#barplot)
-  - [with `ggplot` + `geom_bar(stat = "identity")`](#stat)
-  - [`coord_flip`](#flip)
-  - [save into a file`](#savePng)
+- [Plotting data from a dataframe with `ggplot` library](#plot)
+  - [Creating a barplot with `geom_bar(stat = "identity")`](#barplot)
+  - [Distinct plot - `position=position_dodge()` and flip plot with `coord_flip()`](#flip)<a name="dodge"></a>
+  - [Save into a file`](#savePng)
 
 - [License](#license) 
 
 -----------------------
-
-
 
 <a name="start"></a>
 ### Starting slowly on R
@@ -505,22 +503,9 @@ myGenomeOrdered <- myGenomeSubset[order(myGenomeSubset$Name),]
 {% endhighlight %}
 
 -----------------------
-- [Creating a barplot graphic](#barplot)
-  - [with `ggplot` + `geom_bar(stat = "identity")`](#stat)
-  - [`coord_flip`](#flip)
-  - [save into a file`](#savePng)
 
-<a name="barplot"></a>
-### Creating a barplot graphic
-
-size (Mb) per chromosome (for each genome version)
-
-http://www.sthda.com/french/wiki/ggplot2-barplots-guide-de-demarrage-rapide-logiciel-r-et-visualisation-de-donnees#barplots-basiques
-
-<a name="head"></a>
-##### with `ggplot()`  + `geom_bar(stat = "identity")`]
-
-ggplot is a plotting package that makes simple to create complex plots from data stored in a data frame. It provides a programmatic interface for specifying what variables to plot, how they are displayed, and general visual properties.
+<a name="plot"></a>
+### Plotting data from a dataframe with `ggplot` library
 
 To build a plot, the same following basic template can be used for several plot types :
 
@@ -530,9 +515,28 @@ To build a plot, the same following basic template can be used for several plot 
 * use the `aes` function to select the variables to be plotted and to define how tu present them in the graph (e.g. x/y positions, size, shape, color)
 * add ‘geoms’ – graphical representations of the data in the plot (points, lines, bars) such as `geom_point()`, `geom_boxplot()`,`geom_line()`, `geom-bar()`
 
-* basic barplot with `stat = "identity"` and `by genome version (fill)` 
+
+
+
+<a name="head"></a>
+### with `ggplot()`  + `geom_bar(stat = "identity")`]
+
+ggplot is a plotting package that makes simple to create complex plots from data stored in a data frame. It provides a programmatic interface for specifying what variables to plot, how they are displayed, and general visual properties.
+
+<a name="barplot"></a>
+#####   Creating a barplot with `geom_bar(stat = "identity")`]
+
+Barplots are useful for visualizing categorical data. By default, geom_bar accepts a variable for x, and plots the number of instances each value of x (in this case, chromosome) appears in the dataset.
+
+Here, we will :
+* plot the size (mb) of each chromosome from each genome version with geom_bar
+* use the fill aesthetic for the geom_bar() geom to color bars by the size of each chromosome for each genome version
+* By default, geom_bar uses stat="bin" to make the height of each bar equal to the number of cases in each group (it is incompatible with mapping values to the y aesthetic). Here we use `stat="identity"` because we want the heights of the bars to represent values in the data (with a y aesthetic).
+
+http://www.sthda.com/french/wiki/ggplot2-barplots-guide-de-demarrage-rapide-logiciel-r-et-visualisation-de-donnees#barplots-basiques
 
 <img class="img-responsive" width="50%" src="{{ site.url }}/images/R/barplot-type.png" alt="barplot" />
+
 {% highlight bash %}
 #basic barplot
 p <- ggplot(data = myrefSubset, aes(x = Name, y=mb, fill=Type.1)) + 
@@ -540,7 +544,14 @@ p <- ggplot(data = myrefSubset, aes(x = Name, y=mb, fill=Type.1)) +
 p 
 {% endhighlight %} 
 
-* distinct plot - `position=position_dodge()`
+<a name="dodge"></a>
+##### distinct plot - `position=position_dodge()` and flip plot with `coord_flip()`
+
+* We can separate the portions of the stacked bar that correspond to each genome version and put them side-by-side by using the position argument for geom_bar() and setting it to “dodge”.
+
+* `coord_flip()`: Flip cartesian coordinates so that horizontal becomes vertical, and vertical, horizontal
+
+<img class="img-responsive" width="50%" src="{{ site.url }}/images/R/barplot-flip.png" alt="barplot" />
 
 {% highlight bash %}
 #basic barplot
@@ -550,7 +561,8 @@ q <- ggplot(data = myrefSubset, aes(x = Name, y=mb, fill=Type.1)) +
 q + coord_flip()
 {% endhighlight %} 
 
-* save into a file
+<a name="save"></a>
+##### save into a file
 
 {% highlight bash %}
 jpeg(file="pseudomolOMAP.jpg");
