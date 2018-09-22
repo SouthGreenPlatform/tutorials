@@ -36,9 +36,20 @@ description: R tutoroal
   - [Lines number - `nrow(dataframe)`](#nrow)
   - [Columns number - `ncol(dataframe)`](#ncol)
 
+- [Displaying and manipulating the dataframe content](#print)
+  - [Printing the first lines - `head(dataframe)`](#head)
+  - [Printing the last lines - `last(dataframe)`](#last)
+  - [Printing a whole line - `dataframe[lineNum,]`](#df)
+  - [Printing one line, one column - `dataframe[lineNum,colNum]`](#df2)
+  - [Printing some lines - `dataframe[LineStart:LineEnd,]`](#df3)
+  - [Printing one column of some lines - `dataframe[c(line1,line2,line3),colNum]`](#df4)
+  
 - [License](#license) 
 
 -----------------------
+
+
+
 <a name="start"></a>
 ### Starting slowly on R
 
@@ -75,6 +86,9 @@ description: R tutoroal
 {% endhighlight %}
 
 -----------------------
+
+
+
 
 <a name="importCsv"></a>
 ### Importing Data From `csv` File Into a `Dataframe`
@@ -176,8 +190,11 @@ Chr07	N	21799424	43.09	dna:chromosome	v1
 
 -----------------------
 
+
+
+
 <a name="info"></a>
-### Displaying basic informations about the dataframe structure]
+### Displaying basic informations about the dataframe structure
 
 <a name="colnames"></a>
 ##### Column names - `names(dataframe)` or  `colnames(dataframe)`
@@ -209,6 +226,129 @@ Chr07	N	21799424	43.09	dna:chromosome	v1
 > ncol(myGenome)
 [1] 6
 {% endhighlight %}  
+
+
+
+-----------------------
+
+<a name="print"></a>
+### Displaying and manipulating the dataframe content
+
+<a name="head"></a>
+##### Printing the first lines - `head(dataframe)`
+{% highlight bash %}
+> head(myGenome)
+   Name Type   Length  X.GC       Organism Type.1
+1 Chr10    N 16910673 43.10 dna:chromosome     v1
+2 Chr09    N 17607432 43.51 dna:chromosome     v1
+3 Chr12    N 19154523 42.47 dna:chromosome     v1
+4 Chr08    N 20292731 42.97 dna:chromosome     v1
+5 Chr11    N 20796451 42.59 dna:chromosome     v1
+6 Chr07    N 21799424 43.09 dna:chromosome     v1
+
+> head(myGenome,n=2)
+   Name Type   Length  X.GC       Organism Type.1
+1 Chr10    N 16910673 43.10 dna:chromosome     v1
+2 Chr09    N 17607432 43.51 dna:chromosome     v1
+{% endhighlight %}
+
+<a name="last"></a>
+##### Printing the last lines - `last(dataframe)`
+{% highlight bash %}
+> tail(myGenome)
+            Name Type Length  X.GC     Organism Type.1
+2005 ChrUN-Ctg78    N  21053 43.05 dna:scaffold     v2
+2006 ChrUN-Ctg79    N  19363 40.63 dna:scaffold     v2
+2007 ChrUN-Ctg80    N  15054 41.18 dna:scaffold     v2
+2008 ChrUN-Ctg81    N  13998 42.98 dna:scaffold     v2
+2009 ChrUN-Ctg82    N  13471 42.29 dna:scaffold     v2
+2010 ChrUN-Ctg83    N  10534 42.37 dna:scaffold     v2
+
+> tail(myGenome,n=1)
+            Name Type Length  X.GC     Organism Type.1
+2010 ChrUN-Ctg83    N  10534 42.37 dna:scaffold     v2
+{% endhighlight %}
+
+<a name="df"></a>
+##### Printing a whole line - `dataframe[lineNum,]`
+Line 2
+{% highlight bash %}
+> myGenome[2,]
+   Name Type   Length  X.GC       Organism Type.1
+2 Chr09    N 17607432 43.51 dna:chromosome     v1
+{% endhighlight %}
+
+<a name="df2"></a>
+##### Printing one line, one column - `dataframe[lineNum,colNum]`
+Line 2, column 6 then line 2, column 3
+{% highlight bash %}
+> myGenome[2,6]
+[1] v1
+Levels: v1 v2
+
+> myGenome[2,3]
+[1] 17607432
+{% endhighlight %}
+
+<a name="df3"></a>
+##### Printing some lines - `dataframe[LineStart:LineEnd,]`
+{% highlight bash %}
+> myGenome[1:3,]
+   Name Type   Length  X.GC       Organism Type.1
+1 Chr10    N 16910673 43.10 dna:chromosome     v1
+2 Chr09    N 17607432 43.51 dna:chromosome     v1
+3 Chr12    N 19154523 42.47 dna:chromosome     v1
+
+> myGenome[10:15,]
+    Name Type   Length  X.GC       Organism Type.1
+10 Chr02    N 29142869 43.19 dna:chromosome     v1
+11 Chr01    N 32613412 43.53 dna:chromosome     v1
+12 Chr03    N 33053699 43.20 dna:chromosome     v1
+13 Chr01    N 39656875 43.05 dna:chromosome     v2
+14 Chr02    N 34451706 42.81 dna:chromosome     v2
+15 Chr03    N 35526804 43.23 dna:chromosome     v2
+{% endhighlight %}
+
+<a name="df4"></a>
+##### Printing one column of some lines - `dataframe[c(line1,line2,line3),colNum]`
+Print the complete lines 1, 3, 7, 6 then just the column 3 of the same lines
+
+{% highlight bash %}
+> myGenome[c(1,3,7,6),]
+   Name Type   Length  X.GC       Organism Type.1
+1 Chr10    N 16910673 43.10 dna:chromosome     v1
+3 Chr12    N 19154523 42.47 dna:chromosome     v1
+7 Chr05    N 23192814 42.91 dna:chromosome     v1
+6 Chr07    N 21799424 43.09 dna:chromosome     v1
+
+> myGenome[c(1,3,7,6),3]
+[1] 16910673 19154523 23192814 21799424
+
+{% endhighlight %}
+
+-----------------------
+
+<a name="print"></a>
+### Displaying and manipulating the dataframe content
+
+<a name="head"></a>
+##### Printing the first lines - `head(dataframe)`
+{% highlight bash %}
+
+{% endhighlight %}
+
+-----------------------
+
+<a name="print"></a>
+### Displaying and manipulating the dataframe content
+
+<a name="head"></a>
+##### Printing the first lines - `head(dataframe)`
+{% highlight bash %}
+
+{% endhighlight %}
+
+-----------------------
 
 ### License
 <a name="license"></a>
