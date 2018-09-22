@@ -518,7 +518,17 @@ size (Mb) per chromosome (for each genome version)
 http://www.sthda.com/french/wiki/ggplot2-barplots-guide-de-demarrage-rapide-logiciel-r-et-visualisation-de-donnees#barplots-basiques
 
 <a name="head"></a>
-##### with `gggplot()`  + `geom_bar(stat = "identity")`]
+##### with `ggplot()`  + `geom_bar(stat = "identity")`]
+
+ggplot is a plotting package that makes simple to create complex plots from data stored in a data frame. It provides a programmatic interface for specifying what variables to plot, how they are displayed, and general visual properties.
+
+To build a plot, the same following basic template can be used for several plot types :
+
+`ggplot(data = <DATA>, aes = (<MAPPINGS>)) +  <GEOM_FUNCTION>()`
+
+* use the ggplot() function and bind the plot to a specific data frame using the `data` argument
+* use the `aes` function to select the variables to be plotted and to define how tu present them in the graph (e.g. x/y positions, size, shape, color)
+* add ‘geoms’ – graphical representations of the data in the plot (points, lines, bars) such as `geom_point()`, `geom_boxplot()`,`geom_line()`, `geom-bar()`
 
 * basic barplot with `stat = "identity"` and `by genome version (fill)` 
 
