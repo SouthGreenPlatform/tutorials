@@ -626,8 +626,8 @@ dev.off;
 
 {% highlight bash %}
 p <- ggplot(myscaffSubset, aes(x=Type.1)) + geom_bar(stat="count", width=0.4, fill="steelblue") +
-    ylab("Genome version") +
-    xlab("Scaffold number") +
+    xlab("Genome version") +
+    ylab("Scaffold number") +
     ggtitle("Number of scaffold per genome version")
 p
 {% endhighlight %} 
