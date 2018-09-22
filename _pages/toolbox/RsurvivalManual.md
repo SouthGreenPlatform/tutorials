@@ -39,7 +39,8 @@ description: R tutoroal
 - [Displaying the dataframe content](#print)
   - [Printing the first lines - `head(dataframe)`](#head)
   - [Printing the last lines - `last(dataframe)`](#last)
-  - [Printing a whole line - `dataframe[lineNum,]`](#df)
+  - [Printing a column - `dataframe[colNum|colName]` or  `dataframe$colName`](#df0)
+  - [Printing one whole line - `dataframe[lineNum,]`](#df)
   - [Printing one line, one column - `dataframe[lineNum,colNum]`](#df2)
   - [Printing some lines - `dataframe[LineStart:LineEnd,]`](#df3)
   - [Printing one column of some lines - `dataframe[c(line1,line2,line3),colNum]`](#df4)
@@ -276,8 +277,51 @@ Chr07	N	21799424	43.09	dna:chromosome	v1
 2010 ChrUN-Ctg83    N  10534 42.37 dna:scaffold     v2
 {% endhighlight %}
 
+
+<a name="df0"></a>
+##### Printing a column - `dataframe[colNum|colName]` or  `dataframe$colName`
+
+* output result (line)
+
+{% highlight bash %}
+> head(myGenome[,"Length"])
+[1] 16910673 17607432 19154523 20292731 20796451 21799424
+
+{% endhighlight %}
+
+{% highlight bash %}
+> head(myGenome$Length) 
+[1] 16910673 17607432 19154523 20292731 20796451 21799424
+
+{% endhighlight %}
+
+* output result (column)
+
+{% highlight bash %}
+> head(myGenome[1])
+   Name
+1 Chr10
+2 Chr09
+3 Chr12
+4 Chr08
+5 Chr11
+6 Chr07
+{% endhighlight %}
+
+{% highlight bash %}
+> head(myGenome['Length'])
+    Length
+1 16910673
+2 17607432
+3 19154523
+4 20292731
+5 20796451
+6 21799424
+{% endhighlight %}
+
+
 <a name="df"></a>
-##### Printing a whole line - `dataframe[lineNum,]`
+##### Printing one whole line - `dataframe[lineNum,] `
 Line 2
 {% highlight bash %}
 > myGenome[2,]
