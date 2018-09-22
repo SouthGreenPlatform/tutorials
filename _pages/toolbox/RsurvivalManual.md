@@ -10,7 +10,7 @@ description: R tutoroal
 | :------------- | :------------- | :------------- | :------------- |
 | Authors | christine Tranchant-Dubreuil (christine.tranchant@ird.fr)  |
 | Creation Date | 21/09/2018 |
-| Last Modified Date | 21/09/2018 |
+| Last Modified Date | 22/09/2018 |
 
 
 
@@ -36,7 +36,7 @@ description: R tutoroal
   - [Lines number - `nrow(dataframe)`](#nrow)
   - [Columns number - `ncol(dataframe)`](#ncol)
 
-- [Displaying and manipulating the dataframe content](#print)
+- [Displaying the dataframe content](#print)
   - [Printing the first lines - `head(dataframe)`](#head)
   - [Printing the last lines - `last(dataframe)`](#last)
   - [Printing a whole line - `dataframe[lineNum,]`](#df)
@@ -44,6 +44,13 @@ description: R tutoroal
   - [Printing some lines - `dataframe[LineStart:LineEnd,]`](#df3)
   - [Printing one column of some lines - `dataframe[c(line1,line2,line3),colNum]`](#df4)
   
+- [Manipulating the content of a dataframe](#manipulating)
+  - [Adding a new column](#add)
+  - [Extracting unique values of a column - `unique(dataframe$colName)`](#unique)
+  - [Extracting one part of a dataframe - `subset(dataframe)`](#extract)
+  - [Calculating a sum - `sum(dataframe)` with filtering on an other column](#cal)
+  - [Ordering dataframe on one column](#order)
+
 - [License](#license) 
 
 -----------------------
@@ -328,13 +335,124 @@ Print the complete lines 1, 3, 7, 6 then just the column 3 of the same lines
 
 -----------------------
 
-<a name="print"></a>
-### Displaying and manipulating the dataframe content
 
-<a name="head"></a>
-##### Printing the first lines - `head(dataframe)`
+
+<a name="manipulating"></a>
+### Manipulating the content of a dataframe
+
+
+<a name="add"></a>
+##### Adding a new column 
+
+* A new collumn firstly filled with "NA"
 {% highlight bash %}
+> myGenome["mb"] <- NA 
 
+> head(myGenome)
+   Name Type   Length  X.GC       Organism Type.1 mb
+1 Chr10    N 16910673 43.10 dna:chromosome     v1 NA
+2 Chr09    N 17607432 43.51 dna:chromosome     v1 NA
+3 Chr12    N 19154523 42.47 dna:chromosome     v1 NA
+4 Chr08    N 20292731 42.97 dna:chromosome     v1 NA
+5 Chr11    N 20796451 42.59 dna:chromosome     v1 NA
+6 Chr07    N 21799424 43.09 dna:chromosome     v1 NA
+{% endhighlight %}
+
+* The new column receives the result of an operation
+{% highlight bash %}
+> myGenome$mb <- as.integer(myGenome$Length/1000000)
+
+> head(myGenome)
+   Name Type   Length  X.GC       Organism Type.1 mb
+1 Chr10    N 16910673 43.10 dna:chromosome     v1 16
+2 Chr09    N 17607432 43.51 dna:chromosome     v1 17
+3 Chr12    N 19154523 42.47 dna:chromosome     v1 19
+4 Chr08    N 20292731 42.97 dna:chromosome     v1 20
+5 Chr11    N 20796451 42.59 dna:chromosome     v1 20
+6 Chr07    N 21799424 43.09 dna:chromosome     v1 21
+{% endhighlight %}
+
+<a name="unique"></a>
+##### Extracting unique values of a column - `unique(dataframe$colName)`
+{% highlight bash %}
+> myGenome$Organism
+   [1] dna:chromosome dna:chromosome dna:chromosome dna:chromosome dna:chromosome dna:chromosome dna:chromosome
+   [8] dna:chromosome dna:chromosome dna:chromosome dna:chromosome dna:chromosome dna:chromosome dna:chromosome
+  [15] dna:chromosome dna:chromosome dna:chromosome dna:chromosome dna:chromosome dna:chromosome dna:chromosome
+  [22] dna:chromosome dna:chromosome dna:chromosome dna:scaffold   dna:scaffold   dna:scaffold   dna:scaffold  
+  [29] dna:scaffold   dna:scaffold   dna:scaffold   dna:scaffold   dna:scaffold   dna:scaffold   dna:scaffold  
+  [36] dna:scaffold   dna:scaffold   dna:scaffold   dna:scaffold   dna:scaffold   dna:scaffold   dna:scaffold  
+  [43] dna:scaffold   dna:scaffold   dna:scaffold   dna:scaffold   dna:scaffold   dna:scaffold   dna:scaffold  
+  [50] dna:scaffold   dna:scaffold   dna:scaffold   dna:scaffold   dna:scaffold   dna:scaffold   dna:scaffold  
+  [57] dna:scaffold   dna:scaffold   dna:scaffold   dna:scaffold   dna:scaffold   dna:scaffold   dna:scaffold  
+  [64] dna:scaffold   dna:scaffold   dna:scaffold   dna:scaffold   dna:scaffold   dna:scaffold   dna:scaffold  
+ ... 
+ [981] dna:scaffold   dna:scaffold   dna:scaffold   dna:scaffold   dna:scaffold   dna:scaffold   dna:scaffold  
+ [988] dna:scaffold   dna:scaffold   dna:scaffold   dna:scaffold   dna:scaffold   dna:scaffold   dna:scaffold  
+ [995] dna:scaffold   dna:scaffold   dna:scaffold   dna:scaffold   dna:scaffold   dna:scaffold  
+ [ reached getOption("max.print") -- omitted 1010 entries ]
+Levels: dna:chromosome dna:scaffold
+
+> unique(myRef$Organism)
+[1] dna:chromosome dna:scaffold  
+Levels: dna:chromosome dna:scaffold
+
+> unique(myGenomef$Type.1)
+[1] v1 v2
+Levels: v1 v2
+{% endhighlight %}
+
+<a name="extract"></a>
+##### Extracting one part of a dataframe into a new dataframe - `subset(dataframe)`
+{% highlight bash %}
+> myGenomeSubset <- subset(myGenome, Organism=="dna:chromosome")
+> head(myrefGenome)
+
+> myrefSubset <- subset(myGenome, Organism=="dna:chromosome")
+> head(myrefGenome)
+   Name Type   Length  X.GC       Organism Type.1 mb
+1 Chr10    N 16910673 43.10 dna:chromosome     v1 16
+2 Chr09    N 17607432 43.51 dna:chromosome     v1 17
+3 Chr12    N 19154523 42.47 dna:chromosome     v1 19
+4 Chr08    N 20292731 42.97 dna:chromosome     v1 20
+5 Chr11    N 20796451 42.59 dna:chromosome     v1 20
+6 Chr07    N 21799424 43.09 dna:chromosome     v1 21
+
+> dim(myRGenome)
+[1] 2010    7
+
+> dim(myGenomeSubset)
+[1] 24  7
+
+{% endhighlight %}
+
+<a name="cal"></a>
+##### Calculating a sum - `sum(dataframe)` with filtering on an other column
+{% highlight bash %}
+> sum(myGenomeSubset$Length)
+[1] 629495529
+
+> sum(myGenomeSubset$Length[myGenomeSubset$Type.1=="v1"])
+[1] 285037524
+
+> sum(myGenomeSubset$Length[myGenomeSubset$Type.1=="v2"])
+[1] 344458005
+
+{% endhighlight %}
+
+<a name="order"></a>
+##### Ordering dataframe on one column
+{% highlight bash %}
+myGenomeOrdered <- myGenomeSubset[order(myGenomeSubset$Name),]
+
+> head(myGenomeOrdered)
+    Name Type   Length  X.GC       Organism Type.1 mb
+11 Chr01    N 32613412 43.53 dna:chromosome     v1 32
+13 Chr01    N 39656875 43.05 dna:chromosome     v2 39
+10 Chr02    N 29142869 43.19 dna:chromosome     v1 29
+14 Chr02    N 34451706 42.81 dna:chromosome     v2 34
+12 Chr03    N 33053699 43.20 dna:chromosome     v1 33
+15 Chr03    N 35526804 43.23 dna:chromosome     v2 35
 {% endhighlight %}
 
 -----------------------
