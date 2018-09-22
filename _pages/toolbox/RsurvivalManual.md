@@ -52,6 +52,11 @@ description: R tutoroal
   - [Calculating a sum - `sum(dataframe)` with filtering on an other column](#cal)
   - [Ordering dataframe on one column](#order)
 
+- [Creating a barplot graphic](#barplot)
+  - [with `ggplot` + `geom_bar(stat = "identity")`](#stat)
+  - [`coord_flip`](#flip)
+  - [save into a file`](#savePng)
+
 - [License](#license) 
 
 -----------------------
@@ -500,6 +505,11 @@ myGenomeOrdered <- myGenomeSubset[order(myGenomeSubset$Name),]
 {% endhighlight %}
 
 -----------------------
+- [Creating a barplot graphic](#barplot)
+  - [with `ggplot` + `geom_bar(stat = "identity")`](#stat)
+  - [`coord_flip`](#flip)
+  - [save into a file`](#savePng)
+
 <a name="barplot"></a>
 ### Creating a barplot graphic
 
@@ -508,18 +518,17 @@ size (Mb) per chromosome (for each genome version)
 http://www.sthda.com/french/wiki/ggplot2-barplots-guide-de-demarrage-rapide-logiciel-r-et-visualisation-de-donnees#barplots-basiques
 
 <a name="head"></a>
-##### with `gggplot()` - `head(dataframe)`
+##### with `gggplot()`  + `geom_bar(stat = "identity")`]
 
-* basic barplot with `stat = "identity"` and `by type - `fill` 
+* basic barplot with `stat = "identity"` and `by genome version (fill)` 
 
+<img class="img-responsive" width="50%" src="{{ site.url }}/images/R/barplot-type.png" alt="barplot" />
 {% highlight bash %}
 #basic barplot
 p <- ggplot(data = myrefSubset, aes(x = Name, y=mb, fill=Type.1)) + 
       geom_bar(stat = "identity")
 p 
 {% endhighlight %} 
-
-<img class="img-responsive" width="50%" src="{{ site.url }}/images/R/barplot-type.png" alt="barplot" />
 
 * distinct plot - `position=position_dodge()`
 
