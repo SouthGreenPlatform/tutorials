@@ -651,20 +651,42 @@ p
 * Create a violin plot
 
 <img class="img-responsive" width="50%" src="{{ site.url }}/images/R/violinPlot.png" alt="barplot" />
+
 {% highlight bash %}
-p <- ggplot(myscaffSubset, aes(x=Type.1, y=Length, color=Type.1)) + 
+p <- ggplot(myScaffSubset, aes(x=Type.1, y=Length, color=Type.1)) + 
 +   geom_violin(trim=TRUE) + stat_summary(fun.y=median, geom="point", size=2, color="red")
 > p
 {% endhighlight %} 
 
 * Save plot into a file
 {% highlight bash %}
-> jpeg(file="sacffoldOMAP.jpg");
-> p <- ggplot(myscaffSubset, aes(x=Type.1, y=Length, color=Type.1)) + 
+> jpeg(file="scaffoldOMAP.jpg");
+> p <- ggplot(myScaffSubset, aes(x=Type.1, y=Length, color=Type.1)) + 
 +   geom_violin(trim=TRUE) + stat_summary(fun.y=median, geom="point", size=2, color="red")
 > p
 > dev.off;
 {% endhighlight %} 
+
+-----------------------
+
+<a name="head"></a>
+##### Arranging plots in a grid - `grid.arrange()`
+
+<img class="img-responsive" width="50%" src="{{ site.url }}/images/R/gridPlot.png" alt="grid" />
+
+{% highlight bash %}
+
+myplot1 <- ggplot(data = myGenomeSubset, aes(x = Name, y=mb, fill=Type.1)) + 
+      geom_bar(stat = "identity", position=position_dodge()) + coord_flip()
+
+myplot2 <- ggplot(myScaffSubset, aes(x=Type.1, y=Length, color=Type.1)) + 
+  geom_violin(trim=TRUE) + stat_summary(fun.y=median, geom="point", size=2, color="red")
+
+grid.arrange(myplot1, myplot2, ncol=2)
+
+{% endhighlight %}
+
+
 
 -----------------------
 
