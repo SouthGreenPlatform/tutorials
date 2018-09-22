@@ -50,6 +50,7 @@ description: R tutoroal
   - [Extracting unique values of a column - `unique(dataframe$colName)`](#unique)
   - [Extracting one part of a dataframe - `subset(dataframe)`](#extract)
   - [Calculating a sum - `sum(dataframe)` with filtering on an other column](#cal)
+  - [ Getting the number of elements in a dataframe - `length(dataframe)` with filtering on an other column](#length)
   - [Ordering dataframe on one column](#order)
 
 - [Plotting data from a dataframe with `ggplot` library](#plot)
@@ -484,6 +485,24 @@ Levels: v1 v2
 
 > sum(myGenomeSubset$Length[myGenomeSubset$Type.1=="v2"])
 [1] 344458005
+
+{% endhighlight %}
+
+<a name="length"></a>
+##### Getting the number of elements in a dataframe - `length(dataframe)` with filtering on an other column
+
+{% highlight bash %}
+> length(myGenomeSubset$Length[myGenomeSubset$Type.1=="v1"])
+[1] 1939
+
+> sum(myGenomeSubset$Length[myGenomeSubset$Type.1=="v1"])
+[1] 31382050
+
+> length(myGenomeSubset$Length[myGenomeSubset$Type.1=="v2"])
+[1] 47
+
+> sum(myGenomeSubset$Length[myGenomeSubset$Type.1=="v2"])
+[1] 2863041
 
 {% endhighlight %}
 
