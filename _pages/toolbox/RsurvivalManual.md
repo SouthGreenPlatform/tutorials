@@ -59,6 +59,8 @@ description: R tutoroal
   - [Distinct plot - `position=position_dodge()` and flip plot with `coord_flip()`](#flip)<a name="dodge"></a>
   - [Save into a file`](#savePng)
   - [Creating a barplot with `geom_bar(stat = "count")`](#count)
+  - [ Plotting a violin plot  - `geom_violin()`](#violinPlot)
+  
 
 - [License](#license) 
 
@@ -642,6 +644,30 @@ p <- ggplot(myscaffSubset, aes(x=Type.1)) + geom_bar(stat="count", width=0.4, fi
 p
 {% endhighlight %} 
 -----------------------
+
+<a name="violinPlot"></a>
+##### Plotting a violin plot  - `geom_violin()`
+
+* Create a violin plot
+
+<img class="img-responsive" width="50%" src="{{ site.url }}/images/R/violinPlot.png" alt="barplot" />
+{% highlight bash %}
+p <- ggplot(myscaffSubset, aes(x=Type.1, y=Length, color=Type.1)) + 
++   geom_violin(trim=TRUE) + stat_summary(fun.y=median, geom="point", size=2, color="red")
+> p
+{% endhighlight %} 
+
+* Save plot into a file
+{% highlight bash %}
+> jpeg(file="sacffoldOMAP.jpg");
+> p <- ggplot(myscaffSubset, aes(x=Type.1, y=Length, color=Type.1)) + 
++   geom_violin(trim=TRUE) + stat_summary(fun.y=median, geom="point", size=2, color="red")
+> p
+> dev.off;
+{% endhighlight %} 
+
+-----------------------
+
 <a name="print"></a>
 ### Displaying and manipulating the dataframe content
 
