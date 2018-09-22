@@ -57,6 +57,7 @@ description: R tutoroal
   - [Creating a barplot with `geom_bar(stat = "identity")`](#barplot)
   - [Distinct plot - `position=position_dodge()` and flip plot with `coord_flip()`](#flip)<a name="dodge"></a>
   - [Save into a file`](#savePng)
+  - [Creating a barplot with `geom_bar(stat = "count")`](#count)
 
 - [License](#license) 
 
@@ -452,6 +453,9 @@ Levels: v1 v2
 
 <a name="extract"></a>
 ##### Extracting one part of a dataframe into a new dataframe - `subset(dataframe)`
+
+* Extract only lines about chromosome (Organism column equals to "dna:chromosome") - `==`
+
 {% highlight bash %}
 > myGenomeSubset <- subset(myGenome, Organism=="dna:chromosome")
 > head(myrefGenome)
@@ -471,6 +475,22 @@ Levels: v1 v2
 
 > dim(myGenomeSubset)
 [1] 24  7
+
+{% endhighlight %}
+
+* Extract only lines about scaffold (Organism column not equals to "dna:chromosome") - `!=`
+
+{% highlight bash %}
+> myscaffSubset <- subset(myRef, Organism!="dna:chromosome")
+
+> head(myscaffSubset)
+                  Name Type Length  X.GC     Organism Type.1 mb
+25 Oglab05_unplaced019    N   1026 54.29 dna:scaffold     v1  0
+26      ADWL01015058.1    N   1067 47.14 dna:scaffold     v1  0
+27 Oglab04_unplaced014    N   1099 43.68 dna:scaffold     v1  0
+28      ADWL01009716.1    N   1200 50.08 dna:scaffold     v1  0
+29 Oglab04_unplaced051    N   1834 48.39 dna:scaffold     v1  0
+30      ADWL01025219.1    N   2000 54.35 dna:scaffold     v1  0
 
 {% endhighlight %}
 
@@ -597,7 +617,21 @@ dev.off;
 
 -----------------------
 
+<a name="count"></a>
+#####   Creating a barplot with `geom_bar(stat = "count")`]
 
+* we use `stat="count"` to make the height of each bar equal to the count of lines
+* Adding Labels and Titles with `ylab(<Y-LABEL>)`, `xlab(<X-LABEL>)` , `ggtitle(<TITLE-LABEL>)`
+<img class="img-responsive" width="50%" src="{{ site.url }}/images/R/barplot-count.png" alt="barplot" />
+
+{% highlight bash %}
+p <- ggplot(myscaffSubset, aes(x=Type.1)) + geom_bar(stat="count", width=0.4, fill="steelblue") +
+    ylab("Genome version") +
+    xlab("Scaffold number") +
+    ggtitle("Number of scaffold per genome version")
+p
+{% endhighlight %} 
+-----------------------
 <a name="print"></a>
 ### Displaying and manipulating the dataframe content
 
