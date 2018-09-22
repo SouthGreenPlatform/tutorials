@@ -52,7 +52,8 @@ description: R tutoroal
   - [Calculating a sum - `sum(dataframe)` with filtering on an other column](#cal)
   - [ Getting the number of elements in a dataframe - `length(dataframe)` with filtering on an other column](#length)
   - [Ordering dataframe on one column](#order)
-
+  - [Getting summaries of values of a column  - `summary`](#summary)
+  
 - [Plotting data from a dataframe with `ggplot` library](#plot)
   - [Creating a barplot with `geom_bar(stat = "identity")`](#barplot)
   - [Distinct plot - `position=position_dodge()` and flip plot with `coord_flip()`](#flip)<a name="dodge"></a>
@@ -481,9 +482,9 @@ Levels: v1 v2
 * Extract only lines about scaffold (Organism column not equals to "dna:chromosome") - `!=`
 
 {% highlight bash %}
-> myscaffSubset <- subset(myRef, Organism!="dna:chromosome")
+> myScaffSubset <- subset(myRef, Organism!="dna:chromosome")
 
-> head(myscaffSubset)
+> head(myScaffSubset)
                   Name Type Length  X.GC     Organism Type.1 mb
 25 Oglab05_unplaced019    N   1026 54.29 dna:scaffold     v1  0
 26      ADWL01015058.1    N   1067 47.14 dna:scaffold     v1  0
@@ -539,6 +540,15 @@ myGenomeOrdered <- myGenomeSubset[order(myGenomeSubset$Name),]
 14 Chr02    N 34451706 42.81 dna:chromosome     v2 34
 12 Chr03    N 33053699 43.20 dna:chromosome     v1 33
 15 Chr03    N 35526804 43.23 dna:chromosome     v2 35
+{% endhighlight %}
+
+<a name="summary"></a>
+##### Getting summaries of values of a column  - `summary`
+
+{% highlight bash %}
+> summary(mysSaffSubset$Length)
+   Min. 1st Qu.  Median    Mean 3rd Qu.    Max. 
+   1026    3214    5613   17243   12601 1478587 
 {% endhighlight %}
 
 -----------------------
