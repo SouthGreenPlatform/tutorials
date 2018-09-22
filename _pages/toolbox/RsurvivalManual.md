@@ -503,7 +503,7 @@ myGenomeOrdered <- myGenomeSubset[order(myGenomeSubset$Name),]
 <a name="barplot"></a>
 ### Creating a barplot graphic
 
-Mb by chromosome by genome version
+size (Mb) per chromosome (for each genome version)
 
 http://www.sthda.com/french/wiki/ggplot2-barplots-guide-de-demarrage-rapide-logiciel-r-et-visualisation-de-donnees#barplots-basiques
 
@@ -518,6 +518,8 @@ p <- ggplot(data = myrefSubset, aes(x = Name, y=mb, fill=Type.1)) +
       geom_bar(stat = "identity")
 p 
 {% endhighlight %} 
+
+<img class="img-responsive" width="25%" src="{{ site.url }}/images/southgreenlong.png" alt="South Green Logo" />
 
 * distinct plot - `position=position_dodge()`
 
