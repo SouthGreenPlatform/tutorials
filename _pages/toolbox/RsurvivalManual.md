@@ -519,7 +519,7 @@ p <- ggplot(data = myrefSubset, aes(x = Name, y=mb, fill=Type.1)) +
 p 
 {% endhighlight %} 
 
-<img class="img-responsive" width="25%" src="{{ site.url }}/images/southgreenlong.png" alt="South Green Logo" />
+<img class="img-responsive" width="50%" src="{{ site.url }}/images/R.barplot-type.png" alt="barplot" />
 
 * distinct plot - `position=position_dodge()`
 
