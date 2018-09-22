@@ -672,7 +672,7 @@ p <- ggplot(myScaffSubset, aes(x=Type.1, y=Length, color=Type.1)) +
 <a name="head"></a>
 ##### Arranging plots in a grid - `grid.arrange()`
 
-<img class="img-responsive" width="50%" src="{{ site.url }}/images/R/gridPlot.png" alt="grid" />
+<img class="img-responsive" width="50%" src="{{ site.url }}/images/R/gridPlot.png" alt="grid" /> 
 
 {% highlight bash %}
 
