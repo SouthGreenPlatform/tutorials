@@ -523,6 +523,8 @@ To build a plot, the same following basic template can be used for several plot 
 
 ggplot is a plotting package that makes simple to create complex plots from data stored in a data frame. It provides a programmatic interface for specifying what variables to plot, how they are displayed, and general visual properties.
 
+https://datacarpentry.org/r-socialsci/04-ggplot2/
+
 <a name="barplot"></a>
 #####   Creating a barplot with `geom_bar(stat = "identity")`]
 
@@ -539,7 +541,7 @@ http://www.sthda.com/french/wiki/ggplot2-barplots-guide-de-demarrage-rapide-logi
 
 {% highlight bash %}
 #basic barplot
-p <- ggplot(data = myrefSubset, aes(x = Name, y=mb, fill=Type.1)) + 
+p <- ggplot(data = myGenomeSubset, aes(x = Name, y=mb, fill=Type.1)) + 
       geom_bar(stat = "identity")
 p 
 {% endhighlight %} 
@@ -555,7 +557,7 @@ p
 
 {% highlight bash %}
 #basic barplot
-q <- ggplot(data = myrefSubset, aes(x = Name, y=mb, fill=Type.1)) + 
+q <- ggplot(data = myGenomeSubset, aes(x = Name, y=mb, fill=Type.1)) + 
       geom_bar(stat = "identity", position=position_dodge())
 #horizontal
 q + coord_flip()
@@ -567,7 +569,7 @@ q + coord_flip()
 {% highlight bash %}
 jpeg(file="pseudomolOMAP.jpg");
 #basic barplot
-q <- ggplot(data = myrefSubset, aes(x = Name, y=mb, fill=Type.1)) + 
+q <- ggplot(data = myGenomeSubset, aes(x = Name, y=mb, fill=Type.1)) + 
       geom_bar(stat = "identity", position=position_dodge())
 #horizontal
 q + coord_flip()
