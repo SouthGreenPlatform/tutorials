@@ -500,6 +500,49 @@ myGenomeOrdered <- myGenomeSubset[order(myGenomeSubset$Name),]
 {% endhighlight %}
 
 -----------------------
+<a name="barplot"></a>
+### Creating a barplot graphic
+
+Mb by chromosome by genome version
+
+http://www.sthda.com/french/wiki/ggplot2-barplots-guide-de-demarrage-rapide-logiciel-r-et-visualisation-de-donnees#barplots-basiques
+
+<a name="head"></a>
+##### with `gggplot()` - `head(dataframe)`
+
+* basic barplot with `stat = "identity"` and `by type - `fill` 
+
+{% highlight bash %}
+#basic barplot
+p <- ggplot(data = myrefSubset, aes(x = Name, y=mb, fill=Type.1)) + 
+      geom_bar(stat = "identity")
+p 
+{% endhighlight %} 
+
+* distinct plot - `position=position_dodge()`
+
+{% highlight bash %}
+#basic barplot
+q <- ggplot(data = myrefSubset, aes(x = Name, y=mb, fill=Type.1)) + 
+      geom_bar(stat = "identity", position=position_dodge())
+#horizontal
+q + coord_flip()
+{% endhighlight %} 
+
+* save into a file
+
+{% highlight bash %}
+jpeg(file="pseudomolOMAP.jpg");
+#basic barplot
+q <- ggplot(data = myrefSubset, aes(x = Name, y=mb, fill=Type.1)) + 
+      geom_bar(stat = "identity", position=position_dodge())
+#horizontal
+q + coord_flip()
+dev.off;
+{% endhighlight %} 
+
+-----------------------
+
 
 <a name="print"></a>
 ### Displaying and manipulating the dataframe content
