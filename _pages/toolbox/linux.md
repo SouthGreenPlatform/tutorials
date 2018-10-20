@@ -365,13 +365,17 @@ Note :
 `find options path motif_file`
 
 * the `path` argument defines the top level directory where find begins filtering
-* the `motif_file` argument gives the motif searched in the filename within the directory
+* the `motif_file` argument gives the motif searched in the filename within the directory (and all sub-directories)
+
+The following example search for *k64* files in the current directory and all sub-directories:
 
 `find . -name "*k64*" 
 ./mappingGlabv2/fastqPairedUnmappedBartiivsOmap/TEST/k64ctg-TOGGLEmappingRE
 ./mappingGlabv2/fastqPairedUnmappedBartiivsOmap/TEST/k64`
 
-* 
+
+
+
 ### License
 <a name="license"></a>
 
