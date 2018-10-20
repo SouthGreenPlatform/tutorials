@@ -10,7 +10,7 @@ description: Linux page
 | :------------- | :------------- | :------------- | :------------- |
 | Authors | christine Tranchant-Dubreuil (christine.tranchant@ird.fr)  |
 | Creation Date | 26/02/2018 |
-| Last Modified Date | 25/03/2018 |
+| Last Modified Date | 20/10/2018 |
 
 
 
@@ -40,6 +40,7 @@ description: Linux page
   - [Knowing how much space a file or directory is using on a disk with `du`](#du)
   - [Creating a file shortcut/ a symbolic link with `ln -s`](#ln)
   - [Downloading a file over HTTP with `wget`](#wget)
+  - [Find files by name or extension](#find)
   
 - [License](#license) 
 
@@ -356,6 +357,21 @@ Note :
 
 `wget http://website.com/files/file.zip` : downloads the file `http://website.com/files/file.zip` into the working directory.
 
+-----------------------
+
+<a name="find"></a>
+##### Find files by name or extension with `find`
+
+`find options path motif_file`
+
+* the `path` argument defines the top level directory where find begins filtering
+* the `motif_file` argument gives the motif searched in the filename within the directory
+
+`find . -name "*k64*" 
+./mappingGlabv2/fastqPairedUnmappedBartiivsOmap/TEST/k64ctg-TOGGLEmappingRE
+./mappingGlabv2/fastqPairedUnmappedBartiivsOmap/TEST/k64`
+
+* 
 ### License
 <a name="license"></a>
 
