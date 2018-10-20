@@ -369,11 +369,11 @@ Note :
 
 The following example search for *k64* files in the current directory and all sub-directories:
 
-`find . -name "*k64*" 
+{% highlight bash %}
+find . -name "*k64*" 
 ./mappingGlabv2/fastqPairedUnmappedBartiivsOmap/TEST/k64ctg-TOGGLEmappingRE
 ./mappingGlabv2/fastqPairedUnmappedBartiivsOmap/TEST/k64`
-
-
+{% endhighlight %}
 
 
 ### License
