@@ -18,7 +18,7 @@ description: De novo transcriptome assembly and functional annotation of transcr
 
 | Name | Transcriptome Assembly and Funtional Annotation |
 | :------------- | :------------- | :------------- | :------------- |
-| Description | This page describes a serie of tools and linux commands used to manipulate fastq files for transcriptome assembly and funtional annotation of transcrits using Trinity and Trinonate. |
+| Description | This page describes a serie of tools and linux commands used to manipulate fastq files for transcriptome assembly and funtional annotation of transcrits using Trinity and Trinotate. |
 | Authors | Julie Orjuela (julie.orjuela_at_ird.fr)  |
 | Research Unit | UMR BOREA IPME DIADE |
 | Institut |  IRD |
@@ -53,12 +53,6 @@ fastq, sam, bam
   - [2.1. Evaluating the quality of the assembly](#assemblyQuality)
   - [2.2. Identifying differentially expressed (DE) transcripts](#DEtranscrits)
   
-  
-- [3. Functional annotation of transcripts using `Trinotate` and predicting coding regions using `TransDecoder`](#trinonate)
-  - [3.1. Examining functional enrichments for DE transcripts using GOseq](#GO)
-  - [3.2. Interactively Exploring annotations and expression data via TrinotateWeb](#trinonateWeb)
-
-
 <!-- /TOC -->
 
 ***
