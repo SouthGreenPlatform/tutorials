@@ -56,7 +56,6 @@ fastq, sam, bam
   
 - [3. Functional annotation of transcripts using `Trinotate` and predicting coding regions using `TransDecoder`](#trinotate)
 
-
 <!-- /TOC -->
 
 ***
