@@ -23,7 +23,7 @@ description: De novo transcriptome assembly and functional annotation of transcr
 | Research Unit | UMR BOREA IPME DIADE |
 | Institut |  IRD |
 | Creation Date | 10/08/2018 |
-| Last Modified Date | 31/08/2018 |
+| Last Modified Date | 13/02/2019 |
 
 We need, in this tutorial:
 * A directory with fastq files
@@ -206,13 +206,15 @@ condB\tcondB_rep2\tcondB_rep2_R1.fastq.gz\tcondB_rep2_R2.fastq.gz\n
 <a name="assemblyQuality"></a>
 ### 2.1. Evaluating the quality of the assembly
 
-##### Assembly metrics
+
+#### Assembly metrics
 
 {% highlight bash %}
 $path_to_trinity/util/TrinityStats.pl Trinity.fasta
 {% endhighlight %}
 
-##### Reads mapping back rate :
+
+#### Reads mapping back rate :
 
 A typical ‘good’ assembly has ~80 % reads mapping to the assembly and \~80% are properly paired
 
@@ -288,7 +290,8 @@ cat transcripts.TMM.EXPR.matrix.E-inputs |  egrep -v ^\# | awk '$1 <= 90' | wc -
 
 https://github.com/trinityrnaseq/trinityrnaseq/wiki/Transcriptome-Contig-Nx-and-ExN50-stats
 
-##### Tools to evaluate transcriptomes
+
+#### Tools to evaluate transcriptomes
 
 To avoid redundant transcripts, we kept the longest isoform for each “gene” identified by TRINITY (unigene) using the `get_longest_isoform_seq_per_trinity_gene.pl` utility in TRINITY:
 
@@ -390,14 +393,113 @@ If you decide that you want to filter transcripts to exclude those that are lowl
 $path_to_trinity/util/filter_low_expr_transcripts.pl
 {% endhighlight %}
 
+
 <a name="trinonate"></a>
+
 ## 3. Functional annotation of transcripts using `Trinotate` and predicting coding regions using `TransDecoder`
 
-<a name="GO"></a>
-## 3.1. Examining functional enrichments for DE transcripts using GOseq
+Transcrits assembled using Trinity can be easily annotate using trinotate https://github.com/Trinotate/Trinotate.github.io/wiki.
+
+Trinotate use different methods for functional annotation including homology search to known sequence data (BLAST+/SwissProt), protein domain identification (HMMER/PFAM), protein signal peptide and transmembrane domain prediction (signalP/tmHMM), and take advantage from annotation databases (eggNOG/GO/Kegg). These data are integrated into a SQLite database which allows to create an annotation report for a transcriptome.
+
+Two bash scripts were created to obtain the whole of files obligatories to build a Sqlite database and create reports. 
+
+The fist one, `trinotate-JAv1.0.sh` https://github.com/julieaorjuela/scripts/blob/master/trinotate-JAv1.0.sh, needs as input a repertory containing the fasta files you want to annotate. It generates three repertories : Trinonate, sh, and trash and a submitQsub.sge file that launch every fasta analysis in job array mode. The bash repertory contains scripts created automatically for every fasta file, the Trinotate repertory contains annotation results and the trash contains the log files for every step in the process.
+
+{% highlight bash %}
+bash ~/scripts/trinotate-JAv1.0.sh -f /repertory/containing/fastaFiles/
+{% endhighlight %}
+
+{% highlight bash %}
+qsub /repertory/containing/fastaFiles/jobArray-Trinotate/submitQsub.sge
+{% endhighlight %}
+
+To understand steps run by trinotate-JAv1.0.sh we can view a script generated from HNglobal fasta file as exemple :
+
+{% highlight bash %}
+more jobArray-Trinotate/sh/2_Trinotate.sh 
+{% endhighlight %}
+
+{% highlight bash %}
+
+# Charging modules
+module load bioinfo/Trinotate/3.0.1
+module load bioinfo/TransDecoder/3.0.0
+module load bioinfo/hmmer/3.1b2
+module load bioinfo/diamond/0.7.11
+ 
+# Defining scratch and destination repertories\n
+pathToScratch="/scratch/orjuela/Trinotate_$JOB_ID.$SGE_TASK_ID/"
+pathToDest="/repertory/containing/fastaFiles/jobArray-Trinotate/Trinotate"
+mkdir -p $pathToScratch
+mkdir -p $pathToScratch/DB
+ 
+# Copie du fichier Trinity.fasta vers la partition /scratch du noeud
+scp /repertory/containing/fastaFiles/HNglobal*.fasta $pathToScratch/
+ 
+# Copie des bases uniprot_sprot*, Pfam-A.hmm*, et uniref90.fasta.dmnd vers la partition /scratch du noeud
+scp /usr/local/Trinotate-3.0.1/uniprot_sprot.dmnd /usr/local/Trinotate-3.0.1/uniprot_sprot.pep /usr/local/Trinotate-3.0.1/uniprot_sprot.pep.phr /usr/local/Trinotate-3.0.1/uniprot_sprot.pep.pin /usr/local/Trinota
+te-3.0.1/uniprot_sprot.pep.psq $pathToScratch/DB/
+scp /data/projects/banks//uniref90.fasta.dmnd $pathToScratch/DB/
+scp /usr/local/Trinotate-3.0.1/Pfam-A.hmm /usr/local/Trinotate-3.0.1/Pfam-A.hmm.h3f /usr/local/Trinotate-3.0.1/Pfam-A.hmm.h3i /usr/local/Trinotate-3.0.1/Pfam-A.hmm.h3m /usr/local/Trinotate-3.0.1/Pfam-A.hmm.h3p $
+pathToScratch/DB/
+ 
+cd $pathToScratch/ 
+mkdir $pathToScratch/results_HNglobal
+cd $pathToScratch/results_HNglobal/
+ 
+# Running tool
+ 
+# Calculing trinity_component_distribution
+perl /usr/local/trinityrnaseq-2.5.1/util/misc/trinity_component_distribution.pl $pathToScratch/HNglobal.fasta 
+cmd=" perl /usr/local/trinityrnaseq-2.5.1/util/misc/trinity_component_distribution.pl $pathToScratch/HNglobal.fasta "
+echo "commande executee: $cmd"
+ 
+# 1 getting gene to trans map
+perl /usr/local/trinityrnaseq-2.5.1/util/support_scripts/get_Trinity_gene_to_trans_map.pl $pathToScratch/HNglobal.fasta > $pathToScratch/results_HNglobal/HNglobal.fasta_gene_trans_map 
+cmd=" perl /usr/local/trinityrnaseq-2.5.1/util/support_scripts/get_Trinity_gene_to_trans_map.pl $pathToScratch/HNglobal.fasta \> $pathToScratch/results_HNglobal/HNglobal.fasta_gene_trans_map "
+echo "commande executee: $cmd"
+ 
+# 2 generation of peptide file
+ 
+# 2.1 generation of longestOrf
+TransDecoder.LongOrfs -t $pathToScratch/HNglobal.fasta --gene_trans_map $pathToScratch/results_HNglobal/HNglobal.fasta_gene_trans_map -m 50 
+cmd=" TransDecoder.LongOrfs -t $pathToScratch/HNglobal.fasta --gene_trans_map $pathToScratch/results_HNglobal/HNglobal.fasta_gene_trans_map -m 50  "
+echo "commande executee: $cmd"
+ 
+# 2.2a recherche d’identité parmis les longorfs hmmscan
+hmmscan --cpu 10 --domtblout pfam_longorfs.domtblout $pathToScratch/DB//Pfam-A.hmm $pathToScratch/results_HNglobal/HNglobal.fasta.transdecoder_dir/longest_orfs.pep 
+cmd=" hmmscan --cpu 10 --domtblout pfam_longorfs.domtblout $pathToScratch/DB//Pfam-A.hmm $pathToScratch/results_HNglobal/HNglobal.fasta.transdecoder_dir/longest_orfs.pep  "
+echo "commande executee: $cmd"
+ 
+# 2.2b recherche d’identité parmis les longorfs diamond
+ /usr/local/diamond-0.8.29/diamond blastp --query $pathToScratch/results_HNglobal/HNglobal.fasta.transdecoder_dir/longest_orfs.pep --db $pathToScratch/DB//uniprot_sprot --out diamP_uniprot_longorfs.outfmt6 --out
+fmt 6 --max-target-seqs 1 
+cmd=" /usr/local/diamond-0.8.29/diamond blastp --query $pathToScratch/results_HNglobal/HNglobal.fasta.transdecoder_dir/longest_orfs.pep --threads 10 --db $pathToScratch/DB//uniprot_sprot.pep --out diamP_uniprot_
+longorfs.outfmt6 --outfmt 6 --max-target-seqs 1  "
+echo "commande executee: $cmd"
+ 
+# #2.3 Prediction peptides
+ TransDecoder.Predict --cpu 10 -t $pathToScratch/HNglobal.fasta --retain_pfam_hits $pathToScratch/results_HNglobal/pfam_longorfs.domtblout --retain_blastp_hits $pathToScratch/results_HNglobal/diamP_uniprot_longo
+rfs.outfmt6 
+cmd=" TransDecoder.Predict --cpu 10 -t $pathToScratch/HNglobal.fasta --retain_pfam_hits pfam_longorfs.domtblout --retain_blastp_hits diamP_uniprot_longorfs.outfmt6  "
+echo "commande executee: $cmd"
+ 
+# 3 Recherche de similarité en utilisant Diamond
+ 
+# blastp diamP_uniprott 
+ /usr/local/diamond-0.8.29/diamond blastp --query $pathToScratch/results_HNglobal/HNglobal.fasta.transdecoder.pep --threads 10 --db $pathToScratch/DB//uniprot_sprot --out $pathToScratch/results_HNglobal/diamP_un
+iprot.outfmt6 --outfmt 6 --max-target-seqs 1 --more-sensitive 
+cmd=" /usr/local/diamond-0.8.29/diamond blastp --query $pathToScratch/results_HNglobal/HNglobal.fasta.transdecoder.pep --threads 10 --db $pathToScratch/DB//uniprot_sprot --out $pathToScratch/results_HNglobal/dia
+mP_uniprot.outfmt6 --outfmt 6 --max-target-seqs 1 --more-sensitive  "
+echo "commande executee: $cmd"
+{% endhighlight %}
 
 
-<a name="trinonateWeb"></a>
-## 3.2. Interactively Exploring annotations and expression data via TrinotateWeb
+### Building a Sqlite database and report
 
-THIS PAGE IS UNDER CONSTRUCTION !!!
+The second bash script, `build_Sqlite_trinotate_database_and_report-JAv1.2.0.sh`https://github.com/julieaorjuela/scripts/blob/master/build_Sqlite_trinotate_database_and_report-JAv1.2.0.sh, needs as input the assembled transcrits and the repertory containing the whole of results obtained by trinotate-JAv1.0.sh in the last step.
+
+{% highlight bash %}
+qsub -q bioinfo.q -N reportTrinonate -V -b yes -cwd 'bash ~/scripts/build_Sqlite_trinotate_database_and_report-JAv1.2.0.sh -f /repertory/containing/fastaFiles/longestAGglobal-Trinity.fasta -r /repertory/containing/fastaFiles/jobArray-Trinotate/Trinotate/results_longestAGglobal-Trinity/'
+{% endhighlight %}
