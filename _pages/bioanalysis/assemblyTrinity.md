@@ -53,6 +53,12 @@ fastq, sam, bam
   - [2.1. Evaluating the quality of the assembly](#assemblyQuality)
   - [2.2. Identifying differentially expressed (DE) transcripts](#DEtranscrits)
   
+  
+- [3. Functional annotation of transcripts using `Trinotate` and predicting coding regions using `TransDecoder`](#/repertory/containing/fastaFiles/ate)
+  - [3.1. Examining functional enrichments for DE transcripts using GOseq](#GO)
+  - [3.2. Interactively Exploring annotations and expression data via TrinotateWeb](#/repertory/containing/fastaFiles/ateWeb)
+
+
 <!-- /TOC -->
 
 ***
