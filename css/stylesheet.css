@@ -116,6 +116,21 @@ pre, code {
   box-shadow: 0 0 10px rgba(0,0,0,.1);
 }
 
+pre.highlight {
+  width: 100%;
+  color: #222;
+  background-color: #fff;
+
+  font-family: Monaco, "Bitstream Vera Sans Mono", "Lucida Console", Terminal, monospace;
+  font-size: 14px;
+
+  border-radius: 2px;
+  -moz-border-radius: 2px;
+  -webkit-border-radius: 2px;
+
+  box-shadow: 0 0 10px rgba(0,0,0,.1);
+}
+
 pre {
   padding: 10px;
   overflow: auto;
