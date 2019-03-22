@@ -159,7 +159,7 @@ Attention: les amorces doivent etre ecrit en 5'-3'
 
 les paramettres sont: 
 
-{% highlight ruby %}
+```
 1<minAmpliconSize>
 2<maxAmpliconSize>
 3<fivePrimPrimer>
@@ -170,10 +170,10 @@ les paramettres sont:
 8<out_dir>
 9<datasetTarGz>
 
-{% endhighlight %}
+```
 
 - Si tout se passe bien vous verrez ça:
-{% highlight bash %}
+```
 380
 460
 GGCGVACGGGTGAGTAA
@@ -188,11 +188,11 @@ Step clustering ven. sept. 21 11:52:29 CEST 2018
 Step remove_chimera ven. sept. 21 11:52:44 CEST 2018
 Step filters ven. sept. 21 11:54:30 CEST 2018
 Step affiliation_OTU ven. sept. 21 11:54:33 CEST 2018 ...
-{% endlight bash %}
+```
 
 Votre dossier OUTPUT doit rassembler à ça
 
-{% highlight bash %}
+```
 
 orjuela@MPLCLTLP0157:~/Documents/tools/FROGS/test/OUT$ ll
 total 91524
@@ -254,7 +254,7 @@ drwxr-xr-x 4 orjuela orjuela     4096 juil. 12 14:40 ../
 -rw-r--r-- 1 orjuela orjuela       67 juin  15 15:22 Jaccard_binary.tsv
 -rw-r--r-- 1 orjuela orjuela       67 juin  15 15:22 Unifrac.tsv
 
-{% endlight bash %}
+```
 
 Rapatrier les dossier OUTPUT dans votre machine local et visualiser les html.
 
