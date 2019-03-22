@@ -40,16 +40,14 @@ fastq, OTU tables
 
 ## Lancer FROGs en Ligne de Commande
 
-On crée un dossier ou vous voulez.
-
-Profitez pour le faire dans le /scratch d'un noeud si vous êtes au cluster IRD. 
+On crée un dossier. Profitez pour le faire dans le /scratch d'un noeud si vous êtes au cluster IRD. 
 
 `mkdir /scratch/TEST-FROGS/`
 
 
 ### 1. Préparation de fastq
 
-* Tous les fichiers fastq.gz (R1 et R2) seront mis dans un dossier qu'il faudra apres compresser en .tar.gz
+Tous les fichiers fastq.gz (R1 et R2) seront mis dans un dossier qu'il faudra apres compresser en .tar.gz
 Pour compresser le fichier il faut:
 
 - se deplacer dans le dossier des fastq.gz
@@ -58,13 +56,8 @@ Pour compresser le fichier il faut:
 - Compresser 
 `tar zcvf dataset_path * `
 
-* Vérifier que le dossier compressé a tous les fichiers et qu'il n'y a pas de sous-dossier.
+- Vérifier que le dossier compressé a tous les fichiers et qu'il n'y a pas de sous-dossier: Pour observer les fichiers sans le décompresser utilise `tar -tf dataset_path.tar.gz`. Vous devez avoir la liste des fichiers fastq.gz sans sous-dossier.
 
-Pour observer les fichiers sans le décompresser utilise :
-
-`tar -tf dataset_path.tar.gz`
-
-Vous devez avoir la liste des fichiers fastq.gz sans sous-dossier.
 Exemple :
 
 {% highlight bash %}
@@ -86,7 +79,8 @@ create:   `tar zcvf`
 
 examiner: `tar -tf`
 
-- vous obtenez un fichier dataset_path.tar.gz que vous pouvez deplacer dans le dossier scratch
+- vous obtenez un fichier dataset_path.tar.gz que vous pouvez deplacer dans `/scratch/TEST-FROGS/`
+
 `scp nas3:/your_projet_path/test_dataset.tar.gz /scratch/TEST-FROGS/ `.
 
 
