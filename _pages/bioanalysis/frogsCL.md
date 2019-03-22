@@ -58,9 +58,6 @@ Pour compresser le fichier il faut:
 - Compresser 
 `tar zcvf dataset_path * `
 
-- vous obtenez un fichier dataset_path.tar.gz que vous pouvez deplacer dans le dossier scratch
-`scp nas3:/your_projet_path/test_dataset.tar.gz /scratch/TEST-FROGS/ `
-
 * Vérifier que le dossier compressé a tous les fichiers et qu'il n'y a pas de sous-dossier.
 
 Pour observer les fichiers sans le décompresser utilise :
@@ -84,8 +81,14 @@ splA_03_R2.fastq.gz
 Documentation compression : https://openclassrooms.com/fr/courses/43538-reprenez-le-controle-a-laide-de-linux/41346-archiver-et-compresser
 
 extraire : `tar zxvf`
+
 create:   `tar zcvf`
+
 examiner: `tar -tf`
+
+- vous obtenez un fichier dataset_path.tar.gz que vous pouvez deplacer dans le dossier scratch
+`scp nas3:/your_projet_path/test_dataset.tar.gz /scratch/TEST-FROGS/ `.
+
 
 ### 2. Préparation d'un fichier tabulé "sample_metadata.tsv" qui R utilise
 
@@ -150,15 +153,13 @@ Vous pouvez modifier les lignes 3 et 4 du script pour ajouter le chemin vers les
 
 ### 5. Lancer le script run_frogs_pipeline.sh
 
-Pour lancer le script place vous dans l'endroit ou vous voulez avoir les résultats :`/home/orjuela/TEST-FROGS/fromGitExemple`
+Pour lancer le script place vous dans l'endroit ou vous voulez avoir les résultats :`cd /scratch/TEST-FROGS/`
 
 Attention: les amorces doivent etre ecrit en 5'-3' 
 
-`qsub -q bioinfo.q -N frogsCL -b yes -V -cwd -pe ompi 4 'bash /home/orjuela/scripts/run_frogs_pipeline.sh 380 460 GGCGVACGGGTGAGTAA GTGCCAGCNGCNGCGG 250 250 420 OUTPUT /home/orjuela/TEST-FROGS/fromGitExemple/test_dataset.tar.gz'`
+`qsub -q bioinfo.q -N frogsCL -b yes -V -cwd -pe ompi 4 'bash run_frogs_pipeline.sh 380 460 GGCGVACGGGTGAGTAA GTGCCAGCNGCNGCGG 250 250 420 OUTPUT /scratch/TEST-FROGS/dataset_path.tar.gz'`
 
-`bash run_frogs_pipeline.sh`
-
-les paramettres sont: 
+les paramettres : 
 
 ```
 1<minAmpliconSize>
@@ -257,7 +258,7 @@ drwxr-xr-x 4 orjuela orjuela     4096 juil. 12 14:40 ../
 
 ```
 
-Rapatrier les dossier OUTPUT dans votre machine local et visualiser les html. Utilisez Fillezilla par exemple ou scp.
+Rapatrier les dossier OUTPUT dans votre projet puis dans votre machine local et visualiser les html.
 
 
 
