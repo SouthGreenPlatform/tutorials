@@ -157,9 +157,9 @@ Attention: les amorces doivent etre ecrit en 5'-3'
 
 `bash /home/orjuela/scripts/run_frogs_pipeline.sh`
 
+les paramettres sont: 
 
-{% highlight bash %}
-
+{% highlight ruby %}
 1<minAmpliconSize>
 2<maxAmpliconSize>
 3<fivePrimPrimer>
