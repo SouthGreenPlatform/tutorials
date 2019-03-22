@@ -7,7 +7,7 @@ description: comment lancer FROGS en ligne de commande sur le cluster IRD
 ---
 <table class="table-contact">
 <tr>
-<td><img width="100%" src="https://github.com/SouthGreenPlatform/trainings/blob/gh-pages/images/FROGS_logo.png" alt="" />
+<td><img width="100%" src="{{ site.url }}/images/FROGS_logo.png" alt="" />
 </td>
 <td>
 <h1> FROGs en Ligne de Commande</h1><br />
