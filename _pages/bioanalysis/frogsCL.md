@@ -157,7 +157,9 @@ Attention: les amorces doivent etre ecrit en 5'-3'
 
 `bash /home/orjuela/scripts/run_frogs_pipeline.sh`
 
+
 {% highlight bash %}
+
 1<minAmpliconSize>
 2<maxAmpliconSize>
 3<fivePrimPrimer>
@@ -167,6 +169,7 @@ Attention: les amorces doivent etre ecrit en 5'-3'
 7<expectedAmpliconSize>
 8<out_dir>
 9<datasetTarGz>
+
 {% endhighlight %}
 
 - Si tout se passe bien vous verrez ça:
