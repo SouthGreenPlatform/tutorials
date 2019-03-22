@@ -124,11 +124,13 @@ Sample	Cell	Origin	Repetition	Color
 17MET045	Cell4	Viperine	R3	orange
 {% endhighlight %}
 
+
 ### 3. Connaitre le path de la base de données pour les etapes d'assignation tax
 
-sur le cluster:
+sur le cluster ird
 
 `/usr/local/frogs_databases-2.01/silva_123_16S/silva_123_16S.fasta`
+
 
 ### 4. Visualiser/modifier le script avant de le lancer :
 
@@ -137,18 +139,23 @@ Ouvrir run_frogs_pipeline.sh dans un editeur.
 Vous pouvez modifier les lignes 3 et 4 du script pour ajouter le chemin vers les fichiers sample_metadata et la base de données pour l'assignation taxonomique
 
 `samplefile="/home/orjuela/TEST-FROGS/fromGitExemple/sample_metadata.tsv"`
+
 `db="/usr/local/frogs_databases-2.01/silva_123_16S/silva_123_16S.fasta" `
 
 +Le reste on ne touche pas sauf si vous savez ce que vous faites.+
 
+
 ### 5. Lancer le script /home/orjuela/scripts/run_frogs_pipeline.sh
 
-Pour lancer le script place vous dans l'endroit ou vous voulez avoir les résultats : /home/orjuela/TEST-FROGS/fromGitExemple
+Pour lancer le script place vous dans l'endroit ou vous voulez avoir les résultats :`/home/orjuela/TEST-FROGS/fromGitExemple`
 
 Attention: les amorces doivent etre ecrit en 5'-3' 
+
 `qsub -q bioinfo.q -N frogsCL -b yes -V -cwd -pe ompi 4 'bash /home/orjuela/scripts/run_frogs_pipeline.sh 380 460 GGCGVACGGGTGAGTAA GTGCCAGCNGCNGCGG 250 250 420 OUTPUT /home/orjuela/TEST-FROGS/fromGitExemple/test_dataset.tar.gz'`
 
 `bash /home/orjuela/scripts/run_frogs_pipeline.sh`
+
+{% highlight bash %}
 1<minAmpliconSize>
 2<maxAmpliconSize>
 3<fivePrimPrimer>
@@ -158,10 +165,10 @@ Attention: les amorces doivent etre ecrit en 5'-3'
 7<expectedAmpliconSize>
 8<out_dir>
 9<datasetTarGz>
-
+{% endhighlight %}
 
 - Si tout se passe bien vous verrez ça:
-
+{% highlight bash %}
 380
 460
 GGCGVACGGGTGAGTAA
@@ -176,9 +183,11 @@ Step clustering ven. sept. 21 11:52:29 CEST 2018
 Step remove_chimera ven. sept. 21 11:52:44 CEST 2018
 Step filters ven. sept. 21 11:54:30 CEST 2018
 Step affiliation_OTU ven. sept. 21 11:54:33 CEST 2018 ...
+{% endlight bash %}
 
 Votre dossier OUTPUT doit rassembler à ça
 
+{% highlight bash %}
 orjuela@MPLCLTLP0157:~/Documents/tools/FROGS/test/OUT$ ll
 total 91524
 drwxr-xr-x 2 orjuela orjuela    53248 juin  15 15:23 ./
@@ -238,7 +247,7 @@ drwxr-xr-x 4 orjuela orjuela     4096 juil. 12 14:40 ../
 -rw-r--r-- 1 orjuela orjuela      951 juin  15 15:23 17-phylo_manova.log
 -rw-r--r-- 1 orjuela orjuela       67 juin  15 15:22 Jaccard_binary.tsv
 -rw-r--r-- 1 orjuela orjuela       67 juin  15 15:22 Unifrac.tsv
-
+{% endlight bash %}
 
 Rapatrier les dossier OUTPUT dans votre machine local et visualiser les html.
 
