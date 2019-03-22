@@ -41,6 +41,8 @@ fastq, OTU tables
 
 ## On crée un dossier ou vous voulez.
 
+Profitez pour le faire dand le /scratch si vous etes au cluster IRD.
+
 `mkdir /home/orjuela/TEST-FROGS/fromGitExemple`
 
 
@@ -147,7 +149,7 @@ Vous pouvez modifier les lignes 3 et 4 du script pour ajouter le chemin vers les
 +Le reste on ne touche pas sauf si vous savez ce que vous faites.+
 
 
-### 5. Lancer le script /home/orjuela/scripts/run_frogs_pipeline.sh
+### 5. Lancer le script run_frogs_pipeline.sh
 
 Pour lancer le script place vous dans l'endroit ou vous voulez avoir les résultats :`/home/orjuela/TEST-FROGS/fromGitExemple`
 
