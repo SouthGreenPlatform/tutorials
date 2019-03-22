@@ -39,13 +39,9 @@ fastq, OTU tables
 22/03/2019
 
 
-***
+## On crée un dossier ou vous voulez.
 
-## On crée un dossier ou vous voulez
-
-<pre>
-mkdir /home/orjuela/TEST-FROGS/fromGitExemple
-</pre>
+`mkdir /home/orjuela/TEST-FROGS/fromGitExemple`
 
 
 ### 1. Préparation de fastq
@@ -72,26 +68,34 @@ Pour observer les fichiers sans le décompresser utilise :
 
 Vous devez avoir que la liste des fichiers fastq.gz sans sous-dossier.
 
-splA_01_R1.fastq.gz
-splA_01_R2.fastq.gz
-splA_02_R1.fastq.gz
-splA_02_R2.fastq.gz
-splA_03_R1.fastq.gz
-splA_03_R2.fastq.gz
+{% highlight bash %}
+
+splA_01_R1.fastq.gz \
+splA_01_R2.fastq.gz \
+splA_02_R1.fastq.gz \
+splA_02_R2.fastq.gz \
+splA_03_R1.fastq.gz \
+splA_03_R2.fastq.gz \
+
+{% endhighlight %}
 
 Notes :
 
 Documentation compression : https://openclassrooms.com/fr/courses/43538-reprenez-le-controle-a-laide-de-linux/41346-archiver-et-compresser
-extraire : tar zxvf
-create:   tar zcvf
-examiner: tar -tf
+extraire : `tar zxvf`
+
+create:   `tar zcvf`
+
+examiner: `tar -tf`
 
 ### 2. Préparation d'un fichier tabulé "sample_metadata.tsv" qui R utilise
 
 exemple 1 :
 	Color	ID
 splA_01 red rep1
+
 splA_02	blue	rep2
+
 splA_03	green	rep1
 
 
