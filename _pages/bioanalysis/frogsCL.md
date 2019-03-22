@@ -134,6 +134,8 @@ sur le cluster ird
 
 ### 4. Visualiser/modifier le script avant de le lancer :
 
+Download [run_frogs_pipeline.sh](https://southgreenplatform.github.io/trainings/files/run_frogs_pipelinev2.sh)
+
 Ouvrir run_frogs_pipeline.sh dans un editeur.
 
 Vous pouvez modifier les lignes 3 et 4 du script pour ajouter le chemin vers les fichiers sample_metadata et la base de données pour l'assignation taxonomique
