@@ -39,7 +39,10 @@ fastq, OTU tables
 22/03/2019
 
 
-## On crée un dossier ou vous voulez.
+## Lancer FROGs en Ligne de Commande
+
+
+On crée un dossier ou vous voulez.
 
 Profitez pour le faire dand le /scratch si vous etes au cluster IRD.
 
