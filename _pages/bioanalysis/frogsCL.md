@@ -56,8 +56,6 @@ Pour compresser le fichier il faut:
 `tar zcvf test_dataset.tar.gz * `
 - vous obtenez un fichier test_dataset.tar.gz que vous pouvez deplacer avec
 `mv test_dataset2.tar.gz .. `
-</pre>
-
 
 * Vérifier que le dossier compressé a tous les fichiers et qu'il n'y a pas de sous-dossier.
 
@@ -65,23 +63,23 @@ Pour observer les fichiers sans le décompresser utilise :
 
 `tar -tf test_dataset.tar.gz`
 
-
 Vous devez avoir que la liste des fichiers fastq.gz sans sous-dossier.
 
 {% highlight bash %}
 
-splA_01_R1.fastq.gz \
-splA_01_R2.fastq.gz \
-splA_02_R1.fastq.gz \
-splA_02_R2.fastq.gz \
-splA_03_R1.fastq.gz \
-splA_03_R2.fastq.gz \
+splA_01_R1.fastq.gz
+splA_01_R2.fastq.gz
+splA_02_R1.fastq.gz
+splA_02_R2.fastq.gz
+splA_03_R1.fastq.gz
+splA_03_R2.fastq.gz
 
 {% endhighlight %}
 
 Notes :
 
 Documentation compression : https://openclassrooms.com/fr/courses/43538-reprenez-le-controle-a-laide-de-linux/41346-archiver-et-compresser
+
 extraire : `tar zxvf`
 
 create:   `tar zcvf`
