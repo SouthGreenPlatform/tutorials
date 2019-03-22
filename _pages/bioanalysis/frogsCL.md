@@ -7,7 +7,7 @@ description: comment lancer FROGS en ligne de commande sur le cluster IRD
 ---
 <table class="table-contact">
 <tr>
-<td><img width="100%" src="{{ site.url }}/images/trainings-linux.png" alt="" />
+<td><img width="100%" src="{{ site.url }}/images/FROGS_logo.png" alt="" />
 </td>
 <td>
 <h1> FROGs en Ligne de Commande</h1><br />
@@ -172,7 +172,7 @@ les paramettres sont:
 
 ```
 
-- Si tout se passe bien vous verrez ça:
+Si tout se passe bien vous verrez ça:
 ```
 380
 460
@@ -256,9 +256,7 @@ drwxr-xr-x 4 orjuela orjuela     4096 juil. 12 14:40 ../
 
 ```
 
-Rapatrier les dossier OUTPUT dans votre machine local et visualiser les html.
-
-Utilisez Fillezilla par exemple
+Rapatrier les dossier OUTPUT dans votre machine local et visualiser les html. Utilisez Fillezilla par exemple ou scp.
 
 
 
