@@ -190,6 +190,7 @@ Step affiliation_OTU ven. sept. 21 11:54:33 CEST 2018 ...
 Votre dossier OUTPUT doit rassembler à ça
 
 {% highlight bash %}
+
 orjuela@MPLCLTLP0157:~/Documents/tools/FROGS/test/OUT$ ll
 total 91524
 drwxr-xr-x 2 orjuela orjuela    53248 juin  15 15:23 ./
@@ -249,6 +250,7 @@ drwxr-xr-x 4 orjuela orjuela     4096 juil. 12 14:40 ../
 -rw-r--r-- 1 orjuela orjuela      951 juin  15 15:23 17-phylo_manova.log
 -rw-r--r-- 1 orjuela orjuela       67 juin  15 15:22 Jaccard_binary.tsv
 -rw-r--r-- 1 orjuela orjuela       67 juin  15 15:22 Unifrac.tsv
+
 {% endlight bash %}
 
 Rapatrier les dossier OUTPUT dans votre machine local et visualiser les html.
