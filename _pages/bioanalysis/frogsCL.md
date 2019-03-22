@@ -52,8 +52,10 @@ Pour compresser le fichier il faut:
 
 - se deplacer dans le dossier des fastq.gz
 `cd test_dataset2/`
+
 - Compresser 
 `tar zcvf test_dataset.tar.gz * `
+
 - vous obtenez un fichier test_dataset.tar.gz que vous pouvez deplacer avec
 `mv test_dataset2.tar.gz .. `
 
@@ -89,16 +91,18 @@ examiner: `tar -tf`
 ### 2. Préparation d'un fichier tabulé "sample_metadata.tsv" qui R utilise
 
 exemple 1 :
+
+{% highlight bash %}
+
 	Color	ID
-splA_01 red rep1
-
+splA_01 red	rep1
 splA_02	blue	rep2
-
 splA_03	green	rep1
-
+{% endhighlight %}
 
 exemple2:
 
+{% highlight bash %}
 Sample	Cell	Origin	Repetition	Color
 17MET040	Cell1	SolNu	R1	red
 17MET041	Cell1	SolNu	R2	red
@@ -118,6 +122,7 @@ Sample	Cell	Origin	Repetition	Color
 17MET043	Cell4	Viperine	R1	orange
 17MET044	Cell4	Viperine	R2	orange
 17MET045	Cell4	Viperine	R3	orange
+{% endhighlight %}
 
 ### 3. Connaitre le path de la base de données pour les etapes d'assignation tax
 
