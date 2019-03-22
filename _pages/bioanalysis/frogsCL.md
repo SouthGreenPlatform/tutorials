@@ -30,7 +30,7 @@ We need, in this tutorial:
 | Institut |  IRD |
 
 ### Keywords
-flash, swarm, blast, vsearch, metabarcoding, 16S, 18S, ITS
+flash, swarm, blastn, silva, vsearch, metabarcoding, 16S, 18S, ITS
 
 ### Files format
 fastq, OTU tables
@@ -38,15 +38,13 @@ fastq, OTU tables
 ### Date
 22/03/2019
 
-
 ## Lancer FROGs en Ligne de Commande
-
 
 On crée un dossier ou vous voulez.
 
-Profitez pour le faire dand le /scratch si vous etes au cluster IRD.
+Profitez pour le faire dans le /scratch d'un noeud si vous êtes au cluster IRD. 
 
-`mkdir /home/orjuela/TEST-FROGS/fromGitExemple`
+`mkdir /scratch/TEST-FROGS/`
 
 
 ### 1. Préparation de fastq
@@ -54,23 +52,23 @@ Profitez pour le faire dand le /scratch si vous etes au cluster IRD.
 * Tous les fichiers fastq.gz (R1 et R2) seront mis dans un dossier qu'il faudra apres compresser en .tar.gz
 Pour compresser le fichier il faut:
 
-
 - se deplacer dans le dossier des fastq.gz
-`cd test_dataset2/`
+`cd dataset_path/`
 
 - Compresser 
-`tar zcvf test_dataset.tar.gz * `
+`tar zcvf dataset_path * `
 
-- vous obtenez un fichier test_dataset.tar.gz que vous pouvez deplacer avec
-`mv test_dataset2.tar.gz .. `
+- vous obtenez un fichier dataset_path.tar.gz que vous pouvez deplacer dans le dossier scratch
+`scp nas3:/your_projet_path/test_dataset.tar.gz /scratch/TEST-FROGS/ `
 
 * Vérifier que le dossier compressé a tous les fichiers et qu'il n'y a pas de sous-dossier.
 
 Pour observer les fichiers sans le décompresser utilise :
 
-`tar -tf test_dataset.tar.gz`
+`tar -tf dataset_path.tar.gz`
 
-Vous devez avoir que la liste des fichiers fastq.gz sans sous-dossier.
+Vous devez avoir la liste des fichiers fastq.gz sans sous-dossier.
+Exemple :
 
 {% highlight bash %}
 
@@ -83,14 +81,10 @@ splA_03_R2.fastq.gz
 
 {% endhighlight %}
 
-Notes :
-
 Documentation compression : https://openclassrooms.com/fr/courses/43538-reprenez-le-controle-a-laide-de-linux/41346-archiver-et-compresser
 
 extraire : `tar zxvf`
-
 create:   `tar zcvf`
-
 examiner: `tar -tf`
 
 ### 2. Préparation d'un fichier tabulé "sample_metadata.tsv" qui R utilise
@@ -108,6 +102,7 @@ splA_03	green	rep1
 exemple2:
 
 {% highlight bash %}
+
 Sample	Cell	Origin	Repetition	Color
 17MET040	Cell1	SolNu	R1	red
 17MET041	Cell1	SolNu	R2	red
@@ -127,12 +122,13 @@ Sample	Cell	Origin	Repetition	Color
 17MET043	Cell4	Viperine	R1	orange
 17MET044	Cell4	Viperine	R2	orange
 17MET045	Cell4	Viperine	R3	orange
+
 {% endhighlight %}
 
 
-### 3. Connaitre le path de la base de données pour les etapes d'assignation tax
+### 3. Connaitre le path de la base de données pour les etapes d'assignation taxonomique
 
-sur le cluster ird
+sur le cluster IRD :
 
 `/usr/local/frogs_databases-2.01/silva_123_16S/silva_123_16S.fasta`
 
@@ -145,7 +141,7 @@ Ouvrir run_frogs_pipeline.sh dans un editeur.
 
 Vous pouvez modifier les lignes 3 et 4 du script pour ajouter le chemin vers les fichiers sample_metadata et la base de données pour l'assignation taxonomique
 
-`samplefile="/home/orjuela/TEST-FROGS/fromGitExemple/sample_metadata.tsv"`
+`samplefile="/scratch/TEST-FROGS/sample_metadata.tsv"`
 
 `db="/usr/local/frogs_databases-2.01/silva_123_16S/silva_123_16S.fasta" `
 
@@ -160,7 +156,7 @@ Attention: les amorces doivent etre ecrit en 5'-3'
 
 `qsub -q bioinfo.q -N frogsCL -b yes -V -cwd -pe ompi 4 'bash /home/orjuela/scripts/run_frogs_pipeline.sh 380 460 GGCGVACGGGTGAGTAA GTGCCAGCNGCNGCGG 250 250 420 OUTPUT /home/orjuela/TEST-FROGS/fromGitExemple/test_dataset.tar.gz'`
 
-`bash /home/orjuela/scripts/run_frogs_pipeline.sh`
+`bash run_frogs_pipeline.sh`
 
 les paramettres sont: 
 
