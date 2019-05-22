@@ -3,11 +3,11 @@ layout: page
 title: "Qiime2 en ligne de Commande"
 permalink: /bioanalysis/qiime2/
 tags: [ dada2, qiime2 ]
-description: Metabarcoding using QIIME and DADA2
+description: Metabarcoding using Qiime2 and DADA2
 ---
 <table class="table-contact">
 <tr>
-<td><img width="100%" src="{{ site.url }}/images/FROGS_logo.png" alt="" />
+<td><img width="100%" src="{{ site.url }}/images/qiime2.png" alt="" />
 </td>
 <td>
 <h1> Metabarcoding using Qiime2 and DADA2</h1><br />
@@ -17,23 +17,19 @@ This page describes how to analyse metabarcoding data using Qiime2 and DADA2. Fr
 </table>
 
 
-We need, in this tutorial:
-* a compressed directory with fastq files
-* a database used for the taxonomic assignation
-
 
 ### Author(s)
 
 | Authors  | Marie Simonin and Julie ORJUELA |
 | :------------- | :------------- |
-| Research Unit | UMR IPME   |
+| Research Unit | UMR IPME,  UMR IPME-DIADE   |
 | Institut |  IRD |
 
 ### Keywords
 dada2, silva, vsearch, metabarcoding, 16S, 18S, ITS, Qiime2, denoising, SVs
 
 ### Files format
-fastq, OTU tables
+fastq, SVs tables, OTU tables
 
 ### Date
 22/03/2019
