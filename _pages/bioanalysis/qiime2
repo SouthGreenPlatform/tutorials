@@ -3,15 +3,15 @@ layout: page
 title: "Qiime2 en ligne de Commande"
 permalink: /bioanalysis/qiime2/
 tags: [ dada2, qiime2 ]
-description: comment lancer QIIME en ligne de commande sur le cluster IRD
+description: Metabarcoding using QIIME and DADA2
 ---
 <table class="table-contact">
 <tr>
 <td><img width="100%" src="{{ site.url }}/images/FROGS_logo.png" alt="" />
 </td>
 <td>
-<h1> FROGs en Ligne de Commande</h1><br />
-This page describes how to launch FROGs in command line from IRD cluster. From fastq files to OTU and Phyloseq analysis.
+<h1> Metabarcoding using Qiime2 and DADA2</h1><br />
+This page describes how to analyse metabarcoding data using Qiime2 and DADA2. From fastq files to SVs table obtention and Phyloseq analysis.
 </td>
 </tr>
 </table>
@@ -24,13 +24,13 @@ We need, in this tutorial:
 
 ### Author(s)
 
-| Authors  | Julie ORJUELA  |
+| Authors  | Marie Simonin and Julie ORJUELA |
 | :------------- | :------------- |
-| Research Unit | UMR IPME-DIADE-BOREA   |
+| Research Unit | UMR IPME   |
 | Institut |  IRD |
 
 ### Keywords
-flash, swarm, blastn, silva, vsearch, metabarcoding, 16S, 18S, ITS
+dada2, silva, vsearch, metabarcoding, 16S, 18S, ITS, Qiime2, denoising, SVs
 
 ### Files format
 fastq, OTU tables
