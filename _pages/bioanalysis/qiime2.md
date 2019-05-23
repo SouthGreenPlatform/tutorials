@@ -61,31 +61,31 @@ source activate qiime2-2018.11
 {% endhighlight %}
 
 Import the fastq files in Qiime2 (stored in Qiime2 as a qza file). qza file is the data format (fastq, txt, fasta) in Qiime2 
-```{r}
+{% highlight R %}
 qiime tools import \
   --type 'SampleData[PairedEndSequencesWithQuality]' \
   --input-path manifest.csv \
   --output-path paired-end-demux.qza \
   --input-format PairedEndFastqManifestPhred33
-```
+{% endhighlight %}
 
 #### 2. Verification of sequence quality and number of sequences per sample.
 
 Visualize the qzv file on qiime tools view: https://view.qiime2.org/. qzv file is the visualization format in Qiime2
-```{r}
+{% highlight R %}
 qiime demux summarize \
   --i-data paired-end-demux.qza \
   --o-visualization paired-end-demux.qzv
-```
+{% endhighlight %}
 - If you are working locally (not on the server), use this function to visualize the qzv file online
-```{r}
+{% highlight R %}
 qiime tools view paired-end-demux.qzv
-```
+{% endhighlight %}
 
 #### 3. Denoising with DADA2
 
 Based on the quality information and presence of primers the different p-trim and p-trunc parameters need to be changed. they are specific to each study and primers. Here we have forward primers of 21 bp and reverse of 20 bp.  The total amplicon length is 291 bp, based on the qzv visualization we decide on the truncation length (p-trunc-len) of the forward and reverse reads. You can change the number of threads on the server with p-n-threads. This command will generate 3 files: the OTU table (16S-table.qza), the representative sequence fasta file (16S-rep-seqs.qza) and denoising statistic file (16S-denoising-stats.qza).
-```{r}
+{% highlight R %}
 qiime dada2 denoise-paired \
   --i-demultiplexed-seqs paired-end-demux.qza \
   --p-trim-left-f 21 \
@@ -97,13 +97,13 @@ qiime dada2 denoise-paired \
   --o-representative-sequences 16S-rep-seqs.qza \
   --o-denoising-stats 16S-denoising-stats.qza \
   --verbose
-```
+{% endhighlight %}
 
 
 #### 4. Make summary files and visualize the outputs of DADA2.
 
 It necessitates a metadata file with the treatment information (provided). The first column needs to be "sample-id"and the other columns are treatment, site, etc information. Go to Qiime2 View website to visualize the qzv files
-```{r}
+{% highlight R %}
 qiime metadata tabulate \
   --m-input-file 16S-denoising-stats.qza \
   --o-visualization 16S-denoising-stats.qzv
@@ -116,72 +116,72 @@ qiime feature-table summarize \
 qiime feature-table tabulate-seqs \
   --i-data 16S-rep-seqs.qza \
   --o-visualization 16S-rep-seqs.qzv
-```
+{% endhighlight %}
 
 #### 5. Assign taxonomy to the SVs.
 
 Download pretrained classifier for the V4 region (Silva 132 99% OTUs from 515F/806R region of sequences) based on the SILVA database: `https://docs.qiime2.org/2019.1/data-resources/`
 
 To create the classifier based on your own parameters (fragment size, region) follow this tutorial, for now we will use the pre-trained classifier for the V4 region (515F-806R) at 99% similarity: https://docs.qiime2.org/2019.1/tutorials/feature-classifier/
-```{r}
+{% highlight R %}
 qiime feature-classifier classify-sklearn \
   --i-classifier silva-132-99-515-806-nb-classifier.qza \
   --i-reads 16S-rep-seqs.qza \
   --o-classification 16S-rep-seqs-taxonomy.qza
-```
+{% endhighlight %}
 
 Visualization of the taxonomy output
-```{r}
+{% highlight R %}
 qiime metadata tabulate \
   --m-input-file 16S-rep-seqs-taxonomy.qza \
   --o-visualization 16S-rep-seqs-taxonomy.qzv
-```
+{% endhighlight %}
 
 #### 6. Remove SVs in the table that are Chloroplast or Mitochondria (not bacterial or archaeal taxa)
-```{r}
+{% highlight R %}
 qiime taxa filter-table \
   --i-table 16S-table.qza \
   --i-taxonomy 16S-rep-seqs-taxonomy.qza \
   --p-exclude mitochondria,chloroplast \
   --o-filtered-table 16S-table-noplant.qza
-```
+{% endhighlight %}
 
 #### 7. Possible filtering/cleaning steps 
 
 Rarefy in Qiime2
-```{r}
+{% highlight R %}
 qiime feature-table rarefy \
   --i-table 16S-table-noplant.qza \
   --p-sampling-depth 10000 \
   --o-rarefied-table 16S-table-noplant-rarefied-10000.qza
-```
+{% endhighlight %}
 
 Remove SVs that are present only in 1 sample
-```{r}
+{% highlight R %}
 qiime feature-table filter-features \
   --i-table 16S-table-noplant-rarefied-10000.qza \
   --p-min-samples 2 \
   --o-filtered-table 16S-table-noplant-rarefied-10000_filtered.qza
-```
+{% endhighlight %}
 
 Filter the the rep-seq.qza to keep only SVs that are present in the final SV table (remove SVs that were Chloroplast, Mitochondria or found in only one sample...)
-```{r}
+{% highlight R %}
  qiime feature-table filter-seqs \
   --i-data 16S-rep-seqs.qza \
   --i-table 16S-table-noplant-rarefied-10000_filtered.qza \
   --o-filtered-data 16S-rep-seqs-filtered.qza
-```
+{% endhighlight %}
 
 Summary after cleaning steps
-```{r}
+{% highlight R %}
   qiime feature-table summarize \
   --i-table 16S-table-noplant-rarefied-10000_filtered.qza \
   --o-visualization 16S-table-noplant-rarefied-10000_filtered.qzv \
   --m-sample-metadata-file metadata.txt
-```
+{% endhighlight %}
 
 #### 8. Export SV table (biom file) and representative sequences (fasta file) for analyses in R studio (structure and diversity analyses) - Qiime2 
-```{r}
+{% highlight R %}
 qiime tools export \
   --input-path 16S-rep-seqs.qza \
   --output-path Dada2-output
@@ -189,21 +189,21 @@ qiime tools export \
 qiime tools export \
   --input-path 16S-table-noplant-rarefied-10000_filtered.qza \
   --output-path Dada2-output
-```
+{% endhighlight %}
 
 
 #### 9. Make Phylogenetic tree 
-```{r}
+{% highlight R %}
 qiime phylogeny align-to-tree-mafft-fasttree \
   --i-sequences 16S-rep-seqs-filtered.qza \
   --o-alignment aligned-16S-rep-seqs-filtered.qza \
   --o-masked-alignment masked-aligned-rep-seqs-filtered.qza \
   --o-tree unrooted-16S-tree-filteredSVs.qza \
   --o-rooted-tree rooted-16S-tree-filteredSVs.qza
-```
+{% endhighlight %}
 
 Export trees
-```{r}
+{% highlight R %}
 qiime tools export \
   --input-path unrooted-16S-tree-filteredSVs.qza \
   --output-path exported-tree-16S
@@ -211,4 +211,4 @@ qiime tools export \
 qiime tools export \
   --input-path  rooted-16S-tree-filteredSVs.qza \
   --output-path exported-tree-16S
-```
+{% endhighlight %}
