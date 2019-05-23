@@ -41,7 +41,7 @@ Connect you in ssh mode to bioinfo-master.ird.fr cluster using formation counts.
 
 #### 1. Import raw sequence data (demultiplexed fastQ files) into Qiime2.
 
-`https://docs.qiime2.org/2019.1/tutorials/importing/`
+(https://docs.qiime2.org/2019.1/tutorials/importing/)[https://docs.qiime2.org/2019.1/tutorials/importing/]
 
 - Option with a manifest file: you need to create and use a manifest file that links the sample names to the fastq files The manifest file is a csv file where the first column is the "sample-id", the second column is the "absolute-filepath" to the fastq.gz file, the third column is the "direction" of the reads (forward or reverse). These are mandatory column names.Here is an example for paired end sequences with Phred scores of 33. !! The csv file must be in the american format: replace ";" by "," as a separator if needed.
 
@@ -120,9 +120,9 @@ qiime feature-table tabulate-seqs \
 
 #### 5. Assign taxonomy to the SVs.
 
-Download pretrained classifier for the V4 region (Silva 132 99% OTUs from 515F/806R region of sequences) based on the SILVA database: `https://docs.qiime2.org/2019.1/data-resources/`
+Download pretrained classifier for the V4 region (Silva 132 99% OTUs from 515F/806R region of sequences) based on the SILVA database: (https://docs.qiime2.org/2019.1/data-resources/)[https://docs.qiime2.org/2019.1/data-resources/]
 
-To create the classifier based on your own parameters (fragment size, region) follow this tutorial, for now we will use the pre-trained classifier for the V4 region (515F-806R) at 99% similarity: https://docs.qiime2.org/2019.1/tutorials/feature-classifier/
+To create the classifier based on your own parameters (fragment size, region) follow this tutorial, for now we will use the pre-trained classifier for the V4 region (515F-806R) at 99% similarity: (https://docs.qiime2.org/2019.1/tutorials/feature-classifier/)[https://docs.qiime2.org/2019.1/tutorials/feature-classifier/]
 {% highlight R %}
 qiime feature-classifier classify-sklearn \
   --i-classifier silva-132-99-515-806-nb-classifier.qza \
