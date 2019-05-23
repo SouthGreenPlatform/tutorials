@@ -41,7 +41,7 @@ Connect you in ssh mode to bioinfo-master.ird.fr cluster using formation counts.
 
 #### 1. Import raw sequence data (demultiplexed fastQ files) into Qiime2.
 
-(https://docs.qiime2.org/2019.1/tutorials/importing/)[https://docs.qiime2.org/2019.1/tutorials/importing/]
+[https://docs.qiime2.org/2019.1/tutorials/importing/](https://docs.qiime2.org/2019.1/tutorials/importing/)
 
 - Option with a manifest file: you need to create and use a manifest file that links the sample names to the fastq files The manifest file is a csv file where the first column is the "sample-id", the second column is the "absolute-filepath" to the fastq.gz file, the third column is the "direction" of the reads (forward or reverse). These are mandatory column names.Here is an example for paired end sequences with Phred scores of 33. !! The csv file must be in the american format: replace ";" by "," as a separator if needed.
 
