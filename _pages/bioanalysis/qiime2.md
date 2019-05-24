@@ -22,7 +22,7 @@ This page describes how to analyse metabarcoding data using Qiime2 and DADA2. Fr
 
 | Authors  | Marie Simonin and Julie ORJUELA |
 | :------------- | :------------- |
-| Research Unit | UMR IPME,  UMR IPME-DIADE   |
+| Research Unit | UMR IPME,  UMR IPME-DIADE-BOREA   |
 | Institut |  IRD |
 
 ### Keywords
