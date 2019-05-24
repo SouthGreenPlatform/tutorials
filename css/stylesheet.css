@@ -235,7 +235,8 @@ Menu CSS
 *******************************************************************************/
 /* drop down menu styles */
 #menu a { 
-	display:inline-block; 
+	display:inline-block;
+	z-index:10000000000;
 	color: #9d9d9d;
 	text-decoration:none;
 	text-shadow: 0 0 0;
