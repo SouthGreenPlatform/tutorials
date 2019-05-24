@@ -236,7 +236,6 @@ Menu CSS
 /* drop down menu styles */
 #menu a { 
 	display:inline-block;
-	z-index:10000000000;
 	color: #9d9d9d;
 	text-decoration:none;
 	text-shadow: 0 0 0;
@@ -269,6 +268,7 @@ Menu CSS
 	color: #EB7D24;
 }
 #menu ul {
+	z-index:10000000000;
 	position: absolute;
 	top: 2em;
 	left:0;
