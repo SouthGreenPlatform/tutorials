@@ -268,11 +268,10 @@ Menu CSS
 	color: #EB7D24;
 }
 #menu ul {
-	z-index:10000000000;
 	position: absolute;
 	top: 2em;
 	left:0;
-	max-height:0em;
+	/*max-height:0em;*/
 	margin:0; padding:0;
 	background-color:transparent;
 	overflow:hidden;
