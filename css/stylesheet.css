@@ -271,7 +271,7 @@ Menu CSS
 	position: absolute;
 	top: 2em;
 	left:0;
-	/*max-height:0em;*/
+	max-height:0em;
 	margin:0; padding:0;
 	background-color:transparent;
 	overflow:hidden;
@@ -290,7 +290,7 @@ Menu CSS
 
 #menu>li:hover ul {
 	/* need an adaptation, lower is better, but see it large ;) 13em */
-	max-height:13em;
+	max-height:20em;
 }
 .ie7 #menu > li {
 	display: inline;
