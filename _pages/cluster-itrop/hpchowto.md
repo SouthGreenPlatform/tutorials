@@ -1,7 +1,7 @@
 ---
 layout: page
 title: "HPC Howto"
-permalink: /cluster-itrop/hpcHowto/
+permalink: /cluster-itrop/hpchowto/
 tags: [ linux, HPC, cluster, module load ]
 description: HPC Howto page
 ---
