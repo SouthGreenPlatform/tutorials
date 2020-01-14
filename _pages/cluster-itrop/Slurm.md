@@ -133,7 +133,7 @@ Slurm script example:
 #SBATCH --job-name=test
 ## Define the output file
 #SBATCH --output=res.txt
-## Define the bumber of tasks
+## Define the number of tasks
 #SBATCH --ntasks=1
 ## Define the execution time limit
 #SBATCH --time=10:00
