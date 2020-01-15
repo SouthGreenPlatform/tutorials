@@ -92,29 +92,30 @@ Then you can launch on this node without using the `srun` prefix
 
 `salloc`, `srun` or `sbatch` can be used with the following options:
 
-| actions | Option 
-| :------------- | :------------- | 
-|Choose a  partition |	-p [queue]| 
-| Number of nodes to use | -N [min[-max]]|
-| Number of cpus to use| -n [count]| 
-| Time limitation|-t [min] ou -t [days-hh:mm:ss] |
-| Precise a output file| -o [file_name] |
-| Precise a error file| -e [file_name] |
-| Combine  STDOUT et STDERR files| utiliser -o sans -e|
+| actions | Slurm Options | SGE options
+| :------------- | :------------- | :------------- |
+|Choose a  partition |	-p [queue]|  -q [queue]|
+| Number of nodes to use | -N [min[-max]]|N/A |
+| Number of cpus to use| -n [count]| -pe [PE] [count]|
+| Time limitation|-t [min] ou -t [days-hh:mm:ss] |-l h_rt=[seconds]|
+| Precise a output file| -o [file_name] |  -o [file_name] |
+| Precise a error file| -e [file_name] | -e [file_name] |
+| Combine  STDOUT et STDERR files| utiliser -o sans -e| -j yes |
 | Copy the environnement|	--export=[ALL , NONE , variables]|
-|Type of notifications to send|	--mail-type=[events]|
-|Send a mail|--mail-user=[address]|
-|Job Name|--job-name=[name]|
-| Relaunch job in case of problem|--requeue|
-| Set the working dir|--workdir=[dir_name] |
-| Memory size |--mem=[mem][M,G,T] ou-mem-per-cpu=[mem][M,G,T]|
-| Charge to a account|	--account=[account]|
-|Task per node|--tasks-per-node=[count]|
-| cpus per task| --cpus-per-task=[count]|
-|Job dependency|	--depend=[state:job_id]|
-| Job host preference| --nodelist=[nodes] ET/OU --exclude=[nodes]|
-| Job arrays|	--array=[array_spec]|
-| Begin Time|--begin=YYYY-MM-DD[THH:MM[:SS]]|
+|Type of notifications to send|	--mail-type=[events]| -V|
+|Send a mail|--mail-user=[address]| -M [address] |
+|Job Name|--job-name=[name]| -N [name] |
+| Relaunch job in case of problem|--requeue| -r [yes|no]
+| Set the working dir|--workdir=[dir_name] | -wd [directory] |
+| Memory size |--mem=[mem][M,G,T] ou-mem-per-cpu=[mem][M,G,T]| 	-l mem_free=[memory][K|M|G]|
+| Charge to a account|	--account=[account]| -A [account] |
+|Tasks per node|--tasks-per-node=[count]| (Fixed allocation_rule in PE)|
+| cpus per task| --cpus-per-task=[count]| N/A|
+|Job dependency|	--depend=[state:job_id]| -hold_jid [job_id | job_name]|
+| Job host preference| --nodelist=[nodes] ET/OU --exclude=[nodes]| -q [queue]@[node] OR -q 
+[queue]@@[hostgroup] |
+| Job arrays|	--array=[array_spec]| -t [array_spec]|
+| Begin Time|--begin=YYYY-MM-DD[THH:MM[:SS]]| -a [YYMMDDhhmm] |
 
 ### Launch jobs via a script
 
