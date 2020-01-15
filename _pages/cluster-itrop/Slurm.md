@@ -96,7 +96,7 @@ Then you can launch on this node without using the `srun` prefix
 | :------------- | :------------- | :------------- |
 |Choose a  partition |	-p [queue]|  -q [queue]|
 | Number of nodes to use | -N [min[-max]]|N/A |
-| Number of cpus to use| -n [count]| -pe [PE] [count]|
+| Number of tasks to use| -n [count]| -pe [PE] [count]|
 | Time limitation|-t [min] ou -t [days-hh:mm:ss] |-l h_rt=[seconds]|
 | Precise a output file| -o [file_name] |  -o [file_name] |
 | Precise a error file| -e [file_name] | -e [file_name] |
@@ -178,9 +178,33 @@ I am Slurm job 20305, array job 20303, and array task 1.
 $ cat slurm-20303_19.out
 I am Slurm job 20323, array job 20303, and array task 19.{% endhighlight %}
 
+## Submit a job with several command in parallel at the same time
+
+You have to use the options `--ntasks` and `--cpus-per-task` 
+
+Example:
+
+{% highlight bash %}#!/bin/bash
+
+#SBATCH --ntasks=2
+#SBATCH --cpu-per-task=2
+
+srun --ntasks=1 sleep 10 & 
+srun --ntasks=1 sleep 12 &
+wait{% endhighlight %}
+
+In this example, we use 2 tasks with 2 cpus allocated per task that is to say 4 cpus allocated for this job.
+
+For each task a sleep is launched at the same time.
+
+Notice the use of srun to launch a parallelised command and the  `&` to launch the command in background
+
+The `wait` is needed here to ask the job to wait for the end of each command before stopping
+
+
 ### Submit an OpenMP job:
 
-A OpenMP job is a job using serveral cpus on the same single node. Therefore the number of nodes will always be one.
+A OpenMP job is a job using several cpus on the same single node. Therefore the number of nodes will always be one.
 
 This will work with a program compiled with openMP
 
