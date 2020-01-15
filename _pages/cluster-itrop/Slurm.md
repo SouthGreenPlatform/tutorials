@@ -148,6 +148,37 @@ To launch an analysis use the following command:
 
 With `script.sh` the name of the script to use
 
+### launch a array job
+
+{% highlight bash %}#!/bin/bash
+#SBATCH --partition=short      ### Partition
+#SBATCH --job-name=ArrayJob    ### Job Name
+#SBATCH --time=00:10:00        ### WallTime
+#SBATCH --nodes=1              ### Number of Nodes
+#SBATCH --ntasks=1             ### Number of tasks per array job
+#SBATCH --array=0-19           ### Array index from 0  to 19
+
+ 
+echo "I am Slurm job ${SLURM_JOB_ID}, array job ${SLURM_ARRAY_JOB_ID}, and array task ${SLURM_ARRAY_TASK_ID}."{% endhighlight %}
+
+You  have to  use the `$SBATCH --array`option to  define the range
+
+The variable `${SLURM_JOB_ID}` precise the job id
+
+`${SLURM_ARRAY_JOB_ID}`precise the id of the job array
+
+`${SLURM_ARRAY_TASK_ID}` precise the number of the job array task.
+
+The script should give a answer like:
+
+{% highlight bash %}$ sbatch array.srun
+Submitted batch job 20303
+$ cat slurm-20303_1.out
+I am Slurm job 20305, array job 20303, and array task 1.
+$ cat slurm-20303_19.out
+I am Slurm job 20323, array job 20303, and array task 19.{% endhighlight %}
+
+
 ### Environment variables:
 
        SLURM_JOB_ID		The ID of the job allocation.
