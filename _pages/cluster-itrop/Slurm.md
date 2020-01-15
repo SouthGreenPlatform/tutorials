@@ -148,7 +148,7 @@ To launch an analysis use the following command:
 
 With `script.sh` the name of the script to use
 
-### launch a array job
+### Submit  a array job
 
 {% highlight bash %}#!/bin/bash
 #SBATCH --partition=short      ### Partition
@@ -177,6 +177,27 @@ $ cat slurm-20303_1.out
 I am Slurm job 20305, array job 20303, and array task 1.
 $ cat slurm-20303_19.out
 I am Slurm job 20323, array job 20303, and array task 19.{% endhighlight %}
+
+### Submit an OpenMP job:
+
+A OpenMP job is a job using serveral cpus on the same single node. Therefore the number of nodes will always be one.
+
+This will work with a program compiled with openMP
+
+{% highlight bash %}#!/bin/bash
+#SBATCH --partition=short   ### Partition
+#SBATCH --job-name=HelloOMP ### Job Name
+#SBATCH --time=00:10:00     ### WallTime
+#SBATCH --nodes=1           ### Number of Nodes
+#SBATCH --ntasks-per-node=1 ### Number of tasks (MPI processes)
+#SBATCH --cpus-per-task=28  ### Number of threads per task (OMP threads)
+#SBATCH --account=hpcrcf    ### Account used for job submission
+ 
+export OMP_NUM_THREADS=$SLURM_CPUS_PER_TASK
+ 
+./hello_omp{% endhighlight %}
+
+
 
 
 ### Environment variables:
