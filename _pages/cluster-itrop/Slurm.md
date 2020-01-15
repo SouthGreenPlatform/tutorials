@@ -105,13 +105,13 @@ Then you can launch on this node without using the `srun` prefix
 |Type of notifications to send|	--mail-type=[events]| -V|
 |Send a mail|--mail-user=[address]| -M [address] |
 |Job Name|--job-name=[name]| -N [name] |
-| Relaunch job in case of problem|--requeue| -r [yes|no]
+| Relaunch job in case of problem|--requeue| -r [yes,no]
 | Set the working dir|--workdir=[dir_name] | -wd [directory] |
-| Memory size |--mem=[mem][M,G,T] ou-mem-per-cpu=[mem][M,G,T]| 	-l mem_free=[memory][K|M|G]|
+| Memory size |--mem=[mem][M,G,T] ou-mem-per-cpu=[mem][M,G,T]| -l mem_free=[memory][K,M,G]|
 | Charge to a account|	--account=[account]| -A [account] |
 |Tasks per node|--tasks-per-node=[count]| (Fixed allocation_rule in PE)|
 | cpus per task| --cpus-per-task=[count]| N/A|
-|Job dependency|	--depend=[state:job_id]| -hold_jid [job_id | job_name]|
+|Job dependency|	--depend=[state:job_id]| -hold_jid [job_id , job_name]|
 | Job host preference| --nodelist=[nodes] ET/OU --exclude=[nodes]| -q [queue]@[node] OR -q 
 [queue]@@[hostgroup] |
 | Job arrays|	--array=[array_spec]| -t [array_spec]|
