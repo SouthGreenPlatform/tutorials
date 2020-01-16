@@ -222,8 +222,6 @@ export OMP_NUM_THREADS=$SLURM_CPUS_PER_TASK
 ./hello_omp{% endhighlight %}
 
 
-
-
 ### Environment variables:
 
        SLURM_JOB_ID		The ID of the job allocation.
