@@ -450,7 +450,7 @@ Use your ldap account with your mil password to connect
  
  Choose the convenient queue according to this scheme:
  
- <img width="50%" class="img-responsive" src="{{ site.url }}/images/queue_choice.png"/>
+ <img width="50%" class="img-responsive" src="{{ site.url }}/images/partition_choice.png"/>
  
  By default, when you don't specifify a particular partition the `normal` is used
  
