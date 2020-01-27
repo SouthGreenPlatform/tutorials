@@ -157,7 +157,7 @@ with login: your cluster account
 -----------------------
 
 <a name="howto-3"></a>
-### How to : Reserve one or several cores of a node in intercative mode
+### How to : Reserve one or several cores of a node in interactive mode
 
 The cluster uses the scheduler Slurm (https://slurm.schedmd.com/documentation.html) to manage and prioritize the use jobs.
 
