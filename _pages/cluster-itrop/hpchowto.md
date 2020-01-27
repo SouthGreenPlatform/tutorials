@@ -434,15 +434,19 @@ With `script.sh` the shell script to launch.
  
  Here are the available partitions:
  
- | partition | role  | nodes list
-| :------------- | :------------- | :------------- |
-|short|	Short Jobs < 1 day (higher priority,interactive jobs)| node0,node1,node2,node13,node14|
-| normal | job of maximum 7 days| node0,node1,node2,node5,node13,node14,node15,node16,node17,node18,node19,node20,node22,node23,node24 |
-| long| <7 days< long jobs< 45 days| node3,node8,node9,node10,node11,node12|
-| highmem| jobs with more memory needs |node4, node7,node17,node21|
-| supermem| jobs with much more memory needs|  node25|
-| gpu |Need of analyses on GPU cores| node26|
+ | partition | role  | nodes list | Number of Cores | Ram on nodes
+| :------------- | :------------- | :------------- |:------------- |:------------- |
+|short|	Short Jobs < 1 day (higher priority,interactive jobs)| node0,node1,node2,node13,node14| 12 cores | 48 to 64 GB
+| normal | job of maximum 7 days| node0,node1,node2,node5,node13,node14,node15,node16,node17,node18,node19,node20,node22,node23,node24 | 12 to 24 cores| 64 to 96GB|
+| long| <7 days< long jobs< 45 days| node3,node8,node9,node10,node11,node12|12 to 24 cores| 48 GB|
+| highmem| jobs with more memory needs |node4, node7,node17,node21| 12 to 24 cores| 144 GB|
+| supermem| jobs with much more memory needs|  node25| 40 cores | 1 TB|
+| gpu |Need of analyses on GPU cores| node26| 24 cpus and 8 GPUS cores | 192 GB|
 
+
+Note that the gpu node access is restricted, a request access should be done here: https://itrop-glpi.ird.fr/plugins/formcreator/front/formdisplay.php?id=15
+
+Use your ldap account with your mil password to connect 
  
  Choose the convenient queue according to this scheme:
  
