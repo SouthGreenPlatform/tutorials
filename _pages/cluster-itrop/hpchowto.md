@@ -353,7 +353,7 @@ For example : for the version 1.7 of the bioinformatic software samtools:
 -----------------------
 <a name="howto-6"></a>
 ### How to : Launch a job with Slurm
-The cluster uses the scheduler Slurm (https://slurm.schedmd.com/documentation.html) to manage and prioritize the use jobs.
+The cluster uses the scheduler [Slurm](https://slurm.schedmd.com/documentation.html) to manage and prioritize the use jobs.
 
 It checks the ressources availables (CPU and RAM ) and allocate them to the users to perform their analyses.
 
@@ -406,7 +406,7 @@ Here are the main parameters to add at the begininig of the script:
 ## Define 100Mo of memory per cpu
 #SBATCH --mem-per-cpu=100{% endhighlight %}
 
-You can find more options on the Slurm options here: https://southgreenplatform.github.io/tutorials//cluster-itrop/Slurm/#
+You can find more options on the Slurm options here: [Slurm options](https://southgreenplatform.github.io/tutorials//cluster-itrop/Slurm/#)
 
 #### examples of shell scripts for slurm :
 
@@ -444,7 +444,7 @@ With `script.sh` the shell script to launch.
 | gpu |Need of analyses on GPU cores| node26| 24 cpus and 8 GPUS cores | 192 GB|
 
 
-Note that the gpu node access is restricted, a request access should be done here: https://itrop-glpi.ird.fr/plugins/formcreator/front/formdisplay.php?id=15
+Note that the gpu node access is restricted, a request access should be done here: [request access to gpu](https://itrop-glpi.ird.fr/plugins/formcreator/front/formdisplay.php?id=15)
 
 Use your ldap account with your mil password to connect 
  
@@ -475,7 +475,7 @@ Use your ldap account with your mil password to connect
 <a name="howto-8"></a>
 ### How to : ask for a software, an account or a project space
 
-   - Go to https://itrop-glpi.ird.fr/plugins/formcreator/front/formlist.php
+   - Go to [requests](https://itrop-glpi.ird.fr/plugins/formcreator/front/formlist.php)
    - Use you IRD lpad login and your IRD mail password
    
    On this page, you have access to serveral forms regarding accounts, software,projects or galaxy.
@@ -483,20 +483,20 @@ Use your ldap account with your mil password to connect
    Here are the main forms:
    
 #### Ask for a software:
-   - Go to https://itrop-glpi.ird.fr/plugins/formcreator/front/formdisplay.php?id=7
+   - Go to [software](https://itrop-glpi.ird.fr/plugins/formcreator/front/formdisplay.php?id=7)
    - Use you IRD lpad login and your IRD mail password
 
 #### Ask for an account:
-   - Go to https://itrop-glpi.ird.fr/plugins/formcreator/front/formdisplay.php?id=1
+   - Go to [account](https://itrop-glpi.ird.fr/plugins/formcreator/front/formdisplay.php?id=1)
    - Use you IRD lpad login and your IRD mail password
     
 #### Ask for a projet space:
-  - Go to https://itrop-glpi.ird.fr/plugins/formcreator/front/formdisplay.php?id=14
+  - Go to [project](https://itrop-glpi.ird.fr/plugins/formcreator/front/formdisplay.php?id=14)
    - Use you IRD lpad login and your IRD mail password
    
  
 #### Ask for a galaxy account:
-   - Go to https://itrop-glpi.ird.fr/plugins/formcreator/front/formdisplay.php?id=4
+   - Go to [galaxy](https://itrop-glpi.ird.fr/plugins/formcreator/front/formdisplay.php?id=4)
    - Use you IRD lpad login and your IRD mail password
    
    -----------------------
