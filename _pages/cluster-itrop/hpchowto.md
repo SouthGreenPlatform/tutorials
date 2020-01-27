@@ -47,7 +47,7 @@ The cluster is composed of:
 
 -  1 master 
 -  3 nas servers for a 105To data storage
--  25 nodes servers : 19 nodes with 12 cores, 2 nodes with 16 cores, 4 nodes with 20  cores and with RAM from 48Go to 144Go
+-  27 nodes servers : 8 nodes with 12 cores, 1 node with 16 cores, 4 nodes with 20  cores, 11 with 24 cores  and with RAM from 48Go to 144Go
 
 Here is the architecture:
 
