@@ -468,10 +468,6 @@ Use your ldap account with your mil password to connect
  
  With `partition` the chosen partition.
  
- Here are the available parttions:
- 
- <img width="50%" class="img-responsive" src="{{ site.url }}/images/queues.png"/>
- 
 
 
 -----------------------
