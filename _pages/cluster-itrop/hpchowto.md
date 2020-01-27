@@ -10,7 +10,7 @@ description: HPC Howto page
 | :------------- | :------------- | :------------- | :------------- |
 | Authors | Ndomassi TANDO (ndomassi.tando@ird.fr)  |
 | Creation Date | 08/11/19 |
-| Last Modified Date | 08/11/19 |
+| Last Modified Date | 27/01/20 |
 
 
 -----------------------
@@ -431,6 +431,18 @@ With `script.sh` the shell script to launch.
  The partitions can be considered job queues, each of which has an assortment of constraints such as job size limit, job time limit, users permitted to use it, etc. 
  
  Priority-ordered jobs are allocated nodes within a partition until the resources (nodes, processors, memory, etc.) within that partition are exhausted.
+ 
+ Here are the available partitions:
+ 
+ | partition | role  | nodes list
+| :------------- | :------------- | :------------- |
+|short|	Short Jobs < 1 day (higher priority,interactive jobs)| node0,node1,node2,node13,node14|
+| normal | job of maximum 7 days| node0,node1,node2,node5,node13,node14,node15,node16,node17,node18,node19,node20,node22,node23,node24 |
+| long| <7 days< long jobs< 45 days| node3,node8,node9,node10,node11,node12|
+| highmem| jobs with more memory needs |node4, node7,node17,node21|
+| supermem| jobs with much more memory needs|  node25|
+| gpu |Need of analyses on GPU cores| node26|
+
  
  Choose the convenient queue according to this scheme:
  
