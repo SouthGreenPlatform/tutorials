@@ -24,8 +24,8 @@ description: HPC Howto page
 * [How to: Reserve one or several cores of a node ](#howto-3)
 * [How to: Transfer my data from the nas servers to the node ](#howto-4)
 * [How to: Use the Module Environment ](#howto-5)
-* [How to: Launch a job with qsub ](#howto-6)
-* [How to: Choose a particular queue ](#howto-7)
+* [How to: Launch a job with Slurm ](#howto-6)
+* [How to: Choose a particular partition ](#howto-7)
 * [How to: Ask for a software, an account or a project space ](#howto-8)
 * [How to: See or delete your data on the /scratch partition of the nodes](#howto-9)
 * [How to: Use a singularity container](#howto-10)
@@ -352,49 +352,45 @@ For example : for the version 1.7 of the bioinformatic software samtools:
 
 -----------------------
 <a name="howto-6"></a>
-### How to : Launch a job with qsub
-The cluster uses the scheduler Sun Grid Engine (S.G.E) to manage and prioritize the use jobs.
+### How to : Launch a job with Slurm
+The cluster uses the scheduler Slurm (https://slurm.schedmd.com/documentation.html) to manage and prioritize the use jobs.
 
 It checks the ressources availables (CPU and RAM ) and allocate them to the users to perform their analyses.
 
-When you are connected on bioinfo-master.ird.fr,  You can lauch a command or a script using the command qsub.
+When you are connected on bioinfo-master.ird.fr,  You can lauch a command or a script using the command sbatch.
 
 It allows you to launch your analyses in background process on the cluster.
 
 Then you can kill your ssh session and retrieve your analyses results later.
 
 
-#### Use qsub with a command:
+#### Use srun with a command:
 
 If you simply want to launch a command that will be executed on a node:
 
-`qsub -b y command`
+`srun -p partition command &`
 
-With command the command to launch
+With `command` the command to launch and `partition`the chosen partition
 
 For example 
 
-`qsub -b y hostname`
+`srun -p short hostname &`
 
-will launch the command hostname on the node choose by SGE.
+will launch the command hostname on the node choose by Slurm.
 
 The result of the command will be stored into a file in your personal home  with the following syntax:
 
-`command_launched.oJOBID`
 
-for example with the commande hostname, the result file will be :
 
-`hostname.o001`
-
-#### Use qsub with a script:
+#### Use sbatch to launch a script:
 
 You can directly launch a script with several commands to launch into the chosen node.
 
-##### Set SGE parameters into the script
+##### Set Slurm parameters into the script
 
 The beginning of the script should contain the parameters to provides to SGE.
 
-All the parameters should be written with the syntax  `#$` before.
+All the parameters should be written with the syntax  `#SBATCH` before.
 
 Here are the main parameters to add at the begininig of the script:
 
@@ -415,7 +411,7 @@ Here are the main parameters to add at the begininig of the script:
 
 #### Command to launch a job via qsub:
 
-`qsub script.sh`
+`sbatch script.sh`
 
 With `script.sh` the shell script to launch.
 
