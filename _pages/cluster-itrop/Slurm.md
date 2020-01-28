@@ -10,7 +10,7 @@ description:  Use of Slurm for i-Trop cluster
 | :------------- | :------------- | :------------- | :------------- |
 | Author | Ndomassi TANDO (ndomassi.tando@ird.fr)  |
 | Creation date |08/11/2019 |
-| modification date | 15/01/2020 |
+| modification date | 28/01/2020 |
 
 
 -----------------------
@@ -67,7 +67,7 @@ When you use this command, it is important to precise a reservation time with th
 
 Example:We reserve 2 nodes( option -N) at the same time for 5 minutes and later we run the hostname command thanks to srun
 
-{% highlight bash %}$ salloc --time=05:00 -N 2
+{% highlight bash %}$ salloc --time=05:00 -N 2 -p short
 $ srun hostname{% endhighlight %}
 
 We obtain:
@@ -82,11 +82,23 @@ node14.alineos.net
 To connect to a node in interactive mode for X minutes , use the following command:
 
 
-{% highlight bash %}$ srun --time=X:00 --pty bash -i{% endhighlight %}
+{% highlight bash %}$ srun -p short --time=X:00 --pty bash -i{% endhighlight %}
 
 Then you can launch on this node without using the `srun` prefix 
 
+### Partitions available:
 
+ | partition | role  | nodes list | Number of Cores | Ram on nodes
+| :------------- | :------------- | :------------- |:------------- |:------------- |
+|short|	Short Jobs < 1 day (higher priority,interactive jobs)| node0,node1,node2,node13,node14| 12 cores | 48 to 64 GB
+| normal | job of maximum 7 days| node0,node1,node2,node5,node13,node14,node15,node16,node17,node18,node19,node20,node22,node23,node24 | 12 to 24 cores| 64 to 96GB|
+| long| <7 days< long jobs< 45 days| node3,node8,node9,node10,node11,node12|12 to 24 cores| 48 GB|
+| highmem| jobs with more memory needs |node4, node7,node17,node21| 12 to 24 cores| 144 GB|
+| supermem| jobs with much more memory needs|  node25| 40 cores | 1 TB|
+| gpu |Need of analyses on GPU cores| node26| 24 cpus and 8 GPUS cores | 192 GB|
+
+
+Note that the gpu node access is restricted, a request access should be done here: [request access to gpu](https://itrop-glpi.ird.fr/plugins/formcreator/front/formdisplay.php?id=15)
 
 ### Main options for Slurm:
 
