@@ -1,0 +1,74 @@
+---
+layout: page
+title: "Utilisation du noeud GPU"
+permalink: /cluster-itrop/GPU/
+tags: [ linux, HPC, cluster, GPU ]
+description:  Use of GPU node for i-Trop cluster
+---
+
+| Description | Know how to use GPU node in I-Trop cluster |
+| :------------- | :------------- | :------------- | :------------- |
+| Author | Julie ORJUELA (julie.orjuela_at_ird.fr) and Aurore COMTE (aurore.comte_at_ird.fr) |
+| Creation date |27/01/2020 |
+| modification date | 27/01/2020 |
+
+
+-----------------------
+
+
+### Summary
+
+<!-- TOC depthFrom:2 depthTo:2 withLinks:1 updateOnSave:1 orderedList:0 -->
+* [Objective](#part-1)
+* [Launch jobs in GPU node with Slurm](#part-2)
+* [Resources supervision with nvidia](#part-3)
+* [Liens](#liens)
+* [License](#license)
+
+
+-----------------------
+<a name="part-1"></a>
+## Objectives
+
+Know how to launch different a Slurm job in GPU node in I-Trop Cluster.
+
+Jobs monitoring in GPU
+
+-------------------------------------------------------------------------------------
+
+<a name="part-2"></a>
+## Launch jobs in GPU node with Slurm 
+       
+### Launch commands from the master node
+
+The following command allocate computing resources ( nodes, memory, cores) and immediately launch the command on each allocate resource.
+
+    {% highlight bash %}$ srun + command{% endhighlight %} 
+    
+  Example:
+   
+    {% highlight bash %}$ srun hostname{% endhighlight %} 
+  
+  Allow to obtain the name of the computing resource used   
+  
+  
+  <a name="part-3"></a>
+## Resources supervision with nvidia
+  
+  
+### Liens
+<a name="liens"></a>
+
+* Cours liés : [Slurm Trainings](https://southgreenplatform.github.io/tutorials//cluster-itrop/Slurm/)
+
+
+-----------------------
+
+### License
+<a name="license"></a>
+
+<div>
+The resource material is licensed under the Creative Commons Attribution 4.0 International License (<a href="http://creativecommons.org/licenses/by-nc-sa/4.0/">here</a>).
+<center><img width="25%" class="img-responsive" src="http://creativecommons.org.nz/wp-content/uploads/2012/05/by-nc-sa1.png"/>
+</center>
+</div>
