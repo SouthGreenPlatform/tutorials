@@ -38,10 +38,14 @@ Know how to launch a Slurm job in GPU node in I-Trop Cluster and monitoring this
 
 ## Launch jobs in GPU node with Slurm 
 
-node GPU in I-trop cluster has 8 graphic cards RTX2080, each with 124G de RAM. In total this node has 24 threads.
+Node GPU in I-trop cluster has 8 graphic cards RTX2080, each with 124G de RAM. In total this node has 24 threads.
 We recommend to basecaller a data set using a graphic card to obtain results in only one folder. If you split data you can enjoy of the whole of graphic cards but your data results will be in several folders. In each results folder, reads can be share names. So, you can lost information if you decide to merge it.
 
-Create a sbatch script to allocate ressources. Here, slurm script `lauchGuppyGPU.sbash` takes 4 threads for lauch guppy-gpu, partition `-p gpu`. If you are using i-Trop GPU you are in `gpu_group` so, give this parametter to slurm wiht `-A ` option.
+Create a sbatch script to allocate ressources. Here, slurm script `lauchGuppyGPU.sbash` takes 4 threads for lauch guppy-gpu, partition `-p gpu`. If you are using i-Trop GPU you are into `gpu_group` so, give this parametter to slurm whit `-A ` option.
+
+Guppy is a data processing toolkit that contains the Oxford Nanopore Technologies’ basecalling algorithms, and several bioinformatic post-processing features.
+
+Basecalling with guppy can be launch using gyppy-gpu tool. In guppy commande you have to specify data containig raw read files (fast5) (-i), the output repertory to write fastq files (-o), How many worker threads you are using	–cpu_threads_per_caller	(-c) and the number of parallel basecallers to create	(-num_callers), we recommend to compress the fastq output (-compress_fastq)
 
 
 {% highlight bash %} 
@@ -53,13 +57,24 @@ Create a sbatch script to allocate ressources. Here, slurm script `lauchGuppyGPU
 INPUT=$1
 OUTPUT=$2
 CUDA=$3
+
+#loading modules
 module load bioinfo/guppy-gpu/3.2.4
+
+#running basecalling
 guppy_basecaller -c dna_r9.4.1_450bps_hac.cfg -i ${INPUT} -r -s ${OUTPUT} --num_callers 4 --gpu_runners_per_device 8 --qscore_filtering --min_qscore 7 -x cuda:${CUDA}
 The following command allocate computing resources ( nodes, memory, cores) and immediately launch the command on each allocate resource.
 
 Launch lauchGuppyGPU.sbash script:
 
 {% highlight bash %}$ sbatch lauchGuppyGPU.sbash {% endhighlight %} 
+  
+Note:
+Beside the path of our fast5 files (-i), the basecaller requires an output path (-s) and a config file or the flowcell/kit combination. In order to get a list of possible flowcell/kit combinations and config files, we use:
+
+{% highlight bash %}$ guppy_basecaller --print_workflows {% endhighlight %}
+  
+  
   
   <a name="part-3"></a>
 ## Resources supervision with nvidia
