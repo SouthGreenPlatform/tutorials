@@ -38,19 +38,29 @@ Jobs monitoring in GPU
 
 <a name="part-2"></a>
 ## Launch jobs in GPU node with Slurm 
-       
+
+node GPU in I-trop cluster has 8 graphic cards RTX2080, each with 124G de RAM. In total this node has 24 threads.
+
 ### Launch commands from the master node
 
+Create a sbatch script to allocate ressources. Here, slurm script `lauchGuppyGPU.sbash` takes 4 threads for lauch guppy-gpu.
+
+{% highlight bash %} 
+#!/bin/bash
+#SBATCH -J Basecalling
+#SBATCH -p gpu
+#SBATCH -A gpu_group
+#SBATCH -c 4
+INPUT=$1
+OUTPUT=$2
+CUDA=$3
+module load bioinfo/guppy-gpu/3.2.4
+guppy_basecaller -c dna_r9.4.1_450bps_hac.cfg -i ${INPUT} -r -s ${OUTPUT} --num_callers 4 --gpu_runners_per_device 8 --qscore_filtering --min_qscore 7 -x cuda:${CUDA}
 The following command allocate computing resources ( nodes, memory, cores) and immediately launch the command on each allocate resource.
 
-    {% highlight bash %}$ srun + command{% endhighlight %} 
-    
-  Example:
-   
-    {% highlight bash %}$ srun hostname{% endhighlight %} 
-  
-  Allow to obtain the name of the computing resource used   
-  
+Launch lauchGuppyGPU.sbash script:
+
+{% highlight bash %}$ sbatch lauchGuppyGPU.sbash {% endhighlight %} 
   
   <a name="part-3"></a>
 ## Resources supervision with nvidia
