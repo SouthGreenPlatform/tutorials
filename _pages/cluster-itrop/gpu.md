@@ -2,7 +2,7 @@
 layout: page
 title: "Utilisation du noeud GPU"
 permalink: /cluster-itrop/gpu/
-tags: [ linux, HPC, cluster, GPU ]
+tags: [linux, HPC, cluster, GPU ]
 description:  Use of GPU node for i-Trop cluster
 ---
 
@@ -30,20 +30,19 @@ description:  Use of GPU node for i-Trop cluster
 <a name="part-1"></a>
 ## Objectives
 
-Know how to launch different a Slurm job in GPU node in I-Trop Cluster.
-
-Jobs monitoring in GPU
+Know how to launch a Slurm job in GPU node in I-Trop Cluster and monitoring this jobs in GPU
 
 -------------------------------------------------------------------------------------
 
 <a name="part-2"></a>
+
 ## Launch jobs in GPU node with Slurm 
 
 node GPU in I-trop cluster has 8 graphic cards RTX2080, each with 124G de RAM. In total this node has 24 threads.
+We recommend to basecaller a data set using a graphic card to obtain results in only one folder. If you split data you can enjoy of the whole of graphic cards but your data results will be in several folders. In each results folder, reads can be share names. So, you can lost information if you decide to merge it.
 
-### Launch commands from the master node
+Create a sbatch script to allocate ressources. Here, slurm script `lauchGuppyGPU.sbash` takes 4 threads for lauch guppy-gpu, partition `-p gpu`. If you are using i-Trop GPU you are in `gpu_group` so, give this parametter to slurm wiht `-A ` option.
 
-Create a sbatch script to allocate ressources. Here, slurm script `lauchGuppyGPU.sbash` takes 4 threads for lauch guppy-gpu.
 
 {% highlight bash %} 
 #!/bin/bash
