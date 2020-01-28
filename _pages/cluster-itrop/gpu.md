@@ -78,8 +78,10 @@ Beside the path of our fast5 files (-i), the basecaller requires an output path 
 
   <a name="part-3"></a>
 ## Resources supervision with nvidia
-  
-  
+
+{% highlight bash %}$ nvidia-smi {% endhighlight %}
+
+
 ### Liens
 <a name="liens"></a>
 
