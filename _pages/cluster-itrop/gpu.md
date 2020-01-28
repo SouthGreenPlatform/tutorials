@@ -1,7 +1,7 @@
 ---
 layout: page
 title: "Utilisation du noeud GPU"
-permalink: /cluster-itrop/GPU/
+permalink: /cluster-itrop/gpu/
 tags: [ linux, HPC, cluster, GPU ]
 description:  Use of GPU node for i-Trop cluster
 ---
