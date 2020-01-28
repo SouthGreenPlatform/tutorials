@@ -88,6 +88,14 @@ Then you can launch on this node without using the `srun` prefix
 
 ### Partitions available:
 
+Depending on the type of jobs you want to launch you have the choice between several partitions.
+ 
+ The partitions can be considered job queues, each of which has an assortment of constraints such as job size limit, job time limit, users permitted to use it, etc. 
+ 
+ Priority-ordered jobs are allocated nodes within a partition until the resources (nodes, processors, memory, etc.) within that partition are exhausted.
+ 
+ Here are the available partitions:
+
  | partition | role  | nodes list | Number of Cores | Ram on nodes
 | :------------- | :------------- | :------------- |:------------- |:------------- |
 |short|	Short Jobs < 1 day (higher priority,interactive jobs)| node0,node1,node2,node13,node14| 12 cores | 48 to 64 GB
