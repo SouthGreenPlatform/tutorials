@@ -10,7 +10,7 @@ description: HPC Howto page
 | :------------- | :------------- | :------------- | :------------- |
 | Authors | Ndomassi TANDO (ndomassi.tando@ird.fr)  |
 | Creation Date | 08/11/19 |
-| Last Modified Date | 27/01/20 |
+| Last Modified Date | 28/01/20 |
 
 
 -----------------------
@@ -51,7 +51,7 @@ The cluster is composed of:
 
 Here is the architecture:
 
-<img width="100%" class="img-responsive" src="{{ site.url }}/images/schema_cluster_160119.png"/>
+<img width="100%" class="img-responsive" src="{{ site.url }}/images/schema_cluster_280120.png"/>
 
 ##### Getting connected to a Linux server from Windows with SSH (Secure Shell) protocol 
 
