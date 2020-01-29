@@ -42,11 +42,13 @@ Node GPU in I-trop cluster has 8 graphic cards RTX2080, each with 124G de RAM. I
 
 Guppy is a data processing toolkit that contains the Oxford Nanopore Technologies’ basecalling algorithms, and several bioinformatic post-processing features.
 
-Basecalling with guppy can be launch using gyppy-gpu tool. In guppy commande you have to specify data containig raw read files (fast5) (-i), the output repertory to write fastq files (-o), How many worker threads you are using cpu_threads_per_caller (-c) and the number of parallel basecallers to create	(-num_callers). We recommend to compress the fastq output (-compress_fastq).
+Basecalling with guppy can be launch using gyppy-gpu tool. In guppy commande you have to specify data containig fast5 raw read files (-i), the output repertory to write fastq files (-o), How many worker threads you are using cpu_threads_per_caller (-c) and the number of parallel basecallers to create	(-num_callers). We recommend to compress the fastq output (-compress_fastq).
 
 We recommend to basecaller a data set using a graphic card to obtain results in only one folder. If you split data you can enjoy of the whole of graphic cards but your data results will be in several folders. In each results folder, reads can be share names. So, you can lost information if you decide to merge it.
 
 ## creating a slurm scritp to basecalling in GPU
+
+Copy data in node26 /scratch before launching basecalling.
 
 Create a sbatch script to allocate ressources by using slurm. Here, sbatch script `lauchGuppyGPU.sbash` takes 4 threads for lauch guppy-gpu, partition `-p gpu`. If you are using i-Trop GPU you are into `gpu_group` so, give this parametter to slurm whit `-A ` option.
 
@@ -67,9 +69,11 @@ module load bioinfo/guppy-gpu/3.2.4
 guppy_basecaller -c dna_r9.4.1_450bps_hac.cfg -i ${INPUT} -r -s ${OUTPUT} --num_callers 4 --gpu_runners_per_device 8 --qscore_filtering --min_qscore 7 -x cuda:${CUDA}
 {% endhighlight %} 
 
-Now you can launch lauchGuppyGPU.sbash script:
+Now you can launch lauchGuppyGPU.sbash script giving input, output and cuda graphic card (From 0 to 7):
 
-{% highlight bash %}$ sbatch lauchGuppyGPU.sbash {% endhighlight %} 
+In this example, basecalling is running only in cuda 0.
+
+{% highlight bash %}$ sbatch lauchGuppyGPU.sbash /path/to/fast5 /path/to/fastq 0 {% endhighlight %} 
   
 Note:
 Beside the path of our fast5 files (-i), the basecaller requires an output path (-s) and a config file or the flowcell/kit combination. In order to get a list of possible flowcell/kit combinations and config files, we use:
