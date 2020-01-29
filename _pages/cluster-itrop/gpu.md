@@ -28,15 +28,12 @@ description:  Use of GPU node for i-Trop cluster
 
 -----------------------
 <a name="part-1"></a>
-## Objectives
+### Objectives
 
-Know how to launch a Slurm job in GPU node in I-Trop Cluster and monitoring this jobs in GPU
-
--------------------------------------------------------------------------------------
+Know how to launch a Slurm job in GPU node in I-Trop Cluster and monitoring jobs in GPU
 
 <a name="part-2"></a>
-
-## basecalling with guppy-gpu using the i-Trop GPU node
+## Basecalling with guppy-gpu using the i-Trop GPU node
 
 Node GPU in I-trop cluster has 8 graphic cards RTX2080, each with 124G de RAM. In total this node has 24 threads.
 
@@ -46,7 +43,7 @@ Basecalling with guppy can be launch using gyppy-gpu tool. In guppy commande you
 
 We recommend to basecaller a data set using a graphic card to obtain results in only one folder. If you split data you can enjoy of the whole of graphic cards but your data results will be in several folders. In each results folder, reads can be share names. So, you can lost information if you decide to merge it.
 
-## creating a slurm scritp to basecalling in GPU
+### Creating a slurm scritp to basecalling in GPU
 
 Copy data in node26 /scratch before launching basecalling.
 
