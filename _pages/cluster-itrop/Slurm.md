@@ -176,7 +176,7 @@ With `script.sh` the name of the script to use
 #SBATCH --time=00:10:00        ### WallTime
 #SBATCH --nodes=1              ### Number of Nodes
 #SBATCH --ntasks=1             ### Number of tasks per array job
-#SBATCH --array=0-19           ### Array index from 0  to 19
+#SBATCH --array=0-19%4           ### Array index from 0  to 19 with 4 runnings jobs
 
  
 echo "I am Slurm job ${SLURM_JOB_ID}, array job ${SLURM_ARRAY_JOB_ID}, and array task ${SLURM_ARRAY_TASK_ID}."{% endhighlight %}
@@ -198,7 +198,25 @@ I am Slurm job 20305, array job 20303, and array task 1.
 $ cat slurm-20303_19.out
 I am Slurm job 20323, array job 20303, and array task 19.{% endhighlight %}
 
-## Submit a job with several command in parallel at the same time
+### Submit a R job
+You can use the same syntax than before for Slurm.
+You just have to launch your R script with the R script command
+
+
+{% highlight bash %}#!/bin/bash
+## Define the job name
+#SBATCH --job-name=test
+## Define the output file
+#SBATCH --output=res.txt
+## Define the number of tasks
+#SBATCH --ntasks=1
+## Define the execution time limit
+#SBATCH --time=10:00
+## Define 100Mo of memory per cpu
+#SBATCH --mem-per-cpu=100
+Rscript script.R #launch the R script script.R {% endhighlight %}
+
+### Submit a job with several command in parallel at the same time
 
 You have to use the options `--ntasks` and `--cpus-per-task` 
 
