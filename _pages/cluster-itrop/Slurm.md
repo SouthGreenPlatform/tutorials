@@ -10,7 +10,7 @@ description:  Use of Slurm for i-Trop cluster
 | :------------- | :------------- | :------------- | :------------- |
 | Author | Ndomassi TANDO (ndomassi.tando@ird.fr)  |
 | Creation date |08/11/2019 |
-| modification date | 28/01/2020 |
+| modification date | 19/02/2020 |
 
 
 -----------------------
