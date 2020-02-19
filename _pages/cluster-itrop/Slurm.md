@@ -86,6 +86,19 @@ To connect to a node in interactive mode for X minutes , use the following comma
 
 Then you can launch on this node without using the `srun` prefix 
 
+
+### Connect to a node in interactive mode with x11 support:
+
+The x11 support allows you to launch graphical software within  a node.
+
+You first have to connect to the bioinfo-master.ird.fr with the -X option:
+
+{% highlight bash %}$ ssh -X login@bioinfo-master.ird.fr {% endhighlight %}
+
+Then you can launch this command with the `--x11` option
+
+{% highlight bash %}$ srun -p short --x11 --pty bash -i{% endhighlight %}
+
 ### Partitions available:
 
 Depending on the type of jobs you want to launch you have the choice between several partitions.
