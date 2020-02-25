@@ -73,7 +73,7 @@ In this example, basecalling is running only in cuda 0.
 {% highlight bash %}$ sbatch lauchGuppyGPU.sbash /path/to/fast5 /path/to/fastq 0 {% endhighlight %} 
   
 Note:
-Beside the path of our fast5 files (-i), the basecaller requires an output path (-s) and a config file or the flowcell/kit combination. In order to get a list of possible flowcell/kit combinations and config files, we use:
+Beside the path of our fast5 files folder (-i), the basecaller requires an output path (-s) and a config file or the flowcell/kit combination. In order to get a list of possible flowcell/kit combinations and config files, we use:
 
 {% highlight bash %}$ guppy_basecaller --print_workflows {% endhighlight %}
 
