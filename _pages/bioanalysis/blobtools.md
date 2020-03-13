@@ -3,14 +3,14 @@ layout: page
 title: "blobtools en ligne de commande"
 permalink: /bioanalysis/blobtools
 tags: [blobtools]
-description: Checking contaminations with bloobtools in your assemblies
+description: Checking contaminations with blobtools in your assemblies
 ---
 <table class="table-contact">
 <tr>
 <td><img width="100%" src="{{ site.url }}/images/blob.png" alt="" />
 </td>
 <td>
-<h1> Checking contaminations with bloobtools in your assemblies</h1><br />
+<h1> Checking contaminations with blobtools in your assemblies</h1><br />
 bloobtools is nice!
 </td>
 </tr>
@@ -63,7 +63,6 @@ diamond blastx \
  --evalue 1e-25 \
  --threads 8 
  --out diamond 
- #pd: prochaine fois ajouter --out sinon il ecrit dans le log.out
-
+ # --out sinon il ecrit dans le log.out
 {% endhighlight %}
 
