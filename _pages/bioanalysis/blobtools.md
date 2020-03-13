@@ -1,17 +1,17 @@
 ---
 layout: page
-title: "Qiime2 en ligne de Commande"
-permalink: /bioanalysis/qiime2/
-tags: [ dada2, qiime2 ]
-description: Metabarcoding using Qiime2 and DADA2
+title: "blobtools en ligne de commande"
+permalink: /bioanalysis/bloobtools
+tags: [blobtools]
+description: Checking contaminations with bloobtools in your assemblies
 ---
 <table class="table-contact">
 <tr>
-<td><img width="100%" src="{{ site.url }}/images/qiime2.png" alt="" />
+<td><img width="100%" src="{{ site.url }}/images/blob.png" alt="" />
 </td>
 <td>
-<h1> Metabarcoding using Qiime2 and DADA2</h1><br />
-This page describes how to analyse metabarcoding data using Qiime2 and DADA2. From fastq files to SVs table obtention and Phyloseq analysis.
+<h1> Checking contaminations with bloobtools in your assemblies</h1><br />
+bloobtools is nice!
 </td>
 </tr>
 </table>
