@@ -17,7 +17,6 @@ bloobtools is nice!
 </table>
 
 
-
 ### Author(s)
 
 | Authors  | Julie Orjuela |
@@ -36,7 +35,7 @@ fasta, diamond
 
 ### Checking contaminations with bloobtools in your assemblies
 
-#### diamond in assemblies against a uniprot database
+##### diamond in assemblies against a uniprot database
 
 {% highlight bash %}
 [orjuela@node25 bloobtools]$ more diamond.slurm 
@@ -66,7 +65,7 @@ diamond blastx \
  # --out sinon il ecrit dans le log.out
 {% endhighlight %}
 
-#### minimap2 assembly vs your fastq ONT.
+##### minimap2 assembly vs your fastq ONT.
 
 {% highlight bash %}
 #!/bin/bash
@@ -94,7 +93,7 @@ ssembly_vs_fastqONT.bam
 {% endhighlight %}
 
 
-#### Lauch bloobtools
+##### Lauch bloobtools
 
 {% highlight bash %}
 # chargement des modules
