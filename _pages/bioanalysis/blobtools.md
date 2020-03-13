@@ -66,3 +66,29 @@ diamond blastx \
  # --out sinon il ecrit dans le log.out
 {% endhighlight %}
 
+#### minimap2 assembly vs your fastq ONT.
+
+{% highlight bash %}
+#!/bin/bash
+#SBATCH --export=ALL
+#SBATCH -J minimap2
+#SBATCH -n 10                         # coeurs
+#SBATCH --mem-per-cpu=40GB           # mémoire
+#SBATCH -t 10-00:00                  # durée job (D-HH:MM)
+#SBATCH -o minimap2.%N.%j.out        # STDOUT
+#SBATCH -e minimap2.%N.%j.err        # STDERR
+#SBATCH --partition supermem	     # partition
+
+#modules
+module load bioinfo/minimap2/2.16 
+module load bioinfo/samtools/1.9
+
+# mapping
+echo "minimap2 -x map-ont -m 250 --MD -t 20 --no-long-join -r 50 -a /scratch/orjuela/bloobtools/mil_best_assembly.fasta ALL-ONT-fastqpass-HAC.fastq | samtools sort -@ 4 -O BAM -o minimap2_assembly_vs_fastqONT.ba
+m"
+
+minimap2 -x map-ont -m 250 --MD -t 20 --no-long-join -r 50 -a /scratch/orjuela/bloobtools/mil_best_assembly.fasta /scratch/orjuela/bloobtools/ALL-ONT-fastqpass-HAC.fastq | samtools sort -@ 4 -O BAM -o minimap2_a
+ssembly_vs_fastqONT.bam
+
+# echo "END"
+{% endhighlight %}
