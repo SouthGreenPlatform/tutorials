@@ -1,7 +1,7 @@
 ---
 layout: page
 title: "blobtools en ligne de commande"
-permalink: /bioanalysis/bloobtools
+permalink: /bioanalysis/blobtools
 tags: [blobtools]
 description: Checking contaminations with bloobtools in your assemblies
 ---
