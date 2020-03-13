@@ -92,3 +92,23 @@ ssembly_vs_fastqONT.bam
 
 # echo "END"
 {% endhighlight %}
+
+
+#### Lauch bloobtools
+
+{% highlight bash %}
+# chargement des modules
+module load bioinfo /samtools/1.9
+module load system/singularity/3.3.0
+
+# sort and index your bam
+samtools sort -o minimap2_assembly_vs_fastqONT_sorted.bam minimap2_assembly_vs_fastqONT.bam
+samtools index minimap2_assembly_vs_fastqONT_sorted.bam      
+
+# run singularity blobtools v1
+mkdir blob1; cd blob1
+singularity run /data3/projects/containers/CULEBRONT/bloobtools-v1.1.1.simg blobtools create -i ../mil_best_assembly.fasta -b ../minimap2_assembly_vs_fastqONT_sorted.bam -t ../diamondblastX.csv -o milbloob1 --names /usr/local/blobtools-blobtools_v1.1.1/data/names.dmp --nodes /usr/local/blobtools-blobtools_v1.1.1/data/nodes.dmp
+singularity run /data3/projects/containers/CULEBRONT/bloobtools-v1.1.1.simg blobtools view -i milbloob1.blobDB.json --cov -o mil
+singularity run /data3/projects/containers/CULEBRONT/bloobtools-v1.1.1.simg plot -i milbloob1.blobDB.json
+{% endhighlight %}
+
