@@ -10,7 +10,7 @@ description:  Use of Slurm for i-Trop cluster
 | :------------- | :------------- | :------------- | :------------- |
 | Author | Ndomassi TANDO (ndomassi.tando@ird.fr)  |
 | Creation date |08/11/2019 |
-| modification date | 19/02/2020 |
+| modification date | 30/03/2020 |
 
 
 -----------------------
@@ -112,7 +112,8 @@ Depending on the type of jobs you want to launch you have the choice between sev
  | partition | role  | nodes list | Number of Cores | Ram on nodes
 | :------------- | :------------- | :------------- |:------------- |:------------- |
 |short|	Short Jobs < 1 day (higher priority,interactive jobs)| node0,node1,node2,node13,node14| 12 cores | 48 to 64 GB
-| normal | job of maximum 7 days| node0,node1,node2,node5,node13,node14,node15,node16,node17,node18,node19,node20,node22,node23,node24 | 12 to 24 cores| 64 to 96GB|
+| normal | job of maximum 7 days| node0,node1,node2,node13,node14,node15,node16,node17,node18,node19,node20,node22,node23,node24 | 12 to 24 cores| 64 to 96GB|
+| r900 | job of maximum 7 days | node5 |16 cores| 32 GB|
 | long| <7 days< long jobs< 45 days| node3,node8,node9,node10,node11,node12|12 to 24 cores| 48 GB|
 | highmem| jobs with more memory needs |node4, node7,node17,node21| 12 to 24 cores| 144 GB|
 | supermem| jobs with much more memory needs|  node25| 40 cores | 1 TB|
