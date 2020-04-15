@@ -1,5 +1,5 @@
 ---
-layout: page
+layout: default
 title: "HPC Howto"
 permalink: /cluster-agap/hpchowto/
 tags: [ linux, HPC, cluster, module load ]
