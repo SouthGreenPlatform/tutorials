@@ -1,16 +1,16 @@
 ---
 layout: page
 title: "HPC Howto"
-permalink: /cluster-itrop/hpchowto/
+permalink: /cluster-agap/hpchowto/
 tags: [ linux, HPC, cluster, module load ]
 description: HPC Howto page
 ---
 
 | Description | HowTos for HPC cluster itrop |
 | :------------- | :------------- | :------------- | :------------- |
-| Authors | Ndomassi TANDO (ndomassi.tando@ird.fr)  |
-| Creation Date | 08/11/19 |
-| Last Modified Date | 18/02/20 |
+| Authors | Bertrand PITOLLAT (bertrand.pitollat@cirad.fr)  |
+| Creation Date | 15/04/20 |
+| Last Modified Date | 15/04/20  |
 
 
 -----------------------
