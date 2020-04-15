@@ -9,6 +9,7 @@ description: HPC Howto page
 | Description | HowTos for HPC cluster itrop |
 | :------------- | :------------- | :------------- | :------------- |
 | Authors | Bertrand PITOLLAT (bertrand.pitollat@cirad.fr)  |
+| Authors | Gautier SARAH (gautier.sarah@cirad.fr)  |
 | Creation Date | 15/04/20 |
 | Last Modified Date | 15/04/20  |
 
