@@ -19,6 +19,8 @@ description: Galaxy Howto page
 
 <!-- TOC depthFrom:2 depthTo:2 withLinks:1 updateOnSave:1 orderedList:0 -->
 * [How to: Register to Galaxy South Green](#register)
+* [How to: Upload a file in my history](#upload)
+
 
 * [How to: Connect to the Itrop cluster via `ssh`](#howto-2)
 * [How to: Reserve one or several cores of a node ](#howto-3)
@@ -43,39 +45,20 @@ You can create your account directly by clicking on the register button on our G
 South Green members or partner benefits from 25Go. Please contact admin-bioinfo@cirad.fr after creating your account.
 <img width="100%" class="img-responsive" src="{{ site.url }}/images/galaxy_register.png"/>
 
-##### Getting connected to a Linux server from Windows with SSH (Secure Shell) protocol 
-
-| Platform | Software  | Description | url | 
-| :------------- | :------------- | :------------- | :------------- |
-| <img width="10%" class="img-responsive" src="{{ site.url }}/images/tpLinux/osWin.png"/> | mobaXterm |an enhanced terminal for Windows with an X11 server and a tabbed SSH client | [more](https://mobaxterm.mobatek.net/) |
-| <img width="10%" class="img-responsive" src="{{ site.url }}/images/tpLinux/osWin.png"/>| putty | Putty allows to  connect to a Linux server from a Windows workstation.   | [Download](https://www.chiark.greenend.org.uk/~sgtatham/putty/latest.html)| 
-
-
-
-##### Transferring and copying files from your computer to a Linux servers with SFTP (SSH File Transfer Protocol) protocol
-
-| Platform | Software  | Description | url | 
-| :------------- | :------------- | :------------- | :------------- | 
-| <img width="10%" class="img-responsive" src="{{ site.url }}/images/tpLinux/osApple.png"/> <img width="10%" class="img-responsive" src="{{ site.url }}/images/tpLinux/osLinux.png"/> <img width="10%" class="img-responsive" src="{{ site.url }}/images/tpLinux/osWin.png"/>| <img width="10%" class="img-responsive" src="{{ site.url }}/images/tpLinux/filezilla.png"/> filezilla |  FTP and SFTP client  | [Download](https://filezilla-project.org/)  | 
-
-
-##### Viewing and editing files on your computer before transferring on the linux server or directly on the distant server
-
-| Type | Software  | url | 
-| :------------- | :------------- | :------------- |
-| Distant, console mode |  nano | [Tutorial](http://www.howtogeek.com/howto/42980/) |  
-| Distant, console mode |  vi | [Tutorial](https://www.washington.edu/computing/unix/vi.html)  |  
-| Distant, graphic mode| komodo edit | [Download](https://www.activestate.com/komodo-ide/downloads/edit) | 
-| Linux & windows based editor | Notepad++ | [Download](https://notepad-plus-plus.org/download/v7.5.5.html) | 
-
 -----------------------
 
 
-<a name="howto-1"></a>
-### How to : Transfer files with filezilla `sftp` on the Itrop cluster
+<a name="upload"></a>
+### How to : Upload a file in my history
 
+##### There are several solutions to import a file
 
-##### Download and install FileZilla
+* Import a file stored locally on your computer by clicking on "choose a file"
+* Import a file from a URL by copying the address in the "URL / Text" frame
+* Copy the text of the file directly in the "URL / Text" frame
+* Import a shared file in the “shared data”
+
+<img width="100%" class="img-responsive" src="{{ site.url }}/images/galaxy_upload.png"/>
 
 
 ##### Open FileZilla and save the IRD cluster into the site manager
