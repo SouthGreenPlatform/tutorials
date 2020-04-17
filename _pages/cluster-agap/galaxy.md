@@ -20,6 +20,7 @@ description: Galaxy Howto page
 <!-- TOC depthFrom:2 depthTo:2 withLinks:1 updateOnSave:1 orderedList:0 -->
 * [How to: Register to Galaxy South Green](#register)
 * [How to: Upload a file in my history](#upload)
+* [How to: Upload big datasets](#bigdata)
 
 
 
@@ -67,6 +68,12 @@ Monitoring of imports in your history:
 You can have as many historie as you want and switch between histories. However, we recommend that you organize your data as follows :
 1 history = 1 analysis
 and to name the history in a recognizable way.
+
+-----------------------
+
+
+<a name="bigdata"></a>
+### How to : Upload big datasets
 
 
 
