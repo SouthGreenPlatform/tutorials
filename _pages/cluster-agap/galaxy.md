@@ -39,7 +39,7 @@ South Green members or partner benefits from 25Go. Please contact admin-bioinfo@
 
 
 <a name="upload"></a>
-### How to : Upload a file in my history
+### How to: Upload a file in my history
 
 ##### There are several solutions to import a file
 
@@ -71,17 +71,17 @@ and to name the history in a recognizable way.
 
 
 <a name="bigdata"></a>
-### How to : Upload big datasets
+### How to: Upload big datasets
 
 <img width="50%" class="img-responsive" src="{{ site.url }}/images/galaxy_loadbigdata.png"/>
 
-#### Transfer your file to the HPC, using Filezilla or any other FTP client, into your personnal "User directory":
+##### Transfer your file to the HPC, using Filezilla or any other FTP client, into your personnal "User directory":
 
 /work/GALAXY/galaxy/users_libraries/your.name@mail.com
 
 If you do not have any directory, ask galaxy-dev-southgreen@cirad.fr
 
-#### Add the file into your personnal "data library"
+##### Add the file into your personnal "data library"
 
 Shared Data => Data Libraries.
 
@@ -89,7 +89,7 @@ Then select the library corresponding to your name.
 
 If you do not have any library, please contact: galaxy-dev-southgreen@cirad.fr
 
-#### Import the file into one of your histories for analysis
+##### Import the file into one of your histories for analysis
 
 In order to add data into your library, click on the icon as below. 
 
