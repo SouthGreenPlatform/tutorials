@@ -18,8 +18,8 @@ description: Galaxy Howto page
 ### Summary
 
 <!-- TOC depthFrom:2 depthTo:2 withLinks:1 updateOnSave:1 orderedList:0 -->
-* [Preambule: Architecture of the Itrop Cluster and Softwares to install before connecting to the cluster ](#preambule)
-* [How to: Transfer files with filezilla `sftp` on the Itrop cluster](#howto-1)
+* [How to: Register to Galaxy South Green](#register)
+
 * [How to: Connect to the Itrop cluster via `ssh`](#howto-2)
 * [How to: Reserve one or several cores of a node ](#howto-3)
 * [How to: Transfer my data from the nas servers to the node ](#howto-4)
@@ -36,22 +36,12 @@ description: Galaxy Howto page
 
 -----------------------
 
-<a name="preambule"></a>
-### Preambule
+<a name="register"></a>
+### Register
 
-##### Architecture of the Itrop cluster:
-
-The IRD Bioinformatic Cluster is composed of a pool of machines reachable through a single entry point. The connections to the internal machines are managed by a master node that tries to ensure that proper balancing is made across the available nodes at a given moment: bioinfo-master.ird.fr
-
-The cluster is composed of:
-
--  1 master 
--  3 nas servers for a 127To data storage
--  27 nodes servers : 8 nodes with 12 cores, 2 nodes with 16 cores, 4 nodes with 20  cores, 11 with 24 cores, 1 with 40 cores  with RAM from 48Go to 1To and a GPU serveur with 8 RTX 2080 graphical cards.
-
-Here is the architecture:
-
-<img width="100%" class="img-responsive" src="{{ site.url }}/images/schema_cluster_280120.png"/>
+You can create your account directly by clicking on the register button on our Galaxy instance. 
+South Green members or partner benefits from 25Go. Please contact admin-bioinfo@cirad.fr after creating your account.
+<img width="100%" class="img-responsive" src="{{ site.url }}/images/galaxy_register.png"/>
 
 ##### Getting connected to a Linux server from Windows with SSH (Secure Shell) protocol 
 
