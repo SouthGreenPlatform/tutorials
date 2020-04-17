@@ -75,7 +75,29 @@ and to name the history in a recognizable way.
 <a name="bigdata"></a>
 ### How to : Upload big datasets
 
+<img width="50%" class="img-responsive" src="{{ site.url }}/images/galaxy_loadbigdata.png"/>
 
+#### Transfer your file to the HPC, using Filezilla or any other FTP client, into your personnal "User directory":
+
+/work/GALAXY/galaxy/users_libraries/your.name@mail.com
+
+If you do not have any directory, ask galaxy-dev-southgreen@cirad.fr
+
+#### Add the file into your personnal "data library"
+
+Shared Data => Data Libraries.
+
+Then select the library corresponding to your name.
+
+If you do not have any library, please contact: galaxy-dev-southgreen@cirad.fr
+
+#### Import the file into one of your histories for analysis
+
+In order to add data into your library, click on the icon as below. 
+
+Then you can import data by browsing your personal "User directory" (corresponding to the directory /work/GALAXY/galaxy/users_libraries/your.name@mail.com)
+
+<img width="50%" class="img-responsive" src="{{ site.url }}/images/galaxy_data_libraries.png"/>
 
 
 -----------------------
