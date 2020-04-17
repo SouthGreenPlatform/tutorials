@@ -102,9 +102,15 @@ Then you can import data by browsing your personal "User directory" (correspondi
 <a name="cite"></a>
 ### How to: Cite
 
-If you use South Green Galaxy in your published work, please cite this publication :
+If you use South Green Galaxy in your published work:
 
 “The authors acknowledge the South Green Platform (http://www.southgreen.fr) for providing the galaxy instance (http://galaxy.southgreen.fr/galaxy/) that have contributed to the research results reported within this paper.”
+
+And please ackowledge the AGAP Cluster:
+
+“The authors acknowledge the CIRAD UMR-AGAP HPC (South Green Platform) at CIRAD montpellier for providing HPC resources that have contributed to the research results reported within this paper. URL: http://www.southgreen.fr”
+
+Do not forget to cite the tools.
 
 Enis Afgan, Dannon Baker, Bérénice Batut, Marius van den Beek, Dave Bouvier, Martin Čech, John Chilton, Dave Clements, Nate Coraor, Björn Grüning, Aysam Guerler, Jennifer Hillman-Jackson, Vahid Jalili, Helena Rasche, Nicola Soranzo, Jeremy Goecks, James Taylor, Anton Nekrutenko, and Daniel Blankenberg. The Galaxy platform for accessible, reproducible and collaborative biomedical analyses: 2018 update, Nucleic Acids Research, Volume 46, Issue W1, 2 July 2018, Pages W537–W544, doi:10.1093/nar/gky379
 
