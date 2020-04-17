@@ -52,7 +52,21 @@ South Green members or partner benefits from 25Go. Please contact admin-bioinfo@
 <img width="50%" class="img-responsive" src="{{ site.url }}/images/galaxy_upload.png"/>
 
 When loading a file, Galaxy can detect type automatically but you can also choose the type of your file (txt, fasta,…).
-<img width="100%" class="img-responsive" src="{{ site.url }}/images/galaxy_filetype.png"/>
+<img width="50%" class="img-responsive" src="{{ site.url }}/images/galaxy_filetype.png"/>
+
+To import files from shared data go to "Shared Data" => " Data Libraries "
+Select the files you want to import and click the " To history " button.
+
+Monitoring of imports in your history:
+
+* Blue: job has been submitted
+* Yellow: the job is being processed
+* Green: the job ended successfully
+* Red: the job is in error
+
+You can have as many historie as you want and switch between histories. However, we recommend that you organize your data as follows :
+1 history = 1 analysis
+and to name the history in a recognizable way.
 
 
 ##### Open FileZilla and save the IRD cluster into the site manager
