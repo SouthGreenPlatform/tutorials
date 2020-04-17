@@ -21,9 +21,7 @@ description: Galaxy Howto page
 * [How to: Register to Galaxy South Green](#register)
 * [How to: Upload a file in my history](#upload)
 * [How to: Upload big datasets](#bigdata)
-
-
-
+* [How to: Cite](#cite)
 * [Links](#links)
 * [License](#license)
 
@@ -101,13 +99,14 @@ Then you can import data by browsing your personal "User directory" (correspondi
 
 
 -----------------------
-<a name="howto-11"></a>
-### How to : Cite the Itrop platform in your publications
+<a name="cite"></a>
+### How to: Cite
 
-Please just copy the following sentence:
+If you use South Green Galaxy in your published work, please cite this publication :
 
-`The authors acknowledge the IRD itrop HPC (South Green Platform) at IRD montpellier for providing HPC  resources that have contributed to the research results reported within this paper.
-    URL: https://bioinfo.ird.fr/- http://www.southgreen.fr` 
+“The authors acknowledge the South Green Platform (http://www.southgreen.fr) for providing the galaxy instance (http://galaxy.southgreen.fr/galaxy/) that have contributed to the research results reported within this paper.”
+
+Enis Afgan, Dannon Baker, Bérénice Batut, Marius van den Beek, Dave Bouvier, Martin Čech, John Chilton, Dave Clements, Nate Coraor, Björn Grüning, Aysam Guerler, Jennifer Hillman-Jackson, Vahid Jalili, Helena Rasche, Nicola Soranzo, Jeremy Goecks, James Taylor, Anton Nekrutenko, and Daniel Blankenberg. The Galaxy platform for accessible, reproducible and collaborative biomedical analyses: 2018 update, Nucleic Acids Research, Volume 46, Issue W1, 2 July 2018, Pages W537–W544, doi:10.1093/nar/gky379
 
 -----------------------
 
