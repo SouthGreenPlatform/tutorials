@@ -388,7 +388,7 @@ You can directly launch a script with several commands to launch into the chosen
 
 ##### Set Slurm parameters into the script
 
-The beginning of the script should contain the parameters to provides to SGE.
+The beginning of the script should contain the parameters to provides to Slurm.
 
 All the parameters should be written with the syntax  `#SBATCH` before.
 
